@@ -7,7 +7,7 @@ Statecharts have the following functions:
   + `addState`
   + `sendEvent`
   + `goToState`
-  + `initStates`
+  + `initState` or `initStates`
   
 States should look like this:
 	

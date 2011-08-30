@@ -127,6 +127,7 @@ Statechart = {
 	      }
 	    }
 	  };
+	  sc.initState = sc.initStates;
 		
 		sc.goToState = function(requestedStateName, tree, concurrentTree){
 	    var cState, allStates = this._all_states[tree], idx, len,
@@ -276,7 +277,6 @@ Statechart = {
       // we can go ahead and flush the queued events
       this._sendEventLocked = false;
       this._flushPendingEvents();
-
     };
     
 	  /**
