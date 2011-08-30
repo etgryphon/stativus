@@ -1,14 +1,15 @@
 To Create a Statechart, do this:
 
-  var myStatechart = new Statechart();
+  `var myStatechart = new Statechart();`
 
-Statecharts have the following functions: 
-  addState, 
-  sendEvent, 
-  goToState, 
-  initStates
+Statecharts have the following functions:
+
+  + `addState`
+  + `sendEvent`
+  + `goToState`
+  + `initStates`
   
-	States should look like this:
+States should look like this:
 	
 	myStatechart.addState('loading', {
 		globalConcurrentState: 'data_states', <= *optional: if you have more than 1 global parallel states
