@@ -13,9 +13,9 @@ States should look like this:
 	
 	myStatechart.addState('loading', {
 		globalConcurrentState: 'data_states', <= *optional: if you have more than 1 global parallel states
-		subStatesAreConcurrent: true || false <= *optional: in case you have parallel substates, defaults to <false>
+		substatesAreConcurrent: true || false <= *optional: in case you have parallel substates, defaults to <false>
 		parentState: 'some_parent',
-		initialSubState: 'really_loading' <= *optional: if you have substates
+		initialSubstate: 'really_loading' <= *optional: if you have substates
 		
 		// Base Events
 		initState: function(){ ... },
