@@ -31,14 +31,20 @@ State = {
   }  
 };
 // Our Maker function:  Thank you D.Crockford.
-State.create = function (config) {
-  var nState, k;
-  config = config || {};
+State.create = function (configs) {
+  var nState, k, config, i, len;
+  configs = configs || [];
   function F() {}
   F.prototype = this;
   nState = new F();
-  for (k in config){ 
-    if(config.hasOwnProperty(k)) nState[k] = config[k]; 
+  // You can have 0...n configuration objects
+  for (i = 0, len = configs.length || 0; i < len; i++){
+    config = configs[i];
+    if (typeof config === 'object'){
+      for (k in config){ 
+        if(config.hasOwnProperty(k)) nState[k] = config[k]; 
+      }
+    }
   }
   return nState;
 };
@@ -70,10 +76,14 @@ Statechart = {
 		sc._active_subtrees = {};
 		
 		// Create the functions
-		sc.addState = function(name, config){
-		  var tree, obj, hasConcurrentSubstates, pState, cTree, nState;
+		sc.addState = function(name){
+		  var tree, obj, hasConcurrentSubstates, pState, 
+		      cTree, nState, config, configs = [], len, i;
 		  
-		  // primary configs
+      for(i = 1, len = arguments.length; i < len; i++){
+        configs[i-1] = config = arguments[i];
+      }
+		  // primary config is always the last config
 		  config = config || {};
 		  config.name = name;
 		  config.statechart = this;
@@ -101,7 +111,7 @@ Statechart = {
 	      }
 		  }
 		  
-		  nState = State.create(config);
+		  nState = State.create(configs);
 		  nState.sendAction = nState.sendEvent;
 		  
 		  // Actually add the state to our statechart
@@ -115,6 +125,7 @@ Statechart = {
 	  
 	  sc.initStates = function(init){
 	    var x, state;
+	    this._inInitialSetup = true;
 	    if ( typeof init === 'string'){
 	      this.goToState(init, Statechart.DEFAULT_TREE);
 	    }
@@ -126,6 +137,8 @@ Statechart = {
 	        }
 	      }
 	    }
+	    this._inInitialSetup = false;
+	    this._flushPendingEvents();
 	  };
 	  sc.initState = sc.initStates;
 		
@@ -142,6 +155,9 @@ Statechart = {
 	    cState = concurrentTree ? this._current_state[concurrentTree] : this._current_state[tree];
 	    
 	    reqState = allStates[requestedStateName];
+	    
+	    // if the current state is the same as the requested state do nothing
+	    if (reqState === cState) return;
 	    
 	    if (!reqState) throw '#goToState: Could not find requested state: '+requestedStateName;
 	    
@@ -173,6 +189,7 @@ Statechart = {
 	    // root of the tree to either the requested state or the current state.
 	    // Will always be less than or equal to O(n^2), where n is the number
 	    // of states in the tree
+	    enterMatchIndex = -1;
 	    for (idx = 0, len = exitStates.length; idx < len; idx++){
 	      exitMatchIndex = idx;
 	      enterMatchIndex = enterStates.indexOf(exitStates[idx]);
@@ -181,7 +198,7 @@ Statechart = {
 	    
 	    // In the case where we don't find a common parent state, we 
 	    // must enter from the root state
-	    if (!enterMatchIndex) enterMatchIndex = enterStates.length - 1;
+	    if (enterMatchIndex < 0) enterMatchIndex = enterStates.length - 1;
 	    
 	    // Now, we will exit all the underlying states till we reach the common
 	    // parent state. We do not exit the parent state because we transition
@@ -202,9 +219,6 @@ Statechart = {
 	    cState = enterStates[i];
 	    if (cState) this._cascadeEnterSubstates(cState, enterStates, (i-1), tree, allStates);
 	    
-	    // set the current state for this state transition
-	    this._current_state[tree] = reqState;
-	    
 	    // Ok, we're done with the current state transition. Make sure to unlock
 	    // the goToState and let other pending state transitions
 	    this._goToStateLocked = false;
@@ -212,7 +226,7 @@ Statechart = {
 	    
 	    // Once pending state transitions are flushed then go ahead and start flush
 	    // pending actions
-	    this._flushPendingEvents();
+	    if (!this._inInitialSetup) this._flushPendingEvents();
 	  };
 	  
 	  sc.goToHistoryState = function(requestedState, tree, concurrentTree, isRecursive){
@@ -239,10 +253,10 @@ Statechart = {
           ss = Statechart.SUBSTATE_DELIM, aTrees, sResponder;
       if (len < 1) return;
       for(i = 1; i < len; i++){
-        args = arguments[i];
+        args[i-1] = arguments[i];
       }
       
-      if (this._sendEventLocked || this._goToStateLocked){
+      if (this._inInitialSetup || this._sendEventLocked || this._goToStateLocked){
         // We want to prevent any events from occurring until
         // we have completed the state transitions and events
         this._pendingEvents.push({
@@ -252,7 +266,6 @@ Statechart = {
 
         return;
       }
-
       this._sendEventLocked = true;
       for(tree in currentStates){
         if(!currentStates.hasOwnProperty(tree)) continue;
@@ -276,7 +289,7 @@ Statechart = {
       // Now, that the states have a chance to process the first action
       // we can go ahead and flush the queued events
       this._sendEventLocked = false;
-      this._flushPendingEvents();
+      if (!this._inInitialSetup) this._flushPendingEvents();
     };
     
 	  /**
