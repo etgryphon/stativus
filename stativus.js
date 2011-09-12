@@ -247,6 +247,25 @@ Statechart = {
 	    this.goToState(realHistoryState, tree);
 	  };
 	  
+	  sc.currentState = function(tree){
+	    var ret, sTree, aTrees, bTree, cStates = this._current_state,
+	        cState, i, len;
+	    tree = tree || 'default';
+	    cState = cStates[tree];
+	    if (cState && cState.substatesAreConcurrent){
+	      ret = [];
+	      aTrees = this._active_subtrees[tree] || [];
+        for(i = 0, len = aTrees.length; i < len; i++){
+          sTree = aTrees[i];
+          ret.unshift(cStates[sTree]);
+        }
+	    }
+	    else if (cState && cState.isState){
+	      ret = cState;
+	    }
+	    return ret;
+	  };
+	  
 	  sc.sendEvent = function(evt){
       var handled = false, currentStates = this._current_state, responder,
           args = [], tree, len = arguments.length, i, allStates, sTree,
@@ -430,6 +449,7 @@ Statechart = {
 	    });
 	  };
 	  
+	  // TODO: make this more efficient
 	  sc._removeFromActiveTree = function(baseTree, tree){
 	    var nArray = [], aTrees = this._active_subtrees[baseTree];
       if (!aTrees) return [];

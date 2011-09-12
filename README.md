@@ -5,6 +5,7 @@ To Create a Statechart, do this:
 Statecharts have the following functions:
 
   + `addState`
+  + `currentState`
   + `sendEvent`
   + `goToState`
   + `initState` or `initStates`
