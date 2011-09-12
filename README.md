@@ -1,6 +1,6 @@
 To Create a Statechart, do this:
 
-  `var myStatechart = new Statechart();`
+  `var myStatechart = Statechart.create();`
 
 Statecharts have the following functions:
 

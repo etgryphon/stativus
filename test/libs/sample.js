@@ -1,3 +1,4 @@
+/*globals Statechart */
 var myStatechart = Statechart.create();
 myStatechart.addState('first', {
   substatesAreConcurrent: true,
