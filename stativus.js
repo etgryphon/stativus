@@ -223,7 +223,7 @@ Statechart = {
     // has an initial sub state, then we must enter it too
     i = enterMatchIndex-1;
     cState = enterStates[i];
-    if (cState) this._cascadeEnterSubstates(cState, enterStates, (i-1), tree, allStates);
+    if (cState) this._cascadeEnterSubstates(cState, enterStates, (i-1), concurrentTree || tree, allStates);
     
     // Ok, we're done with the current state transition. Make sure to unlock
     // the goToState and let other pending state transitions
@@ -310,9 +310,9 @@ Statechart = {
       for(i = 0, len = aTrees.length; i < len; i++){
         sTree = aTrees[i];
         sResponder = currentStates[sTree];
-        this._cascadeEvents(evt, args, sResponder, allStates, sTree);
+        handled = handled || this._cascadeEvents(evt, args, sResponder, allStates, sTree);
       }
-      this._cascadeEvents(evt, args, responder, allStates, null);   
+      if (!handled) this._cascadeEvents(evt, args, responder, allStates, null);   
     }
 
     // Now, that the states have a chance to process the first action
@@ -341,8 +341,10 @@ Statechart = {
       }
       // check to see if we have reached the end of this tree
       if (tree && ssName === responder.name) return handled;
-      if (!handled) responder = responder.parentState ? allStates[responder.parentState] : null ;
+      responder = !handled && responder.parentState ? allStates[responder.parentState] : null ;
     }
+    
+    return handled;
   },
   
   _flushPendingEvents: function(){

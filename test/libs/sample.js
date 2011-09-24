@@ -39,6 +39,7 @@ var TestRunner = {
     	testEvent: function(){
     	  console.log('In ', this.name, ' firing event: testEvent');
     	  this.goToState('first.first.second');
+    	  return true;
     	}
     });
     sc.addState('first.first.second', allEnterExit, {
