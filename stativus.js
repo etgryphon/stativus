@@ -163,7 +163,7 @@ Statechart = {
     reqState = allStates[requestedStateName];
     
     // if the current state is the same as the requested state do nothing
-    if (reqState === cState) return;
+    if (this._checkAllCurrentStates(reqState, concurrentTree || tree)) return;
     
     if (!reqState) throw '#goToState: Could not find requested state: '+requestedStateName;
     
@@ -345,6 +345,13 @@ Statechart = {
     }
     
     return handled;
+  },
+  
+  _checkAllCurrentStates: function(reqState, tree){
+    var currentStates = this.currentState(tree) || [];
+    if (typeof currentStates === 'string' && reqState === this._all_states[currentStates]) return true
+    else if (currentStates.indexOf && currentStates.indexOf(reqState) > -1) return true;
+    else return false;
   },
   
   _flushPendingEvents: function(){
