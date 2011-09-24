@@ -110,7 +110,7 @@ Statechart = {
 	    this._states_with_concurrent_substates[tree] = obj;
 	  } 
 	  // Am I a Concurrent State of any parent State?
-	  else if (pState && cTree && cTree[pState]){
+	  if (pState && cTree && cTree[pState]){
 	    pState = this._all_states[tree][pState];
 	    if(pState) {
 	      pState.substates = pState.substates || [];
@@ -255,15 +255,19 @@ Statechart = {
   
 	currentState: function(tree){
     var ret, sTree, aTrees, bTree, cStates = this._current_state,
-        cState, i, len;
+        cState, i, len, state, ps, aStates;
     tree = tree || 'default';
     cState = cStates[tree];
+    aStates = this._all_states[tree];
     if (cState && cState.substatesAreConcurrent){
-      ret = [];
+      ret = [cState];
       aTrees = this._active_subtrees[tree] || [];
       for(i = 0, len = aTrees.length; i < len; i++){
         sTree = aTrees[i];
-        ret.unshift(cStates[sTree]);
+        state = cStates[sTree];
+        if(state) ps = aStates[state.parentState];
+        if (ps && ret.indexOf(ps) < 0) ret.unshift(ps);
+        if (state && ret.indexOf(state) < 0) ret.unshift(state);
       }
     }
     else if (cState && cState.isState){
