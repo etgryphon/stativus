@@ -12,6 +12,12 @@ State = {
   // walk like a duck
   isState: true,
   
+  _data: null,
+  
+  _isNone: function(value){
+    return (value === undefined || value === null);
+  },
+  
   goToState: function(name){
     var sc = this.statechart;
     if (sc){ sc.goToState(name, this.globalConcurrentState, this.localConcurrentState); }
@@ -28,7 +34,19 @@ State = {
     var sc = this.statechart;
     if (sc){ sc.sendEvent.apply(sc, arguments); }
     else { throw 'Cannot sendEvent cause state doesnt have a statechart'; }
-  }  
+  },
+  
+  getData: function(key){
+    if (this._isNone(key)) return key;
+    var sc = this.statechart, ret = this._data[key];
+    if (this._isNone(ret)) ret = sc.getData(key, this.parentState, this.globalConcurrentState);
+    return ret;
+  },
+  
+  setData: function(key, value){
+    if (this._isNone(key)) return value;
+    this._data[key] = value;
+  }
 };
 // Our Maker function:  Thank you D.Crockford.
 State.create = function (configs) {
@@ -37,6 +55,7 @@ State.create = function (configs) {
   function F() {}
   F.prototype = this;
   nState = new F();
+  nState._data = {};
   // You can have 0...n configuration objects
   for (i = 0, len = configs.length || 0; i < len; i++){
     config = configs[i];
@@ -319,6 +338,13 @@ Statechart = {
     // we can go ahead and flush the queued events
     this._sendEventLocked = false;
     if (!this._inInitialSetup) this._flushPendingEvents();
+  },
+  
+  getData: function(key, stateName, tree){
+    var allStates = this._all_states[tree], state;
+    if (!allStates) return null;
+    state = allStates[stateName];
+    if (state && state.isState) return state.getData(key);
   },
   
   /**

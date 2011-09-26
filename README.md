@@ -9,6 +9,8 @@ Statecharts have the following functions:
   + `sendEvent`
   + `goToState`
   + `initState` or `initStates`
+  + `setData`
+  + `getData`
   
 States should look like this:
 	
