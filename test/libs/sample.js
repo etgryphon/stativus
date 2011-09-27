@@ -2,87 +2,61 @@
 var TestRunner = {  
   createDefaultStatechart: function(){
     var sc = Statechart.create();
-    var allEnterExit = {
-      enterState: function(){
-    	  console.log('Enter State: ', this.name);
-    	},
-    	exitState: function(){ 
-    	  console.log('Exit State: ', this.name);
-    	}
-    };
-    sc.addState('first', allEnterExit, {
+    sc.addState('first', {
       substatesAreConcurrent: true,
     	// Base Events
     	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
         this.goToState('second');
     	}
     });
-    sc.addState('first.first', allEnterExit, {
+    sc.addState('first.first', {
       parentState: 'first',
       initialSubstate: 'first.first.first',
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
-    sc.addState('first.second', allEnterExit, {
+    sc.addState('first.second', {
       parentState: 'first',
       initialSubstate: 'first.second.first',
     	// Base Events
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
-    sc.addState('first.first.first', allEnterExit, {
+    sc.addState('first.first.first', {
       parentState: 'first.first',
     	// Base Events
     	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
     	  this.goToState('first.first.second');
     	  return true;
     	}
     });
-    sc.addState('first.first.second', allEnterExit, {
+    sc.addState('first.first.second', {
       parentState: 'first.first',
     	// Base Events
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
-    sc.addState('first.second.first', allEnterExit, {
+    sc.addState('first.second.first', {
       parentState: 'first.second',
     	// Base Events
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
-    sc.addState('first.second.second', allEnterExit, {
+    sc.addState('first.second.second', {
       parentState: 'first.second',
     	// Base Events
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
-    sc.addState('second', allEnterExit, {
+    sc.addState('second', {
       initialSubstate: 'second.first',
     	// Base Events
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
-    sc.addState('second.first', allEnterExit, {
+    sc.addState('second.first', {
       parentState: 'second',
     	// Base Events
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
-    sc.addState('second.second', allEnterExit, {
+    sc.addState('second.second', {
       parentState: 'second',
     	// Base Events
-    	testEvent: function(){
-    	  console.log('In ', this.name, ' firing event: testEvent');
-    	}
+    	testEvent: function(){ }
     });
     sc.initStates('first');
     return sc;

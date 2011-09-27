@@ -22,27 +22,19 @@ var runInitTests = function(){
   module("Module: Test Edge Initializations", {
     setup: function(){
       var sc = Statechart.create();
-      var docEnter = {
-        enterState: function() {
-            console.log("Enter State: " + this.name);
-        },
-        exitState: function() {
-            console.log("Enter State: " + this.name);
-        }
-      };
-      sc.addState("#application", docEnter, {
+      sc.addState("#application", {
         substatesAreConcurrent: true
       });
-      sc.addState("#subapplication", docEnter, { // This state isn't entered
+      sc.addState("#subapplication", {
         parentState: "#application",
         substatesAreConcurrent: true
       });
   
-      sc.addState("#first", docEnter, {
+      sc.addState("#first", {
         parentState: "#subapplication"
       });
   
-      sc.addState("#second", docEnter, {
+      sc.addState("#second", {
         parentState: "#subapplication"
       });
       sc.initStates("#application");

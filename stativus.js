@@ -1,4 +1,4 @@
-/*globals Statechart State*/
+/*globals Statechart State DEBUG_MODE*/
 
 /**
   This is the code for creating statecharts in your javascript files
@@ -7,6 +7,9 @@
   @version: 0.1
   @since: 0.1
 */
+if (typeof DEBUG_MODE === "undefined"){
+  DEBUG_MODE = true;
+}
 State = {
   
   // walk like a duck
@@ -21,19 +24,25 @@ State = {
   goToState: function(name){
     var sc = this.statechart;
     if (sc){ sc.goToState(name, this.globalConcurrentState, this.localConcurrentState); }
-    else { throw 'Cannot goToState cause state doesnt have a statechart'; }
+    else { // weird format for UglifyJS preprocessing
+      if (DEBUG_MODE){ throw 'Cannot goToState cause state doesnt have a statechart'; }
+    }
   },
   
   goToHistoryState: function(name, isRecursive){
     var sc = this.statechart;
     if (sc){ sc.goToHistoryState(name, this.globalConcurrentState, this.localConcurrentState, isRecursive); }
-    else { throw 'Cannot goToState cause state doesnt have a statechart'; }
+    else { // weird format for UglifyJS preprocessing
+      if (DEBUG_MODE){ throw 'Cannot goToState cause state doesnt have a statechart'; }
+    }
   },
   
   sendEvent: function(evt){
     var sc = this.statechart;
     if (sc){ sc.sendEvent.apply(sc, arguments); }
-    else { throw 'Cannot sendEvent cause state doesnt have a statechart'; }
+    else { // weird format for UglifyJS preprocessing
+      if (DEBUG_MODE){ throw 'Cannot sendEvent cause state doesnt have a statechart'; }
+    }
   },
   
   getData: function(key){
@@ -143,7 +152,9 @@ Statechart = {
 	  // Actually add the state to our statechart
 	  obj = this._all_states[tree]; 
 	  if (!obj) obj = {};
-	  if (obj[name]) throw ['Trying to add state', name, 'to state tree', tree, 'and it already exists'].join(' ');
+	  if (obj[name]){ // weird format for UglifyJS preprocessing
+	    if (DEBUG_MODE) throw ['Trying to add state', name, 'to state tree', tree, 'and it already exists'].join(' ');
+	  } 
 	  obj[name] = nState;
 	  this._all_states[tree] = obj;
 	  nState._beenAdded = true;
@@ -174,7 +185,9 @@ Statechart = {
         reqState, pState, i, substateTree,
         enterStateHandled, exitStateHandled, substates;
         
-    if (!tree) throw '#goToState: invalid global parallel state';
+    if (!tree){ // weird format for UglifyJS preprocessing
+      if (DEBUG_MODE) throw '#goToState: invalid global parallel state';
+    } 
     
     // First, find the current tree off of the concurrentTree, then the main tree
     cState = concurrentTree ? this._current_state[concurrentTree] : this._current_state[tree];
@@ -184,7 +197,9 @@ Statechart = {
     // if the current state is the same as the requested state do nothing
     if (this._checkAllCurrentStates(reqState, concurrentTree || tree)) return;
     
-    if (!reqState) throw '#goToState: Could not find requested state: '+requestedStateName;
+    if (!reqState){ // weird format for UglifyJS preprocessing
+      if (DEBUG_MODE) throw '#goToState: Could not find requested state: '+requestedStateName;
+    } 
     
     if (this._goToStateLocked){
       // There is a state transition currently happening. Add this requested
@@ -231,10 +246,7 @@ Statechart = {
     if (cState && cState.substatesAreConcurrent) this._fullExitFromSubstates(tree, cState);
     for (i = 0; i < exitMatchIndex; i+=1){
       cState = exitStates[i];
-      exitStateHandled = false;
-      if (cState.willExitState) exitStateHandled = cState.willExitState(cState.exitState);
-      if (!exitStateHandled && cState.exitState) cState.exitState();
-      if (cState.didExitState) cState.didExitState();
+      this._fullExit(cState);
     }
     
     // Finally, from the common parent state, but not including the parent state,
@@ -257,7 +269,9 @@ Statechart = {
   goToHistoryState: function(requestedState, tree, concurrentTree, isRecursive){
     var allStateForTree = this._all_states[tree],
         pState, realHistoryState;
-    if(!tree || !allStateForTree) throw '#goToHistoryState: State requesting does not have a valid global parallel tree';
+    if(!tree || !allStateForTree) { // weird format for UglifyJS preprocessing
+      if (DEBUG_MODE) throw '#goToHistoryState: State requesting does not have a valid global parallel tree';
+    }
     
     pState = allStateForTree[requestedState];
     if (pState) realHistoryState = pState.history || pState.initialSubstate;
@@ -290,7 +304,7 @@ Statechart = {
       }
     }
     else if (cState && cState.isState){
-      ret = cState;
+      ret = this._parentStates(cState);
     }
     return ret;
   },
@@ -364,6 +378,7 @@ Statechart = {
     while(!handled && responder){
       if (responder[evt]){
         handled = responder[evt].apply(responder, args);
+        if (DEBUG_MODE) console.log(['EVENT:',responder.name,'fires','['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' '));
       }
       // check to see if we have reached the end of this tree
       if (tree && ssName === responder.name) return handled;
@@ -375,7 +390,8 @@ Statechart = {
   
   _checkAllCurrentStates: function(reqState, tree){
     var currentStates = this.currentState(tree) || [];
-    if (typeof currentStates === 'string' && reqState === this._all_states[currentStates]) return true
+    if (currentStates === reqState) return true
+    else if (typeof currentStates === 'string' && reqState === this._all_states[tree][currentStates]) return true
     else if (currentStates.indexOf && currentStates.indexOf(reqState) > -1) return true;
     else return false;
   },
@@ -404,9 +420,19 @@ Statechart = {
     if (!state) return;
     // run all the enter state functions
     var enterStateHandled = false;
-    if (state.willEnterState) enterStateHandled = state.willEnterState(cState.enterState);
+    if (DEBUG_MODE) console.log('ENTER: '+state.name);
+    if (state.willEnterState) enterStateHandled = state.willEnterState();
     if (!enterStateHandled && state.enterState) state.enterState();
     if (state.didEnterState) state.didEnterState();
+  },
+  
+  _fullExit: function(state){
+    if (!state) return;
+    var exitStateHandled = false;
+    if (state.willExitState) exitStateHandled = state.willExitState();
+    if (!exitStateHandled && state.exitState) state.exitState();
+    if (state.didExitState) state.didExitState();
+    if (DEBUG_MODE) console.log('EXIT: '+state.name);
   },
   
   _cascadeEnterSubstates: function(start, requiredStates, index, tree, allStates){
@@ -482,10 +508,8 @@ Statechart = {
 	      // check to see if it has substates
 	      if(currState.substatesAreConcurrent) that._fullExitFromSubstates(tree, currState);
 
-	      if (currState.willExitState) exitStateHandled = currState.willExitState(currState.exitState);
-	      if (!exitStateHandled && currState.exitState) currState.exitState();
-	      if (currState.didExitState) currState.didExitState();
-
+        that._fullExit(currState);
+        
 	      curr = currState.parentState;
 	      currState = allStates[curr];
 	    }

@@ -7,10 +7,6 @@ var runGetSetTests = function(){
       var docEnter = {
         enterState: function() {
             this.setData(this.name, this.name+'_data');
-            console.log("Enter State: " + this.name);
-        },
-        exitState: function() {
-            console.log("Enter State: " + this.name);
         }
       };
       sc.addState("#application", docEnter, {
