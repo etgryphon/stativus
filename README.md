@@ -20,7 +20,14 @@ Statecharts are a great way to organize your web application and make it more ro
     + All events are documented with 'EVENT: *state_name* fired [*event_name*] with *n* argument(s)'
     + Any time your application is configured in such a way that it will break, an exception will be thrown
   + **Minified**: this is the file named `stativus-min.js` and is a minified version for production use
-  
+
+## Demo
+
+You can see a working version using only HTML5 Canvas and Stativus called [RedFlix](http://aperture-0672911f.strobeapp.com/)
+You can see the code at [stativus-demo](https://github.com/etgryphon/stativus-demo)
+
+## Usage
+
 To Create a Statechart, do this:
 
   `var myStatechart = Statechart.create();`
