@@ -377,8 +377,8 @@ Statechart = {
     
     while(!handled && responder){
       if (responder[evt]){
-        handled = responder[evt].apply(responder, args);
         if (DEBUG_MODE) console.log(['EVENT:',responder.name,'fires','['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' '));
+        handled = responder[evt].apply(responder, args);
       }
       // check to see if we have reached the end of this tree
       if (tree && ssName === responder.name) return handled;
