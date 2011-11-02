@@ -112,8 +112,8 @@ Statechart = {
 	},
   
   addState: function(name){
-	  var tree, obj, hasConcurrentSubstates, pState, 
-	      cTree, nState, config, configs = [], len, i;
+	  var tree, obj, hasConcurrentSubstates, pState, states,
+	      cTree, nState, config, configs = [], len, i, that = this;
 	  
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
@@ -158,6 +158,39 @@ Statechart = {
 	  obj[name] = nState;
 	  this._all_states[tree] = obj;
 	  nState._beenAdded = true;
+	  
+    // Code to get the substates and add them.
+    states = nState.states || [];
+    states.forEach( function(x, idx){
+      var args = [], good = false;
+      if(typeof x === 'object' && x.length > 0){
+        if (typeof x[0] !== 'string'){
+          if (DEBUG_MODE) throw '#addState: invalid substate array...Must have the name at index=0'; 
+        }
+        args = args.concat(x);
+        good = true;
+      }
+      else if(typeof x === 'string'){
+        args.push(x);
+        good = true;
+      }
+      else if (typeof x === 'object'){
+        if (typeof x.name !== 'string'){
+          if (DEBUG_MODE) throw '#addState: invalid substate hash...Must have a \'name\' property'; 
+        }
+        args.push(x.name);
+        args.push(x);
+        good = true;
+      }
+      if (good){
+        args.push({ parentState: name,  globalConcurrentState: tree});
+           that.addState.apply(that, args);
+      } else {
+        if (DEBUG_MODE) throw '#addState: invalid substate at index='+idx; 
+      }
+    });
+    
+    return this;
   },
   
   initStates: function(init){
@@ -176,6 +209,8 @@ Statechart = {
     }
     this._inInitialSetup = false;
     this._flushPendingEvents();
+    
+    return this;
   },
   
   goToState: function(requestedStateName, tree, concurrentTree){
