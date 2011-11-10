@@ -23,7 +23,7 @@ Statecharts are a great way to organize your web application and make it more ro
 
 ## Demo
 
-You can see a working version using only HTML5 Canvas and Stativus called [RedFlix](http://aperture-0672911f.strobeapp.com/)
+You can see a working version using only HTML5 Canvas and Stativus called (chrome only!)[RedFlix](http://aperture-0672911f.strobeapp.com/)
 You can see the code at [stativus-demo](https://github.com/etgryphon/stativus-demo)
 
 ## Usage
