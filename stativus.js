@@ -162,7 +162,7 @@ Statechart = {
     // Code to get the substates and add them.
     states = nState.states || [];
     if(states.length === 1 && nState.substatesAreConcurrent){ // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE) throw ['Trying to add substates in property \'states\', but must have more than ONE substate'];
+      if (DEBUG_MODE) throw ['Trying to add substates in property \'states\' to '+nState.name+', but must have more than ONE substate'];
     }
     states.forEach( function(x, idx){
       var args = [], good = false;
