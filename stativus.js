@@ -161,6 +161,9 @@ Statechart = {
 	  
     // Code to get the substates and add them.
     states = nState.states || [];
+    if(states.length === 1 && nState.substatesAreConcurrent){ // weird format for UglifyJS preprocessing
+      if (DEBUG_MODE) throw ['Trying to add substates in property \'states\', but must have more than ONE substate'];
+    }
     states.forEach( function(x, idx){
       var args = [], good = false;
       if(typeof x === 'object' && x.length > 0){
@@ -322,13 +325,19 @@ Statechart = {
   },
   
 	currentState: function(tree){
-    var ret, sTree, aTrees, bTree, cStates = this._current_state,
+    var ret, tmp, sTree, aTrees, bTree, cStates = this._current_state,
         cState, i, len, state, ps, aStates;
     tree = tree || 'default';
     cState = cStates[tree];
     aStates = this._all_states[tree];
+    
+    // now add all the parents of the current state...
+    if (cState && cState.isState){
+      ret = this._parentStates(cState);
+    }
+    
+    // Now see if it has substates...
     if (cState && cState.substatesAreConcurrent){
-      ret = [cState];
       aTrees = this._active_subtrees[tree] || [];
       for(i = 0, len = aTrees.length; i < len; i++){
         sTree = aTrees[i];
@@ -337,9 +346,6 @@ Statechart = {
         if (ps && ret.indexOf(ps) < 0) ret.unshift(ps);
         if (state && ret.indexOf(state) < 0) ret.unshift(state);
       }
-    }
-    else if (cState && cState.isState){
-      ret = this._parentStates(cState);
     }
     return ret;
   },
