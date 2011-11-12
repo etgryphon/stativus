@@ -127,5 +127,36 @@ var runInitTests = function(){
     });
   });
   
+  module("Module: Test Advanced Nested Initializations", {
+    setup: function(){      
+      // statechart with hashs as substates
+      SC = Statechart.create();
+      SC.addState("#application", {
+        initialSubstate: '#first',
+        states: [ 
+          { 
+            name: '#first',
+            initialSubstate: '#first.first',
+            states: [
+              { name: '#first.first'},
+              { name: '#first.second'}
+            ]
+          },
+          { name: '#second'}
+        ]
+      });
+      SC.initStates("#application");
+    }
+  });
+  
+  test("Test the state with advanced object substates?", function() {
+    var cStates, testNames = '#application,#first,#first.first';
+    expect(4);
+    cStates = SC.currentState();
+    equals( cStates.length, 3, "In the Default State: there are 3 current states" );
+    cStates.forEach( function(x){
+      ok( testNames.indexOf(x.name) > -1, "In the Default State: there is current state named: "+x.name );
+    });
+  });
   
 };
