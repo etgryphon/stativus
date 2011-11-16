@@ -165,7 +165,7 @@ Statechart = {
       if (DEBUG_MODE) throw ['Trying to add substates in property \'states\' to '+nState.name+', but must have more than ONE substate'];
     }
     states.forEach( function(x, idx){
-      var args = [], good = false;
+      var args = [], good = false, last;
       if(typeof x === 'object' && x.length > 0){
         if (typeof x[0] !== 'string'){
           if (DEBUG_MODE) throw '#addState: invalid substate array...Must have the name at index=0'; 
@@ -186,8 +186,11 @@ Statechart = {
         good = true;
       }
       if (good){
-        args.push({ parentState: name,  globalConcurrentState: tree});
-           that.addState.apply(that, args);
+        // add missing config parts to the last element.
+        last = args.length-1;
+        args[last].parentState = name;
+        args[last].globalConcurrentState = tree;
+        that.addState.apply(that, args);
       } else {
         if (DEBUG_MODE) throw '#addState: invalid substate at index='+idx; 
       }
