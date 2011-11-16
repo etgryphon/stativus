@@ -23,8 +23,21 @@ Statecharts are a great way to organize your web application and make it more ro
 
 ## Demo
 
-You can see a working version using only HTML5 Canvas and Stativus called (chrome only!)[RedFlix](http://aperture-0672911f.strobeapp.com/)
+You can see a working version (chrome only!) using only HTML5 Canvas and Stativus called [RedFlix](http://aperture-0672911f.strobeapp.com/)
 You can see the code at [stativus-demo](https://github.com/etgryphon/stativus-demo)
+
+## Readings and Tutorials on Statecharts
+
+Here are a list of resources for learning about state charts (Thanks: Johnny Luu):
+
+  + (http://www3.informatik.uni-erlangen.de/Lectures/UMLEmbSys/WS2001/slides/Statecharts.pdf)
+  + (http://www.agilemodeling.com/artifacts/stateMachineDiagram.htm)
+  + (http://santos.cis.ksu.edu/771-Distribution/Reading/uml-section3.73-94.pdf)
+  + (http://www.tutorialspoint.com/uml/uml_statechart_diagram.htm)
+  + (http://www.developer.com/design/article.php/2238131/State-Diagram-in-UML.htm)
+  + (http://www.slideshare.net/erant/uml-statechart-diagrams)
+  + (http://www.uml.org.cn/UMLApplication/pdf/bestbook.pdf)
+  + (http://www.boost.org/doc/libs/1_41_0/libs/statechart/doc/tutorial.html)
 
 ## Usage
 
@@ -66,5 +79,14 @@ States should look like this:
 		}
 	});
 
+## Contributors
 
++ Architect: Evin Grano
+  + twitter: @etgryphon
+  + contact: etgryphon@sproutcore.com
++ Beta Tester: Johnny Luu
+
+## License
+
+Stativus is under the MIT license that can be read in license.js  Just remember who brought this to you
 
