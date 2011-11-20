@@ -389,7 +389,10 @@ Statechart = {
         sResponder = currentStates[sTree];
         handled = handled || this._cascadeEvents(evt, args, sResponder, allStates, sTree);
       }
-      if (!handled) this._cascadeEvents(evt, args, responder, allStates, null);   
+      if (!handled) handled = this._cascadeEvents(evt, args, responder, allStates, null);  
+      if(!handled) { // weird format for UglifyJS preprocessing
+        if (DEBUG_MODE) console.log(['EVENT:',evt,'with', args.length || 0, 'argument(s)','found NO state to handle the event'].join(' '));
+      } 
     }
 
     // Now, that the states have a chance to process the first action

@@ -53,27 +53,19 @@ var runInitTests = function(){
   });  
   
   module("Module: Test Nested Initializations", {
-    setup: function(){
-      // Statechart with strings as substates
+    setup: function(){    
+      SC = [];  
+      // statechart with hashs as substates
       var sc1 = Statechart.create();
       sc1.addState("#application", {
-        initialSubstate: '#first',
-        states: [ '#first', '#second' ]
-      });
-      sc1.initStates("#application");
-      SC = [sc1];
-      
-      // statechart with hashs as substates
-      var sc2 = Statechart.create();
-      sc2.addState("#application", {
         initialSubstate: '#first',
         states: [ 
           { name: '#first'},
           { name: '#second'}
         ]
       });
-      sc2.initStates("#application");
-      SC.push(sc2);
+      sc1.initStates("#application");
+      SC.push(sc1);
       
       // statechart with arrays as substates
       var sameCode = {
@@ -81,20 +73,20 @@ var runInitTests = function(){
           this.goToState({'#first': '#second', '#second': '#first'}[this.name]);
         }
       };
-      var sc3 = Statechart.create();
-      sc3.addState("#application", {
+      var sc2 = Statechart.create();
+      sc2.addState("#application", {
         initialSubstate: '#first',
         states: [ 
           ['#first', sameCode],
           ['#second', sameCode]
         ]
       });
-      sc3.initStates("#application");
-      SC.push(sc3);
+      sc2.initStates("#application");
+      SC.push(sc2);
     }
   });
-  
-  test("Test the state with string substates?", function() {
+    
+  test("Test the state with object substates?", function() {
     var cStates, sc = SC[0], testNames = '#application,#first';
     cStates = sc.currentState();
     equals( cStates.length, 2, "In the Default State: there are 2 current states" );
@@ -103,17 +95,8 @@ var runInitTests = function(){
     });
   });
   
-  test("Test the state with object substates?", function() {
-    var cStates, sc = SC[1], testNames = '#application,#first';
-    cStates = sc.currentState();
-    equals( cStates.length, 2, "In the Default State: there are 2 current states" );
-    cStates.forEach( function(x){
-      ok( testNames.indexOf(x.name) > -1, "In the Default State: there is current state named: "+x.name );
-    });
-  });
-  
   test("Test the state with array substates?", function() {
-    var cStates, sc = SC[2], testNames = '#application,#first', testNames2 = '#application,#second';
+    var cStates, sc = SC[1], testNames = '#application,#first', testNames2 = '#application,#second';
     cStates = sc.currentState();
     equals( cStates.length, 2, "In the Default State: there are 2 current states" );
     cStates.forEach( function(x){
