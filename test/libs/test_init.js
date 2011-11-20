@@ -18,6 +18,25 @@ var runInitTests = function(){
       ok( testNames.indexOf(x.name) > -1, "In the Default State: there is current state named: "+x.name );
     });
   });
+  
+  module("Module: Test most basic initializations", {
+    setup: function(){
+      var sc = Statechart.create();
+      sc.addState('#application');
+      sc.initStates("#application");
+      SC = sc;
+    }
+  });
+  
+  test("Is Statechart Initialization Correct for single state w/ only a name?", function() {
+    var cStates, testNames = '#application';
+    expect(2);
+    cStates = SC.currentState();
+    equals( cStates.length, 1, "In the Default State: there are 1 current states" );
+    cStates.forEach( function(x){
+      ok( testNames.indexOf(x.name) > -1, "In the Default State: there is current state named: "+x.name );
+    });
+  });
     
   module("Module: Test Edge Initializations", {
     setup: function(){

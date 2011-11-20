@@ -118,8 +118,8 @@ Statechart = {
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
     }
+    if (len === 1) configs[0] = config = {};
 	  // primary config is always the last config
-	  config = config || {};
 	  config.name = name;
 	  config.statechart = this;
 	  config.history = null;
