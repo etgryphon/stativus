@@ -1,7 +1,7 @@
-/*globals Statechart */
+/*globals Stativus */
 var TestRunner = {  
   createDefaultStatechart: function(){
-    var sc = Statechart.create();
+    var sc = Stativus.createStatechart();
     sc.addState('first', {
       substatesAreConcurrent: true,
     	// Base Events

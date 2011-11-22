@@ -1,4 +1,4 @@
-/*globals $ equal module expect myStatechart Statechart*/
+/*globals $ equal module expect myStatechart Stativus*/
 var SC, stateTransitions;
 var runInitTests = function(){
   
@@ -21,7 +21,7 @@ var runInitTests = function(){
   
   module("Module: Test most basic initializations", {
     setup: function(){
-      var sc = Statechart.create();
+      var sc = Stativus.createStatechart();
       sc.addState('#application');
       sc.initStates("#application");
       SC = sc;
@@ -40,7 +40,7 @@ var runInitTests = function(){
     
   module("Module: Test Edge Initializations", {
     setup: function(){
-      var sc = Statechart.create();
+      var sc = Stativus.createStatechart();
       sc.addState("#application", {
         substatesAreConcurrent: true
       });
@@ -75,7 +75,7 @@ var runInitTests = function(){
     setup: function(){    
       SC = [];  
       // statechart with hashs as substates
-      var sc1 = Statechart.create();
+      var sc1 = Stativus.createStatechart();
       sc1.addState("#application", {
         initialSubstate: '#first',
         states: [ 
@@ -92,7 +92,7 @@ var runInitTests = function(){
           this.goToState({'#first': '#second', '#second': '#first'}[this.name]);
         }
       };
-      var sc2 = Statechart.create();
+      var sc2 = Stativus.createStatechart();
       sc2.addState("#application", {
         initialSubstate: '#first',
         states: [ 
@@ -132,7 +132,7 @@ var runInitTests = function(){
   module("Module: Test Advanced Nested Initializations", {
     setup: function(){      
       // statechart with hashs as substates
-      SC = Statechart.create();
+      SC = Stativus.createStatechart();
       SC.addState("#application", {
         initialSubstate: '#first',
         states: [ 

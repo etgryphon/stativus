@@ -1,4 +1,4 @@
-/*globals Statechart State DEBUG_MODE*/
+/*globals Stativus Statechart State DEBUG_MODE*/
 
 /**
   This is the code for creating statecharts in your javascript files
@@ -10,7 +10,8 @@
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
 }
-State = {
+Stativus = window.Stativus || { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.1' };
+Stativus.State = {
   
   // walk like a duck
   isState: true,
@@ -58,7 +59,7 @@ State = {
   }
 };
 // Our Maker function:  Thank you D.Crockford.
-State.create = function (configs) {
+Stativus.State.create = function (configs) {
   var nState, k, config, i, len;
   configs = configs || [];
   function F() {}
@@ -81,11 +82,9 @@ State.create = function (configs) {
   Statechart functionality...
   TODO: Document more...
 */
-Statechart = {
+Stativus.Statechart = {
   
-  DEFAULT_TREE: 'default',
-  SUBSTATE_DELIM: 'SUBSTATE:',
-  version: '0.1',
+  
   isStatechart: true,
   
   create: function(config){
@@ -97,16 +96,27 @@ Statechart = {
 		
 		// config all the internal information 
 		sc._all_states = {};
-		sc._all_states[Statechart.DEFAULT_TREE] = {};
+		sc._all_states[Stativus.DEFAULT_TREE] = {};
 		sc._states_with_concurrent_substates = {};
 		sc._current_subtrees = {};
 		sc._current_state = {};
-		sc._current_state[Statechart.DEFAULT_TREE] = null;
+		sc._current_state[Stativus.DEFAULT_TREE] = null;
 		sc._goToStateLocked = false;
 		sc._sendEventLocked = false;
 		sc._pendingStateTransitions = [];
 		sc._pendingEvents = [];
 		sc._active_subtrees = {};
+		
+		if(DEBUG_MODE){
+		  sc.inState = function(name, tree){
+		    var ret = false, cStates = this.currentState(tree);
+        cStates.forEach( function(x){
+          if(x.name === name) ret = true;
+        });
+        return ret;
+		  };
+		  sc.getActiveStates = sc.currentState;
+		}
 		
 		return sc;
 	},
@@ -124,7 +134,7 @@ Statechart = {
 	  config.statechart = this;
 	  config.history = null;
 	  
-	  tree = config.globalConcurrentState || Statechart.DEFAULT_TREE;
+	  tree = config.globalConcurrentState || Stativus.DEFAULT_TREE;
 	  config.globalConcurrentState = tree;
 	  
 	  // Concurrent Substate checks: 
@@ -146,7 +156,7 @@ Statechart = {
       }
 	  }
 	  
-	  nState = State.create(configs);
+	  nState = Stativus.State.create(configs);
 	  nState.sendAction = nState.sendEvent;
 	  
 	  // Actually add the state to our statechart
@@ -203,7 +213,7 @@ Statechart = {
     var x, state;
     this._inInitialSetup = true;
     if ( typeof init === 'string'){
-      this.goToState(init, Statechart.DEFAULT_TREE);
+      this.goToState(init, Stativus.DEFAULT_TREE);
     }
     else if ( typeof init === 'object'){
       for( x in init){
@@ -356,7 +366,7 @@ Statechart = {
   sendEvent: function(evt){
     var handled = false, currentStates = this._current_state, responder,
         args = [], tree, len = arguments.length, i, allStates, sTree,
-        ss = Statechart.SUBSTATE_DELIM, aTrees, sResponder;
+        ss = Stativus.SUBSTATE_DELIM, aTrees, sResponder;
     if (len < 1) return;
     for(i = 1; i < len; i++){
       args[i-1] = arguments[i];
@@ -494,7 +504,7 @@ Statechart = {
         
         // Now, we have to push the item onto the active subtrees for
         // the base tree for later use of the events.
-        bTree = cState.globalConcurrentState || Statechart.DEFAULT_TREE;
+        bTree = cState.globalConcurrentState || Stativus.DEFAULT_TREE;
         aTrees = that._active_subtrees[bTree] || [];
         aTrees.unshift(nTree);
         that._active_subtrees[bTree] = aTrees;
@@ -515,8 +525,8 @@ Statechart = {
       this._current_state[tree] = start;
       start.localConcurrentState = tree;
       if (start.substatesAreConcurrent){
-        tree = start.globalConcurrentState || Statechart.DEFAULT_TREE;
-        nTree = [Statechart.SUBSTATE_DELIM,tree,name].join('=>');
+        tree = start.globalConcurrentState || Stativus.DEFAULT_TREE;
+        nTree = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
         start.history = start.substates;
         this._cascadeEnterSubstates( start.substates || [], requiredStates, index, nTree, allStates);
       }
@@ -546,7 +556,7 @@ Statechart = {
     
     stopState.substates.forEach( function(state){
       var substateTree, currState, curr, exitStateHandled, aTrees;
-      substateTree = [Statechart.SUBSTATE_DELIM, tree, stopState.name, state].join('=>');
+      substateTree = [Stativus.SUBSTATE_DELIM, tree, stopState.name, state].join('=>');
 	    currState = cStates[substateTree];
 	    while(currState && currState !== stopState){
 	      exitStateHandled = false;
@@ -599,3 +609,6 @@ Statechart = {
   }
 	
 };
+
+Stativus.createStatechart = function(){ return this.Statechart.create(); };
+window.Stativus = Stativus;

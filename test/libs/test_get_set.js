@@ -1,9 +1,9 @@
-/*globals $ equal module expect myStatechart Statechart*/
+/*globals $ equal module expect myStatechart Stativus*/
 var SC, stateTransitions;
 var runGetSetTests = function(){  
   module("Module: Data Get/Set", {
     setup: function(){
-      var sc = Statechart.create();
+      var sc = Stativus.createStatechart();
       var docEnter = {
         enterState: function() {
             this.setData(this.name, this.name+'_data');
