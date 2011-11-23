@@ -10,7 +10,8 @@
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
 }
-Stativus = window.Stativus || { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.1' };
+
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.1' };
 Stativus.State = {
   
   // walk like a duck
@@ -611,4 +612,9 @@ Stativus.Statechart = {
 };
 
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
-window.Stativus = Stativus;
+
+if (typeof window !== "undefined") {
+  window.Stativus = Stativus;
+} else if (typeof exports !== "undefined") {
+  module.exports = Stativus;
+}

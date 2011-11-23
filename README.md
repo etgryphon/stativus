@@ -49,9 +49,12 @@ Statecharts have the following functions:
 
   + `addState`
   + `currentState`
+  + `getAllStates`
+  + `inState`
   + `sendEvent`
   + `goToState`
-  + `initState` or `initStates`
+  + `goToHistoryState`
+  + `initStates`
   + `setData`
   + `getData`
   
