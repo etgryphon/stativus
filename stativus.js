@@ -1,4 +1,4 @@
-/*globals Stativus Statechart State DEBUG_MODE*/
+/*globals Stativus DEBUG_MODE exports */
 
 /**
   This is the code for creating statecharts in your javascript files
@@ -417,6 +417,15 @@ Stativus.Statechart = {
     if (!allStates) return null;
     state = allStates[stateName];
     if (state && state.isState) return state.getData(key);
+  },
+  
+  getState: function(name, tree){
+    var allStates, ret;
+    tree = tree || Stativus.DEFAULT_TREE;
+    allStates = this._all_states[tree];
+    if (!allStates) return null;
+    ret = allStates[name];
+    return ret;
   },
   
   /**

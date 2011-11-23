@@ -31,21 +31,21 @@ var runGetSetTests = function(){
   
   test("Can get local value", function() {
     expect(2);
-    var state = SC._all_states['default']['#first'];
+    var state = SC.getState('#first');
     ok(state, "State exists...");
     equals(state.getData('#first'), '#first_data', "Current state has local data" );
   });
   
   test("Can get parent value", function() {
     expect(2);
-    var state = SC._all_states['default']['#first'];
+    var state = SC.getState('#first');
     ok(state, "State exists...");
     equals(state.getData('#subapplication'), '#subapplication_data', "Current state has parent data" );
   });
 
   test("Can get root parent value", function() {
     expect(2);
-    var state = SC._all_states['default']['#first'];
+    var state = SC.getState('#first');
     ok(state, "State exists...");
     equals(state.getData('#application'), '#application_data', "Current state has root parent data" );
   });

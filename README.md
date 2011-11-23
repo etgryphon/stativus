@@ -50,6 +50,7 @@ Statecharts have the following functions:
   + `addState`
   + `currentState`
   + `getAllStates`
+  + `getState`
   + `inState`
   + `sendEvent`
   + `goToState`
@@ -91,5 +92,5 @@ States should look like this:
 
 ## License
 
-Stativus is under the MIT license that can be read in license.js  Just remember who brought this to you
+Stativus is under the MIT license that can be read in license.js  Just remember who brought this to you.
 
