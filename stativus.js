@@ -365,7 +365,7 @@ Stativus.Statechart = {
   },
   
   sendEvent: function(evt){
-    var handled = false, currentStates = this._current_state, responder,
+    var handled = false, found = false, tmp, currentStates = this._current_state, responder,
         args = [], tree, len = arguments.length, i, allStates, sTree,
         ss = Stativus.SUBSTATE_DELIM, aTrees, sResponder;
     if (len < 1) return;
@@ -398,10 +398,18 @@ Stativus.Statechart = {
       for(i = 0, len = aTrees.length; i < len; i++){
         sTree = aTrees[i];
         sResponder = currentStates[sTree];
-        handled = handled || this._cascadeEvents(evt, args, sResponder, allStates, sTree);
+        tmp = handled ? [true, true] : this._cascadeEvents(evt, args, sResponder, allStates, sTree);
+        handled = tmp[0];
+        if (DEBUG_MODE) found = tmp[1];
       }
-      if (!handled) handled = this._cascadeEvents(evt, args, responder, allStates, null);  
-      if(!handled) { // weird format for UglifyJS preprocessing
+      if (!handled) {
+        tmp = this._cascadeEvents(evt, args, responder, allStates, null);  
+        handled = tmp[0];
+        if (!found){ // weird format for UglifyJS preprocessing
+          if (DEBUG_MODE) found = tmp[1];
+        }
+      }
+      if(!found) { // weird format for UglifyJS preprocessing
         if (DEBUG_MODE) console.log(['EVENT:',evt,'with', args.length || 0, 'argument(s)','found NO state to handle the event'].join(' '));
       } 
     }
@@ -433,7 +441,7 @@ Stativus.Statechart = {
     name: _cascadeEvents
   */
   _cascadeEvents: function(evt, args, responder, allStates, tree){
-    var handled, trees, len, ssName;
+    var handled, trees, len, ssName, found = false;
     
     // substate prep work...
     if (tree){
@@ -446,13 +454,14 @@ Stativus.Statechart = {
       if (responder[evt]){
         if (DEBUG_MODE) console.log(['EVENT:',responder.name,'fires','['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' '));
         handled = responder[evt].apply(responder, args);
+        found = true;
       }
       // check to see if we have reached the end of this tree
-      if (tree && ssName === responder.name) return handled;
+      if (tree && ssName === responder.name) return [handled, found];
       responder = !handled && responder.parentState ? allStates[responder.parentState] : null ;
     }
     
-    return handled;
+    return [handled, found];
   },
   
   _checkAllCurrentStates: function(reqState, tree){
