@@ -87,49 +87,48 @@ Basic States should look like this:
 	});
 	
 More Advanced State can nest substates inside of them like this:
-  
-  myStatechart.addState("#application", {
-    initialSubstate: '#first',
-    states: [ 
-      { // Type 1: create configuration code as the element
-        name: '#first',
-        initialSubstate: '#first.first',
-        states: [
-          { name: '#first.first'}, // <= Multiple nesting
-          { name: '#first.second'}
-        ]
-      },
-      ['#second', { ... config code ... }] // Type 2:  You can also pass an array where the first argument is the 
-                                           // name, second argument is shared object
-    ]
-  });
-  
+    
+	myStatechart.addState("#application", {
+	  initialSubstate: '#first',
+	  states: [ 
+	    { // Type 1: create configuration code as the element
+	      name: '#first',
+	      initialSubstate: '#first.first',
+	      states: [
+	        { name: '#first.first'}, // <= Multiple nesting
+	        { name: '#first.second'}
+	      ]
+	    },
+	    ['#second', { ... config code ... }] // Type 2:  You can also pass an array where the first argument is the 
+	                                         // name, second argument is shared object
+	  ]
+	});
+    
 Async Coding can be done like this:
-  
-  // Morpheus example: https://github.com/ded/morpheus
-  myStatechart.addState("#first", {
-    enterState: function(){ ... },
-    testEvent: function(){
-      this.goToState('#second');
-    }
-  });
-  
-  sc.addState("#second", {
-    willEnterState: function(statechart){
-      $('#content .boosh').animate({
-        left: 911,
-        complete: function () {
-          statechart.restart(); // REQUIRED!!: call this function to 
-                                // restart the statechart transitions
-        }
-      })
-      
-      return true; // REQUIRED!!: return true so Stativus knows to stop the 
-                   // transitions and wait for animation or other async code.
-    },
-    enterState: function(){ ... }
-  });
-  
+	
+	// Morpheus example: https://github.com/ded/morpheus
+	myStatechart.addState("#first", {
+	  enterState: function(){ ... },
+	  testEvent: function(){
+	    this.goToState('#second');
+	  }
+	});
+
+	sc.addState("#second", {
+	  willEnterState: function(statechart){
+	    $('#content .boosh').animate({
+	      left: 911,
+	      complete: function () {
+	        statechart.restart(); // REQUIRED!!: call this function to 
+	                              // restart the statechart transitions
+	      }
+	    })
+	    return true; // REQUIRED!!: return true so Stativus knows to stop the 
+	                 // transitions and wait for animation or other async code.
+	  },
+	  enterState: function(){ ... }
+	});
+    
 ## Contributors
 
 + Architect: Evin Grano
