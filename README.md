@@ -49,17 +49,20 @@ Statecharts have the following functions:
 
   + `addState`
   + `currentState`
-  + `getAllStates`
   + `getState`
-  + `inState`
   + `sendEvent`
   + `goToState`
   + `goToHistoryState`
-  + `initStates`
+  + `initStates` or `initState`
   + `setData`
   + `getData`
   
-States should look like this:
+Statecharts also have the following functions only in *Debug mode*:
+
+  + `getAllStates`
+  + `inState`
+  
+Basic States should look like this:
 	
 	myStatechart.addState('loading', {
 	  // Configuration
@@ -69,11 +72,11 @@ States should look like this:
 		initialSubstate: 'really_loading' <= *optional: if you have substates
 		
 		// Base Events
-		willEnterState: function(){ ... },
+		willEnterState: function(statechart){ ... }, <= for async coding, trigger statechart to restart with 'statechart.restart()'
 		enterState: function(){ ... },
 		didEnterState: function(){ ... },
 		
-		willExitState: function(){ ... },
+		willExitState: function(statechart){ ... }, <= for async coding, trigger statechart to restart with 'statechart.restart()'
 		exitState: function(){ ... },
 		didExitState: function(){ ... },
 		
@@ -82,6 +85,48 @@ States should look like this:
 		    // do stuff
 		}
 	});
+	
+More Advanced State can nest substates inside of them like this:
+
+  myStatechart.addState("#application", {
+    initialSubstate: '#first',
+    states: [ 
+      { // Type 1: create configuration code as the element
+        name: '#first',
+        initialSubstate: '#first.first',
+        states: [
+          { name: '#first.first'}, // <= Multiple nesting
+          { name: '#first.second'}
+        ]
+      },
+      ['#second', { ... config code ... }] // Type 2:  You can also pass an array where the first argument is the name, second argument is shared object
+    ]
+  });
+  
+Async Coding can be done like this:
+
+  // Morpheus example: https://github.com/ded/morpheus
+  myStatechart.addState("#first", {
+    enterState: function(){ ... },
+    testEvent: function(){
+      this.goToState('#second');
+    }
+  });
+
+  sc.addState("#second", {
+    willEnterState: function(statechart){
+      $('#content .boosh').animate({
+        left: 911,
+        complete: function () {
+          statechart.restart(); // REQUIRED!!: call this function to restart the statechart transitions
+        }
+      })
+      
+      return true; // REQUIRED!!: return true so Stativus knows to stop the transitions and wait for animation or other async code.
+    },
+    enterState: function(){ ... }
+  });
+
 
 ## Contributors
 

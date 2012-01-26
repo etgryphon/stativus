@@ -111,6 +111,7 @@ Stativus.Statechart = {
 		if(DEBUG_MODE){
 		  sc.inState = function(name, tree){
 		    var ret = false, cStates = this.currentState(tree);
+		    if (!cStates) throw "Doesn't appear that you are in any states, perhaps you forgot to 'initStates'?";
         cStates.forEach( function(x){
           if(x.name === name) ret = true;
         });
@@ -292,32 +293,27 @@ Stativus.Statechart = {
     // must enter from the root state
     if (enterMatchIndex < 0) enterMatchIndex = enterStates.length - 1;
     
+    // Setup for the enter state sequence
+    this._enterStates = enterStates;
+    this._enterStateMatchIndex = enterMatchIndex;
+    this._enterStateConcurrentTree = concurrentTree;
+    this._enterStateTree = tree;
+    
     // Now, we will exit all the underlying states till we reach the common
     // parent state. We do not exit the parent state because we transition
     // within it.
+    this._exitStateStack = [];
     if (cState && cState.substatesAreConcurrent) this._fullExitFromSubstates(tree, cState);
     for (i = 0; i < exitMatchIndex; i+=1){
       cState = exitStates[i];
-      this._fullExit(cState);
+      this._exitStateStack.push(cState);
     }
     
-    // Finally, from the common parent state, but not including the parent state,
-    // enter the sub states down to the requested state. If the requested state
-    // has an initial sub state, then we must enter it too
-    i = enterMatchIndex-1;
-    cState = enterStates[i];
-    if (cState) this._cascadeEnterSubstates(cState, enterStates, (i-1), concurrentTree || tree, allStates);
-    
-    // Ok, we're done with the current state transition. Make sure to unlock
-    // the goToState and let other pending state transitions
-    this._goToStateLocked = false;
-    this._flushPendingStateTransitions();
-    
-    // Once pending state transitions are flushed then go ahead and start flush
-    // pending actions
-    if (!this._inInitialSetup) this._flushPendingEvents();
+    // Now, that we have the full stack of states to exit
+    // We can exit them in an orderly fashion.
+    this._unwindExitStateStack();
   },
-  
+    
   goToHistoryState: function(requestedState, tree, concurrentTree, isRecursive){
     var allStateForTree = this._all_states[tree],
         pState, realHistoryState;
@@ -482,8 +478,9 @@ Stativus.Statechart = {
   
   _flushPendingStateTransitions: function(){
     var pending = this._pendingStateTransitions.shift(), msg;
-    if (!pending) return;
+    if (!pending) return false;
     this.goToState(pending.requestedState, pending.tree);
+    return true;
   },
   
   _parentStateObject: function(name, tree){
@@ -497,71 +494,106 @@ Stativus.Statechart = {
     // run all the enter state functions
     var enterStateHandled = false;
     if (DEBUG_MODE) console.log('ENTER: '+state.name);
-    if (state.willEnterState) enterStateHandled = state.willEnterState();
-    if (!enterStateHandled && state.enterState) state.enterState();
+    if (state.enterState) state.enterState();
     if (state.didEnterState) state.didEnterState();
+    this._unwindEnterStateStack();
   },
   
   _fullExit: function(state){
     if (!state) return;
     var exitStateHandled = false;
-    if (state.willExitState) exitStateHandled = state.willExitState();
-    if (!exitStateHandled && state.exitState) state.exitState();
+    if (state.exitState) state.exitState();
     if (state.didExitState) state.didExitState();
     if (DEBUG_MODE) console.log('EXIT: '+state.name);
+    this._unwindExitStateStack();
+  },
+  
+  _initiateEnterStateSequence: function(){
+    var enterStates, enterMatchIndex, concurrentTree, tree,
+        allStates, i, cState;
+    
+    enterStates = this._enterStates;
+    enterMatchIndex = this._enterStateMatchIndex;
+    concurrentTree = this._enterStateConcurrentTree;
+    tree = this._enterStateTree;
+    allStates = this._all_states[tree];
+    
+    // Initialize the Enter State Stack
+    this._enterStateStack = this._enterStateStack || [];
+    
+    // Finally, from the common parent state, but not including the parent state,
+    // enter the sub states down to the requested state. If the requested state
+    // has an initial sub state, then we must enter it too
+    i = enterMatchIndex-1;
+    cState = enterStates[i];
+    if (cState) this._cascadeEnterSubstates(cState, enterStates, (i-1), concurrentTree || tree, allStates);
+    
+    // once, we have fully hydrated the Enter State Stack, we must actually async unwind it 
+    this._unwindEnterStateStack();
+    
+    // Cleanup
+    enterStates = null;
+    enterMatchIndex = null;
+    concurrentTree = null;
+    tree = null;
+    
+    delete this._enterStates;
+    delete this._enterStateMatchIndex;
+    delete this._enterStateConcurrentTree;
+    delete this._enterStateTree;
   },
   
   _cascadeEnterSubstates: function(start, requiredStates, index, tree, allStates){
-    var cState, len = requiredStates.length, pState, 
+    var cState, len = requiredStates.length, pState, subStates,
         that = this, nTree, bTree, name, currStates, aTrees;
-    // console.log('SC: #_cascadeEnterSubstates called');
-    // TODO: might be able to kill the array, and do it below...save a stack call.
-    if (typeof start === 'object' && start.length > 0 ){ // we have an array
-      start.forEach( function(x){
+        
+    if (!start) return;
+        
+    name = start.name;
+    this._enterStateStack.push(start);
+    this._current_state[tree] = start;
+    start.localConcurrentState = tree;
+    if (start.substatesAreConcurrent){
+      tree = start.globalConcurrentState || Stativus.DEFAULT_TREE;
+      nTree = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
+      start.history = start.history || {};
+      subStates = start.substates || [];
+      subStates.forEach( function(x){
         nTree = tree+'=>'+x;
         cState = allStates[x];
-        
+
         // Now, we have to push the item onto the active subtrees for
         // the base tree for later use of the events.
         bTree = cState.globalConcurrentState || Stativus.DEFAULT_TREE;
         aTrees = that._active_subtrees[bTree] || [];
         aTrees.unshift(nTree);
         that._active_subtrees[bTree] = aTrees;
-        
+
         if (index > -1 && requiredStates[index] === cState) index -= 1;
         that._cascadeEnterSubstates(cState, requiredStates, index, nTree, allStates);
 	    });
-	    return;
-    } 
-    else if ( typeof start === 'string' ){
-      start = allStates[start];
+	    return;        
     }
-    
-    // This is where the hard work is...
-    if ( start && !!start.isState ){
-      name = start.name;
-      this._fullEnter(start);
-      this._current_state[tree] = start;
-      start.localConcurrentState = tree;
-      if (start.substatesAreConcurrent){
-        tree = start.globalConcurrentState || Stativus.DEFAULT_TREE;
-        nTree = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
-        start.history = start.substates;
-        this._cascadeEnterSubstates( start.substates || [], requiredStates, index, nTree, allStates);
+    else {
+      // now we can trigger the lower levels of the state
+      cState = requiredStates[index];
+      if (cState){
+        pState = allStates[cState.parentState];
+        if (pState) {
+          if (pState.substatesAreConcurrent){
+            pState.history[tree] = cState.name;
+          }
+          else {
+            pState.history = cState.name;
+          }
+        } 
+        index -= 1;
+        if (index > -1) this._cascadeEnterSubstates( cState, requiredStates, index, tree, allStates);
       }
+      // now we will go into the initial substates of this state
       else {
-        // now we can trigger the lower levels of the state
-        cState = requiredStates[index];
-        if (cState){
-          pState = allStates[cState.parentState];
-	        if (pState) pState.history = cState.name;
-	        index -= 1;
-	        if (index > -1) this._cascadeEnterSubstates( cState, requiredStates, index, tree, allStates);
-        }
-        // now we will go into the initial substates of this state
-        else {
-          this._cascadeEnterSubstates( start.initialSubstate, requiredStates, index, tree, allStates);
-        }
+        cState = allStates[start.initialSubstate];
+        this._cascadeEnterSubstates( cState, requiredStates, index, tree, allStates);
       }
     }
   },
@@ -572,6 +604,7 @@ Stativus.Statechart = {
     
     allStates = this._all_states[tree];
     cStates = this._current_state;
+    this._exitStateStack = this._exitStateStack || [];
     
     stopState.substates.forEach( function(state){
       var substateTree, currState, curr, exitStateHandled, aTrees;
@@ -580,11 +613,11 @@ Stativus.Statechart = {
 	    while(currState && currState !== stopState){
 	      exitStateHandled = false;
 	      if (!currState) continue;
+	      
+	      that._exitStateStack.unshift(currState);
 
 	      // check to see if it has substates
 	      if(currState.substatesAreConcurrent) that._fullExitFromSubstates(tree, currState);
-
-        that._fullExit(currState);
         
 	      curr = currState.parentState;
 	      currState = allStates[curr];
@@ -593,6 +626,85 @@ Stativus.Statechart = {
 	    // Now, remove this from the active substate tree
 	    that._active_subtrees[tree] = that._removeFromActiveTree(tree, substateTree);
     });
+  },
+  
+  // @private
+  // this function unwinds the next item on the exitStateStack...
+  _unwindExitStateStack: function(){
+    var stateToExit, delayForAsync = false, stateRestart;
+    this._exitStateStack = this._exitStateStack || [];
+    stateToExit = this._exitStateStack.shift();
+    if(stateToExit){
+      if (stateToExit.willExitState) {
+        // Now for some amazing encapsulation magic with closures
+        // We are going to create a temporary object that gets passed
+        // into the willExitState call that will restart the state
+        // exit for this path as needed
+        stateRestart = {
+          _statechart: this,
+          _start: stateToExit,
+          restart: function(){
+            var sc = this._statechart;
+            if (DEBUG_MODE) console.log(['RESTART: after async processing on,', this._start.name, 'is about to fully exit'].join(' '));
+            if (sc) sc._fullExit(this._start);
+          }
+        };
+        delayForAsync = stateToExit.willExitState(stateRestart);
+        if (DEBUG_MODE) {
+          if (delayForAsync) { console.log('ASYNC: Delayed exit '+stateToExit.name); }
+          else { console.warn('ASYNC: Didn\'t return \'true\' willExitState on '+stateToExit.name+' which is needed if you want async'); }
+        }
+      }
+      if (!delayForAsync) this._fullExit(stateToExit);
+    }
+    else {
+      delete this._exitStateStack;
+      this._initiateEnterStateSequence();
+    }
+  },
+
+  // @private
+  // this function unwinds the next item on the enterStateStack...
+  _unwindEnterStateStack: function(){
+    var stateToEnter, delayForAsync = false, stateRestart, more;
+    this._exitStateStack = this._exitStateStack || [];
+    stateToEnter = this._enterStateStack.shift();
+    if(stateToEnter){
+      if (stateToEnter.willEnterState) {
+        // Now for some amazing encapsulation magic with closures
+        // We are going to create a temporary object that gets passed
+        // into the willExitState call that will restart the state
+        // exit for this path as needed
+        stateRestart = {
+          _statechart: this,
+          _start: stateToEnter,
+          restart: function(){
+            var sc = this._statechart;
+            if (DEBUG_MODE) console.log(['RESTART: after async processing on,', this._start.name, 'is about to fully enter'].join(' '));
+            if (sc) sc._fullEnter(this._start);
+          }
+        };
+        delayForAsync = stateToEnter.willEnterState(stateRestart);
+        if (DEBUG_MODE) {
+          if (delayForAsync) { console.log('ASYNC: Delayed enter '+stateToEnter.name); }
+          else { console.warn('ASYNC: Didn\'t return \'true\' willExitState on '+stateToEnter.name+' which is needed if you want async'); }
+        }
+      }
+      if (!delayForAsync) this._fullEnter(stateToEnter);
+    }
+    else {
+      delete this._enterStateStack;
+      
+      // Ok, we're done with the current state transition. Make sure to unlock
+      // the goToState and let other pending state transitions
+      this._goToStateLocked = false;
+      more = this._flushPendingStateTransitions();
+      if (!more && !this._inInitialSetup) {
+        // Once pending state transitions are flushed then go ahead and start flush
+        // pending actions
+        this._flushPendingEvents();
+      }
+    }
   },
   
   // TODO: make this more efficient
@@ -631,6 +743,7 @@ Stativus.Statechart = {
 
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
 
+// TODO:  Work on AMD Loading...
 if (typeof window !== "undefined") {
   window.Stativus = Stativus;
 } else if (typeof exports !== "undefined") {
