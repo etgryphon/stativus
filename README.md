@@ -3,7 +3,7 @@
 `Stativus` is a micro-framework that has full functionality of Statecharts for your application.  It can work in any library such as:
 
   + [`backbone.js`](http://documentcloud.github.com/backbone/)
-  + [`SproutCore 2.0`](http://www.sproutcore.com/) SproutCore 1.x has statecharts built in...
+  + [`EmberJS`](http://emberjs.com/)
   + [`spine.js`](http://maccman.github.com/spine/)
   + [ExtJS/Sencha](http://www.sencha.com/)
   + or any others
