@@ -164,23 +164,29 @@ Stativus.Statechart = {
 	  // Actually add the state to our statechart
 	  obj = this._all_states[tree]; 
 	  if (!obj) obj = {};
-	  if (obj[name]){ // weird format for UglifyJS preprocessing
-	    if (DEBUG_MODE) throw ['Trying to add state', name, 'to state tree', tree, 'and it already exists'].join(' ');
-	  } 
+	  if (DEBUG_MODE){
+	    if (obj[name]) throw ['Trying to add state', name, 'to state tree', tree, 'and it already exists'].join(' ');
+	  }
+	  
 	  obj[name] = nState;
 	  this._all_states[tree] = obj;
 	  nState._beenAdded = true;
 	  
     // Code to get the substates and add them.
     states = nState.states || [];
-    if(states.length === 1 && nState.substatesAreConcurrent){ // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE) throw ['Trying to add substates in property \'states\' to '+nState.name+', but must have more than ONE substate'];
+    if (DEBUG_MODE){
+      if(states.length === 1 && nState.substatesAreConcurrent){ // weird format for UglifyJS preprocessing
+        throw ['Trying to add substates in property \'states\' to '+nState.name+', but must have more than ONE substate'];
+      }
     }
+    
     states.forEach( function(x, idx){
       var args = [], good = false, last;
       if(typeof x === 'object' && x.length > 0){
-        if (typeof x[0] !== 'string'){
-          if (DEBUG_MODE) throw '#addState: invalid substate array...Must have the name at index=0'; 
+        if (DEBUG_MODE){
+          if (typeof x[0] !== 'string'){
+            throw '#addState: invalid substate array...Must have the name at index=0'; 
+          }
         }
         args = args.concat(x);
         good = true;
@@ -238,10 +244,10 @@ Stativus.Statechart = {
         reqState, pState, i, substateTree,
         enterStateHandled, exitStateHandled, substates;
         
-    if (!tree){ // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE) throw '#goToState: invalid global parallel state';
-    } 
-    
+    if (DEBUG_MODE){
+      if (!tree) throw '#goToState: invalid global parallel state';
+    }
+  
     // First, find the current tree off of the concurrentTree, then the main tree
     cState = concurrentTree ? this._current_state[concurrentTree] : this._current_state[tree];
     
@@ -250,8 +256,8 @@ Stativus.Statechart = {
     // if the current state is the same as the requested state do nothing
     if (this._checkAllCurrentStates(reqState, concurrentTree || tree)) return;
     
-    if (!reqState){ // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE) throw '#goToState: Could not find requested state: '+requestedStateName;
+    if (DEBUG_MODE) {
+      if (!reqState) throw '#goToState: Could not find requested state: '+requestedStateName;
     } 
     
     if (this._goToStateLocked){
@@ -317,10 +323,11 @@ Stativus.Statechart = {
   goToHistoryState: function(requestedState, tree, concurrentTree, isRecursive){
     var allStateForTree = this._all_states[tree],
         pState, realHistoryState;
-    if(!tree || !allStateForTree) { // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE) throw '#goToHistoryState: State requesting does not have a valid global parallel tree';
-    }
     
+    if (DEBUG_MODE){
+      if (!tree || !allStateForTree) throw '#goToHistoryState: State requesting does not have a valid global parallel tree';
+    }
+  
     pState = allStateForTree[requestedState];
     if (pState) realHistoryState = pState.history || pState.initialSubstate;
     
@@ -401,13 +408,13 @@ Stativus.Statechart = {
       if (!handled) {
         tmp = this._cascadeEvents(evt, args, responder, allStates, null);  
         handled = tmp[0];
-        if (!found){ // weird format for UglifyJS preprocessing
-          if (DEBUG_MODE) found = tmp[1];
+        if (DEBUG_MODE){ 
+          if (!found) found = tmp[1];
         }
       }
-      if(!found) { // weird format for UglifyJS preprocessing
-        if (DEBUG_MODE) console.log(['EVENT:',evt,'with', args.length || 0, 'argument(s)','found NO state to handle the event'].join(' '));
-      } 
+      if (DEBUG_MODE){
+        if(!found) console.log(['EVENT:',evt,'with', args.length || 0, 'argument(s)','found NO state to handle the event'].join(' '));
+      }
     }
 
     // Now, that the states have a chance to process the first action

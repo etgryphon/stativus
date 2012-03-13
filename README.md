@@ -21,7 +21,7 @@ Statecharts are a great way to organize your web application and make it more ro
     + Any time your application is configured in such a way that it will break, you will get a console or exception
     + All Async starts and stops will be outputted to the console.
     + Will warn you if you forgot to return true when using willEnterState()
-  + **Minified**: this is the file named `stativus-min.js` and is a minified version for production use (gzipped: <3.5k)
+  + **Minified**: this is the file named `stativus-min.js` and is a minified version for production use (gzipped: <3k)
 
 ## Demo
 
