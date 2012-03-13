@@ -130,6 +130,12 @@ Async Coding can be done like this:
 	  },
 	  enterState: function(){ ... }
 	});
+	
+## Development
+
+1. Make sure that you have [UglifyJS](https://github.com/mishoo/UglifyJS) installed
+2. Clone the repository: git clone git://github.com/etgryphon/stativus.git
+3. make
     
 ## Contributors
 
