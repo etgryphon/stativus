@@ -19,15 +19,15 @@ var runAsyncTests = function(){
           var func = function(){
             statechart.restart();
           };
-          window.setTimeout(func, 2000); 
+          window.setTimeout(func, 2000);
           return true;
         },
         enterState: function(){
           data += 1;
-          equals(data, 2, "Data variable is incremented to 2" );
+          equal(data, 2, "Data variable is incremented to 2" );
           var cStates = sc.currentState();
-          equals(cStates.length, 1, "We have the correct number of current states" );
-          equals(cStates[0].name, '#second', "we are currently in '#second'" );
+          equal(cStates.length, 1, "We have the correct number of current states" );
+          equal(cStates[0].name, '#second', "we are currently in '#second'" );
           start();
         }
       });
@@ -40,9 +40,9 @@ var runAsyncTests = function(){
     // expect(6);
     var cStates, state = SC.getState('#first');
     ok(state, "State exists...");
-    equals(data, 1, "Current state '#first' has updated value correctly" );
+    equal(data, 1, "Current state '#first' has updated value correctly" );
     SC.sendEvent('testEvent');
-    equals(data, 1, "Data variable is the same after exit from '#first'" );
+    equal(data, 1, "Data variable is the same after exit from '#first'" );
     stop();
   });
   

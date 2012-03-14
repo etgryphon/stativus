@@ -4,14 +4,13 @@
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.1
-  @since: 0.1
+  @version: 0.5
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
 }
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.1' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.5' };
 Stativus.State = {
   
   // walk like a duck

@@ -33,21 +33,21 @@ var runGetSetTests = function(){
     expect(2);
     var state = SC.getState('#first');
     ok(state, "State exists...");
-    equals(state.getData('#first'), '#first_data', "Current state has local data" );
+    equal(state.getData('#first'), '#first_data', "Current state has local data" );
   });
   
   test("Can get parent value", function() {
     expect(2);
     var state = SC.getState('#first');
     ok(state, "State exists...");
-    equals(state.getData('#subapplication'), '#subapplication_data', "Current state has parent data" );
+    equal(state.getData('#subapplication'), '#subapplication_data', "Current state has parent data" );
   });
 
   test("Can get root parent value", function() {
     expect(2);
     var state = SC.getState('#first');
     ok(state, "State exists...");
-    equals(state.getData('#application'), '#application_data', "Current state has root parent data" );
+    equal(state.getData('#application'), '#application_data', "Current state has root parent data" );
   });
   
 };

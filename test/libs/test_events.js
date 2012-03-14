@@ -58,9 +58,9 @@ var runEventTests = function(){
     stateTransitions = [];
     expect(11);
     SC.sendEvent('testEvent');
-    equals( stateTransitions.length, 4, "After first event: There should be 4 transitions" );
+    equal( stateTransitions.length, 4, "After first event: There should be 4 transitions" );
     SC.sendEvent('testEvent');
-    equals( stateTransitions.length, 9, "After second event: There should be 9 transitions" );
+    equal( stateTransitions.length, 9, "After second event: There should be 9 transitions" );
     stateTransitions.forEach( function(x, i){
       ok( x.indexOf(expectedEvents[i]) > -1, "The ["+i+"] transition is => "+x );
     });
