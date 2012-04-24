@@ -1,4 +1,4 @@
-/*globals Stativus DEBUG_MODE EVENTABLE exports *//**
+/*globals Stativus DEBUG_MODE EVENTABLE exports $ *//**
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano

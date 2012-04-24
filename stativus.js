@@ -1,4 +1,4 @@
-/*globals Stativus DEBUG_MODE EVENTABLE exports */
+/*globals Stativus DEBUG_MODE EVENTABLE exports $ */
 
 /**
   This is the code for creating statecharts in your javascript files
@@ -444,7 +444,7 @@ Stativus.Statechart = {
         }
       }
       if (DEBUG_MODE){
-        if(!found) console.log(['EVENT:',evt,'with', args.length || 0, 'argument(s)','found NO state to handle the event'].join(' '));
+        if(!found) console.log(['ACTION/EVENT:{'+evt+'} with', args.length || 0, 'argument(s)','found NO state to handle this'].join(' '));
       }
     }
   },
@@ -758,17 +758,98 @@ Stativus.Statechart = {
 	
 };
 
-if (EVENTABLE){
-  Stativus.Statechart.tryToPerform = function(selector, event){
-    var args = [], len = arguments.length, i;
-    if (len < 2) return;
-    for(i = 2; i < len; i++){
-      args[i-2] = arguments[i];
-    }
-  };
-}
-
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
+
+// All this code will add some awesome eventing structure that looks like backbone.js
+// 
+if (EVENTABLE){
+  Stativus.Statechart._internalTryToPerform = function(node, evt, args){
+    var that = this, lookup, selectors;
+    
+    if (!node || !node.className) return;
+    selectors = node.className.split(/\s+/).map( function(x){ return '.'+x; });
+    if (node.id) selectors.push('#'+node.id);
+    selectors.forEach( function(x){
+      lookup = (x+' '+evt).replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+      that._structureCrawl('_cascadeActionHandler', lookup, args);
+    });
+  };
+  
+  Stativus.Statechart._cascadeActionHandler = function(lookup, args, responder, allStates, tree){
+    var handled, trees, len, ssName, found = false, evt;
+    
+    // substate prep work...
+    if (tree){
+      trees = tree.split('=>');
+      len = trees.length || 0;
+      ssName = trees[len-1];
+    }
+    
+    while(!handled && responder && responder.actions){
+      evt = responder.actions[lookup];
+      if (evt){
+        if (DEBUG_MODE) console.log(['ACTION LOOKUP:',responder.name,'will fire [',evt,'] for','['+lookup+']', 'with', args.length || 0, 'argument(s)'].join(' '));
+        args.unshift(evt);
+        this.sendEvent.apply(this, args);
+        return [true, true];
+      }
+      // check to see if we have reached the end of this tree
+      if (tree && ssName === responder.name) return [handled, found];
+      responder = !handled && responder.parentState ? allStates[responder.parentState] : null ;
+    }
+    
+    return [handled, found];
+  };
+  
+  // Special sauce when you have jQuery Loaded
+  var jQueryIsLoaded=false;
+  try {
+    if (jQuery) jQueryIsLoaded=true;
+  }
+  catch(err){
+    jQueryIsLoaded=false;
+  }
+
+  if(jQueryIsLoaded){
+    
+    var findEventableNodeData = function(start){
+      var parents, evt, evts, args,
+          node = $(start), found, ret;
+      if (node.hasClass('eventable')) found = node;
+
+      if (!found){
+        parents = node.parents('.eventable');
+        if (parents && parents.length > 0) found = parents;
+      }
+
+      if (found){
+        args = found.attr('data');
+        args = args ? args.split('::') : [];
+        found = found[0];
+      }
+      return [found, args];
+    };
+  
+    Stativus.Statechart.tryToPerform = function(node, evt){      
+      var selectors = [], tuple = findEventableNodeData(node);
+      if (!tuple[0]) return;
+      this._internalTryToPerform(tuple[0], evt, tuple[1]);
+    };
+  }  
+  else {
+    
+    // When you don't have JQuery you can still fire off the tryToPerform, but
+    // you are responsible for converting the selectors
+    Stativus.Statechart.tryToPerform = function(node, evt){
+      var args = [], len = arguments.length, i, lookup;
+      if (len < 2) return;
+      for(i = 2; i < len; i++){
+        args[i-2] = arguments[i];
+      }
+      this._internalTryToPerform(node, evt, args);
+    };
+  }
+}
 
 // TODO:  Work on AMD Loading...
 if (typeof window !== "undefined") {
