@@ -1,4 +1,4 @@
-/*globals Stativus DEBUG_MODE exports */
+/*globals Stativus DEBUG_MODE EVENTABLE exports */
 
 /**
   This is the code for creating statecharts in your javascript files
@@ -8,6 +8,11 @@
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
+}
+
+// Pre-processor for eventable code
+if (typeof EVENTABLE === "undefined"){
+  EVENTABLE = true;
 }
 
 Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.5' };
@@ -367,9 +372,8 @@ Stativus.Statechart = {
   },
   
   sendEvent: function(evt){
-    var handled = false, found = false, tmp, currentStates = this._current_state, responder,
-        args = [], tree, len = arguments.length, i, allStates, sTree,
-        ss = Stativus.SUBSTATE_DELIM, aTrees, sResponder;
+    var args = [], len = arguments.length, i;
+
     if (len < 1) return;
     for(i = 1; i < len; i++){
       args[i-1] = arguments[i];
@@ -386,35 +390,8 @@ Stativus.Statechart = {
       return;
     }
     this._sendEventLocked = true;
-    for(tree in currentStates){
-      if(!currentStates.hasOwnProperty(tree)) continue;
-
-      handled = false;
-      sTree = null;
-      responder = currentStates[tree];
-      if (!responder || tree.slice(0, ss.length) === ss) continue;
-      // if we don't have an all state tree then we know that this is a substate tree
-      allStates = this._all_states[tree];
-      if(!allStates) continue;
-      aTrees = this._active_subtrees[tree] || [];
-      for(i = 0, len = aTrees.length; i < len; i++){
-        sTree = aTrees[i];
-        sResponder = currentStates[sTree];
-        tmp = handled ? [true, true] : this._cascadeEvents(evt, args, sResponder, allStates, sTree);
-        handled = tmp[0];
-        if (DEBUG_MODE) found = tmp[1];
-      }
-      if (!handled) {
-        tmp = this._cascadeEvents(evt, args, responder, allStates, null);  
-        handled = tmp[0];
-        if (DEBUG_MODE){ 
-          if (!found) found = tmp[1];
-        }
-      }
-      if (DEBUG_MODE){
-        if(!found) console.log(['EVENT:',evt,'with', args.length || 0, 'argument(s)','found NO state to handle the event'].join(' '));
-      }
-    }
+    
+    this._structureCrawl('_cascadeEvents', evt, args);
 
     // Now, that the states have a chance to process the first action
     // we can go ahead and flush the queued events
@@ -436,6 +413,40 @@ Stativus.Statechart = {
     if (!allStates) return null;
     ret = allStates[name];
     return ret;
+  },
+  
+  _structureCrawl: function(func, evt, args){
+    var tree, currentStates = this._current_state, i, len, sResponder, tmp,
+        allStates, responder, aTrees, sTree, handled, found, ss = Stativus.SUBSTATE_DELIM;
+    for(tree in currentStates){
+      if(!currentStates.hasOwnProperty(tree)) continue;
+    
+      handled = false;
+      sTree = null;
+      responder = currentStates[tree];
+      if (!responder || tree.slice(0, ss.length) === ss) continue;
+      // if we don't have an all state tree then we know that this is a substate tree
+      allStates = this._all_states[tree];
+      if(!allStates) continue;
+      aTrees = this._active_subtrees[tree] || [];
+      for(i = 0, len = aTrees.length; i < len; i++){
+        sTree = aTrees[i];
+        sResponder = currentStates[sTree];
+        tmp = handled ? [true, true] : this[func](evt, args, sResponder, allStates, sTree);
+        handled = tmp[0];
+        if (DEBUG_MODE) found = tmp[1];
+      }
+      if (!handled) {
+        tmp = this[func](evt, args, responder, allStates, null);  
+        handled = tmp[0];
+        if (DEBUG_MODE){ 
+          if (!found) found = tmp[1];
+        }
+      }
+      if (DEBUG_MODE){
+        if(!found) console.log(['EVENT:',evt,'with', args.length || 0, 'argument(s)','found NO state to handle the event'].join(' '));
+      }
+    }
   },
   
   /**
@@ -593,8 +604,8 @@ Stativus.Statechart = {
             pState.history = cState.name;
           }
         } 
-        index -= 1;
-        if (index > -1) this._cascadeEnterSubstates( cState, requiredStates, index, tree, allStates);
+        if (index > -1 && requiredStates[index] === cState) index -= 1;
+        this._cascadeEnterSubstates( cState, requiredStates, index, tree, allStates);
       }
       // now we will go into the initial substates of this state
       else {
@@ -746,6 +757,16 @@ Stativus.Statechart = {
   }
 	
 };
+
+if (EVENTABLE){
+  Stativus.Statechart.tryToPerform = function(selector, event){
+    var args = [], len = arguments.length, i;
+    if (len < 2) return;
+    for(i = 2; i < len; i++){
+      args[i-2] = arguments[i];
+    }
+  };
+}
 
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
 
