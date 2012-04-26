@@ -830,23 +830,28 @@ if (EVENTABLE){
       return [found, args];
     };
   
-    Stativus.Statechart.tryToPerform = function(node, evt){      
-      var selectors = [], tuple = findEventableNodeData(node);
+    Stativus.Statechart.tryToPerform = function(evt){   
+      if (!evt) return;   
+      var args, selectors = [], 
+          tuple = findEventableNodeData(evt.target);
       if (!tuple[0]) return;
-      this._internalTryToPerform(tuple[0], evt, tuple[1]);
+      tuple[1].push(evt); // Add the evt to the last argument
+      this._internalTryToPerform(tuple[0], evt.type, tuple[1]);
     };
   }  
   else {
     
     // When you don't have JQuery you can still fire off the tryToPerform, but
     // you are responsible for converting the selectors
-    Stativus.Statechart.tryToPerform = function(node, evt){
+    Stativus.Statechart.tryToPerform = function(evt){
+      if (!evt) return;
       var args = [], len = arguments.length, i, lookup;
       if (len < 2) return;
       for(i = 2; i < len; i++){
         args[i-2] = arguments[i];
       }
-      this._internalTryToPerform(node, evt, args);
+      args.push(evt);
+      this._internalTryToPerform(evt.target, evt.type, args);
     };
   }
 }
