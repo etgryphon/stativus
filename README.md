@@ -61,7 +61,7 @@ Statecharts have the following functions:
   
 Statecharts also have the following functions only in *Debug mode*:
 
-  + `getAllStates`
+  + `getActiveStates`
   + `inState`
   
 Basic States should look like this:
