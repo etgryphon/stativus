@@ -785,8 +785,8 @@ if (EVENTABLE){
       ssName = trees[len-1];
     }
     
-    while(!handled && responder && responder.actions){
-      evt = responder.actions[lookup];
+    while(!handled && responder){
+      evt = responder.actions ? responder.actions[lookup] : null;
       if (evt){
         if (DEBUG_MODE) console.log(['ACTION LOOKUP:',responder.name,'will fire [',evt,'] for','['+lookup+']', 'with', args.length || 0, 'argument(s)'].join(' '));
         args.unshift(evt);
