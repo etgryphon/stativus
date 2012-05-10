@@ -126,10 +126,9 @@ Stativus.Statechart = {
 		  sc.inState = function(name, tree){
 		    var ret = false, cStates = this.currentState(tree);
 		    if (!cStates) throw "Doesn't appear that you are in any states, perhaps you forgot to 'initStates'?";
-        for (var idx = 0; idx < cStates.length; idx++) {
-          var x = cStates[idx];
+        cStates.forEach( function(x){
           if(x.name === name) ret = true;
-        }
+        });
         return ret;
 		  };
 		  sc.getActiveStates = sc.currentState;
@@ -194,9 +193,8 @@ Stativus.Statechart = {
         throw ['Trying to add substates in property \'states\' to '+nState.name+', but must have more than ONE substate'];
       }
     }
-   
-    for (var idx = 0; idx < states.length; idx++) {
-      var x = states[idx];
+    
+    states.forEach( function(x, idx){
       var args = [], good = false, last;
       if(typeof x === 'object' && x.length > 0){
         if (DEBUG_MODE){
@@ -228,7 +226,7 @@ Stativus.Statechart = {
       } else {
         if (DEBUG_MODE) throw '#addState: invalid substate at index='+idx; 
       }
-    }
+    });
     
     return this;
   },
@@ -587,8 +585,7 @@ Stativus.Statechart = {
       nTree = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
       start.history = start.history || {};
       subStates = start.substates || [];
-      for (var idx = 0; idx < subStates.length; idx++) {
-        var x = subStates[idx];
+      subStates.forEach( function(x){
         nTree = tree+'=>'+x;
         cState = allStates[x];
 
@@ -601,7 +598,7 @@ Stativus.Statechart = {
 
         if (index > -1 && requiredStates[index] === cState) index -= 1;
         that._cascadeEnterSubstates(cState, requiredStates, index, nTree, allStates);
-	    }
+	    });
 	    return;        
     }
     else {
@@ -635,9 +632,8 @@ Stativus.Statechart = {
     allStates = this._all_states[tree];
     cStates = this._current_state;
     this._exitStateStack = this._exitStateStack || [];
-   
-    for (var idx = 0; idx < stopState.substates.length; idx++) {
-      var state = stopState.substates[idx];
+    
+    stopState.substates.forEach( function(state){
       var substateTree, currState, curr, exitStateHandled, aTrees;
       substateTree = [Stativus.SUBSTATE_DELIM, tree, stopState.name, state].join('=>');
 	    currState = cStates[substateTree];
@@ -656,7 +652,7 @@ Stativus.Statechart = {
 	    
 	    // Now, remove this from the active substate tree
 	    that._active_subtrees[tree] = that._removeFromActiveTree(tree, substateTree);
-    }
+    });
   },
   
   // @private
@@ -744,9 +740,9 @@ Stativus.Statechart = {
     if (!aTrees) return [];
     if (!tree) return aTrees;
 
-    for (var idx = 0;idx < aTrees.length; idx++) {
+    aTrees.forEach( function(x){
       if(x !== tree) nArray.push(x);
-    }
+    });
     
     return nArray;
   },
@@ -783,11 +779,10 @@ if (EVENTABLE){
     if (!node || !node.className) return;
     selectors = node.className.split(/\s+/).map( function(x){ return '.'+x; });
     if (node.id) selectors.push('#'+node.id);
-    for (var idx = 0;idx < selectors.length; idx++) {
-      var x = selectors[idx];
+    selectors.forEach( function(x){
       lookup = (x+' '+evt).replace(/^\s\s*/, '').replace(/\s\s*$/, '');
       that._structureCrawl('_cascadeActionHandler', lookup, args);
-    }
+    });
   };
   
   Stativus.Statechart._cascadeActionHandler = function(lookup, args, responder, allStates, tree){
