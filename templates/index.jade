@@ -1,3 +1,4 @@
+//- Late loading JS  
 !!!
 html(lang='en')
   head
@@ -24,9 +25,8 @@ html(lang='en')
     link(href="./assets/css/bootstrap-responsive.css", rel="stylesheet")
 
     // Le HTML5 shim, for IE6-8 support of HTML5 elements
-    // [if lt IE 9]
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    // [endif]
+    //if lt IE 9
+      script(src="http://html5shim.googlecode.com/svn/trunk/html5.js")
     
     // Le fav and touch icons
     link(rel="shortcut icon", href="../assets/ico/favicon.ico")
@@ -47,12 +47,9 @@ html(lang='en')
           a.brand(href="#") Stativus
           .nav-collapse
             ul.nav
-              li.active
-                a.eventable.home-act(href="#") Home
-              li
-                a.eventable.about-act(href="#") About
-              li
-                a.eventable.contact-act(href="#") Contact
+              li.active: a.eventable.home-act(href="#") Home
+              li: a.eventable.about-act(href="#") About
+              li: a.eventable.contact-act(href="#") Contact
     
     .container-fluid
       .row-fluid
@@ -60,38 +57,90 @@ html(lang='en')
           .well.sidebar-nav
             ul.nav.nav-list
               li.nav-header Statecharts
-              li
-                a(href="#") Primer
-              li
-                a(href="#") External Resources
+              li: a(href="#") Primer
+              li: a(href="#") External Resources
               li.nav-header API
-              li
-                a(href="#") Basic
-              li
-                a(href="#") Advanced
+              li: a(href="#") Basic
+              li: a(href="#") Advanced
               li.nav-header Versions
-              li
-                a(href="#") Debug-Mode
-              li
-                a(href="#") Basic
-              li  
-                a(href="#") Eventable
+              li: a(href="#") Debug-Mode
+              li: a(href="#") Basic
+              li: a(href="#") Eventable
               li.nav-header Examples
-              li
-                a(href="#") Quick Start
-              li
-                a(href="#") Basic
-              li
-                a(href="#") Advanced
+              li: a(href="#") Quick Start
+              li: a(href="#") Basic
+              li: a(href="#") Advanced
               li.nav-header Demos
-              li
-                a(href="http://demo.stativ.us") All
-              li
-                a(href="http://demo.stativ.us/html5-canvas/index.html") Redflix \(jQuery, HTML5\)
+              li: a(href="http://demo.stativ.us") All Demos
+              li: a(href="http://demo.stativ.us/html5-canvas/index.html") Redflix \(jQuery, HTML5\)
               li.nav-header Miscellaneous
-              li
-                a.eventable.browser-btn(href="#") Browser Compatibility
-              li
-                a(href="#") License
-              li
-                a(href="#") Acknowledgements
+              li: a.eventable.browser-btn(href="#") Browser Compatibility
+              li: a(href="#") License
+              li: a(href="#") Acknowledgements
+        .span9
+          .hero-unit
+            h1 Welcome to Stativus!
+            p Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.
+              h4 Version: 
+                span(style='font-weight: normal') 0.6
+            .pull-right
+              - var space=" "
+              a.btn.btn-success.btn-large Quick Start &raquo;
+              //- Weird bug that needs to have a space here...between the <a> tags
+              #{space} 
+              a.btn.btn-primary.btn-large Learn More &raquo;
+              
+          .row-fluid
+            .span4
+              h2 What Is a Statechart?
+              p.info-text A Statechart is a hierarchical finite state machine that is very useful in building and organizing user interfaces...  </p>
+              p
+                a.btn(href="#") Read Primer &raquo;
+            //- span4
+            .span4
+              h2 An Issue or a Bug?
+              p.info-text We are always working to constantly improve Stativus, so please submit any questions, issues or bugs at the github account... </p>
+              p
+                a.btn(href="https://github.com/etgryphon/stativus/issues") Submit an Issue &raquo;
+            //- span4
+            .span4
+              h2 Where's the Code?
+              p.info-text The code is hosted on Github: Watch, Fork, Play!
+              p
+                a.btn(href="https://github.com/etgryphon/stativus") View code &raquo;
+            //- span4
+          //- row-fluid
+        //- span9
+      //- row-fluid
+
+      //- Modals
+      .modal.fade.hide#browsers-modal
+        .modal-body.hero-unit
+          h1 Browser Compatibility
+        .modal-footer
+          a.eventable.btn.btn-primary Close
+          
+      hr
+
+      footer
+        p &copy; Evin Grano 2012
+
+    // Le javascript
+    // ==================================================
+    // Placed at the end of the document so the pages load faster
+    script(src="./assets/js/jquery.js")
+    script(src="./assets/js/stativus-evt-min.js")
+    script(src="./assets/js/states/default.js")
+    script(src="./assets/js/bootstrap-transition.js")
+    script(src="./assets/js/bootstrap-alert.js")
+    script(src="./assets/js/bootstrap-modal.js")
+    script(src="./assets/js/bootstrap-dropdown.js")
+    script(src="./assets/js/bootstrap-scrollspy.js")
+    script(src="./assets/js/bootstrap-tab.js")
+    script(src="./assets/js/bootstrap-tooltip.js")
+    script(src="./assets/js/bootstrap-popover.js")
+    script(src="./assets/js/bootstrap-button.js")
+    script(src="./assets/js/bootstrap-collapse.js")
+    script(src="./assets/js/bootstrap-carousel.js")
+    script(src="./assets/js/bootstrap-typeahead.js")
+    
