@@ -78,9 +78,10 @@
               <li><a href="#">Basic</a></li>
               <li><a href="#">Advanced</a></li>
               <li class="nav-header">Demos</li>
-              <li><a href="#">Redflix (jQuery, HTML5)</a></li>
+              <li><a href="http://demo.stativ.us">All</a></li>
+              <li><a href="http://demo.stativ.us/html5-canvas/index.html">Redflix (jQuery, HTML5)</a></li>
               <li class="nav-header">Miscellaneous</li>
-              <li><a href="#">Browser Compatibility</a></li>
+              <li><a class='eventable browser-btn' href="#">Browser Compatibility</a></li>
               <li><a href="#">License</a></li>
               <li><a href="#">Acknowledgements</a></li>
             </ul>
@@ -115,6 +116,16 @@
           </div><!--/row-->
         </div><!--/span-->
       </div><!--/row-->
+      
+      <!-- Modals -->
+      <div class='modal fade hide' id="browsers-modal">
+        <div class='modal-body hero-unit'>
+          <h1>Browser Compatibility</h1>
+        </div>
+        <div class='modal-footer'>
+          <a class='eventable btn btn-primary'> Close </a>
+        </div>
+      </div>
 
       <hr>
 
@@ -128,6 +139,8 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="./assets/js/jquery.js"></script>
+    <script src="./assets/js/stativus-evt-min.js"></script>
+    <script src="./assets/js/states/default.js"></script>
     <script src="./assets/js/bootstrap-transition.js"></script>
     <script src="./assets/js/bootstrap-alert.js"></script>
     <script src="./assets/js/bootstrap-modal.js"></script>
