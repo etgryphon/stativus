@@ -24,8 +24,9 @@ Statecharts are a great way to organize your web application and make it more ro
   + **Minified**: this is the file named `stativus-min.js` and is a minified version for production use (gzipped: <3k)
 
 ## Demo
+A list of all demos can be found at [Stativus Demos](http://demo.stativ.us)
 
-You can see a working version using only HTML5 Canvas and Stativus called [RedFlix](http://etgryphon.github.com/stativus-demo/html5-canvas/index.html)
+You can see a working version using only HTML5 Canvas / JQuery / Stativus called [RedFlix](http://demo.stativ.us/html5-canvas/index.html)
 You can see the code at [stativus-demo](https://github.com/etgryphon/stativus-demo)
 
 ## Readings and Tutorials on Statecharts
