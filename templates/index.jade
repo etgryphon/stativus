@@ -57,27 +57,27 @@ html(lang='en')
           .well.sidebar-nav
             ul.nav.nav-list
               li.nav-header Statecharts
-              li: a(href="#") Primer
-              li: a(href="#") External Resources
+              li: a(href="#") *Primer
+              li: a(href="#") *External Resources
               li.nav-header API
-              li: a(href="#") Basic
-              li: a(href="#") Advanced
+              li: a(href="#") *Basic
+              li: a(href="#") *Advanced
               li.nav-header Versions
-              li: a(href="#") Debug-Mode
-              li: a(href="#") Basic
-              li: a(href="#") Eventable
+              li: a(href="#") *Debug-Mode
+              li: a(href="#") *Basic
+              li: a(href="#") *Eventable
               li.nav-header Examples
-              li: a(href="#") Quick Start
-              li: a(href="#") Basic
-              li: a(href="#") Advanced
+              li: a(href="#") *Quick Start
+              li: a(href="#") *Basic
+              li: a(href="#") *Advanced
               li.nav-header Demos
               li: a(href="http://demo.stativ.us") All Demos
               li: a(href="http://demo.stativ.us/html5-canvas/index.html") Redflix \(jQuery, HTML5\)
               li.nav-header Miscellaneous
-              li: a.eventable.browser-btn(href="#") Browser Compatibility
-              li: a(href="#") License
-              li: a(href="#") Acknowledgements
-        .span9
+              li: a.eventable.browser-btn(href="#") *Browser Compatibility
+              li: a(href="#") *License
+              li: a(href="#") *Acknowledgements
+        .span9.home-page
           .hero-unit
             h1 Welcome to Stativus!
             p Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.
@@ -85,17 +85,17 @@ html(lang='en')
                 span(style='font-weight: normal') 0.6
             .pull-right
               - var space=" "
-              a.btn.btn-success.btn-large Quick Start &raquo;
+              a.btn.btn-success.btn-large *Quick Start &raquo;
               //- Weird bug that needs to have a space here...between the <a> tags
               #{space} 
-              a.btn.btn-primary.btn-large Learn More &raquo;
+              a.btn.btn-primary.btn-large *Learn More &raquo;
               
           .row-fluid
             .span4
               h2 What Is a Statechart?
               p.info-text A Statechart is a hierarchical finite state machine that is very useful in building and organizing user interfaces...  </p>
               p
-                a.btn(href="#") Read Primer &raquo;
+                a.btn(href="#") *Read Primer &raquo;
             //- span4
             .span4
               h2 An Issue or a Bug?
@@ -114,11 +114,11 @@ html(lang='en')
       //- row-fluid
 
       //- Modals
-      .modal.fade.hide#browsers-modal
-        .modal-body.hero-unit
-          h1 Browser Compatibility
+      .modal.fade.hide#info-modal
+        .modal-header Header
+        .modal-body Info Text
         .modal-footer
-          a.eventable.btn.btn-primary Close
+          a.eventable.btn.btn-primary.close-action Close
           
       hr
 
@@ -130,7 +130,7 @@ html(lang='en')
     // Placed at the end of the document so the pages load faster
     script(src="./assets/js/jquery.js")
     script(src="./assets/js/stativus-evt-min.js")
-    script(src="./assets/js/states/default.js")
+    script(src="./assets/js/states.js")
     script(src="./assets/js/bootstrap-transition.js")
     script(src="./assets/js/bootstrap-alert.js")
     script(src="./assets/js/bootstrap-modal.js")
