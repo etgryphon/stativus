@@ -1,8 +1,8 @@
 /*globals $ Stativus _trackEvent _gat*/
 var statechart = Stativus.createStatechart();
 var sendGoogleAnalyticEvent = function(cat, evt, label){
-  var et = window.gaEventTracker || (_gat && _gat._createTracker('UA-32146791-1', 'eventTracker'));
-  if(et) et._trackEvent(cad, evt, label);
+  var et = window.gaEventTracker || (typeof _gat !== 'undefined' && _gat._createTracker('UA-32146791-1', 'eventTracker'));
+  if(et) et._trackEvent(cat, evt, label);
 };
 // *********************************
 // DEFAULT STATES
@@ -26,7 +26,7 @@ statechart.addState("#app", {
 });
 
 statechart.addState("#home", {
-  
+  parentState: '#app',
   enterState: function(){
     $('.home-page').show('fast');
   },
