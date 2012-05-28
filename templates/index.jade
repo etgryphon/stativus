@@ -70,26 +70,26 @@ html(lang='en')
           .well.sidebar-nav
             ul.nav.nav-list
               li.nav-header Statecharts
-              li: a(href="#") *Primer
-              li: a(href="#") *External Resources
+              li: a.eventable.underContruction(href="#", data='MenuPrimer') *Primer
+              li: a.eventable.underContruction(href="#", data='External Resources') *External Resources
               li.nav-header API
-              li: a(href="#") *Basic
-              li: a(href="#") *Advanced
+              li: a.eventable.underContruction(href="#", data='BasicAPI') *Basic
+              li: a.eventable.underContruction(href="#", data='AdvancedAPI') *Advanced
               li.nav-header Versions
-              li: a(href="#") *Debug-Mode
-              li: a(href="#") *Basic
-              li: a(href="#") *Eventable
+              li: a.eventable.underContruction(href="#", data='versionDebug') *Debug-Mode
+              li: a.eventable.underContruction(href="#", data='versionBasic') *Basic
+              li: a.eventable.underContruction(href="#", data='versionEventable') *Eventable
               li.nav-header Examples
-              li: a(href="#") *Quick Start
-              li: a(href="#") *Basic
-              li: a(href="#") *Advanced
+              li: a.eventable.underContruction(href="#", data='MenuQuickStart') *Quick Start
+              li: a.eventable.underContruction(href="#", data='BasicExample') *Basic
+              li: a.eventable.underContruction(href="#", data='AdvancedExample') *Advanced
               li.nav-header Demos
               li: a(href="http://demo.stativ.us") All Demos
               li: a(href="http://demo.stativ.us/html5-canvas/index.html") Redflix \(jQuery, HTML5\)
               li.nav-header Miscellaneous
-              li: a.eventable.browser-btn(href="#") *Browser Compatibility
-              li: a(href="#") *License
-              li: a(href="#") *Acknowledgements
+              li: a.eventable.underContruction(href="#", data='Browsers') *Browser Compatibility
+              li: a.eventable.underContruction(href="#", data='License') *License
+              li: a.eventable.underContruction(href="#", data='Acknowledgements') *Acknowledgements
         .span9.home-page
           .hero-unit
             h1 Welcome to Stativus!
@@ -98,17 +98,17 @@ html(lang='en')
                 span(style='font-weight: normal') 0.6
             .pull-right
               - var space=" "
-              a.btn.btn-success.btn-large *Quick Start &raquo;
+              a.btn.btn-success.btn-large.underContruction(data='MainQuickStart') *Quick Start &raquo;
               //- Weird bug that needs to have a space here...between the <a> tags
               #{space} 
-              a.btn.btn-primary.btn-large *Learn More &raquo;
+              a.btn.btn-primary.btn-large.underContruction(data='LearnMorePrimer') *Learn More &raquo;
               
           .row-fluid
             .span4
               h2 What Is a Statechart?
               p.info-text A Statechart is a hierarchical finite state machine that is very useful in building and organizing user interfaces...  </p>
               p
-                a.btn(href="#") *Read Primer &raquo;
+                a.btn.underContruction(href="#", data='WhatIsPrimer') *Read Primer &raquo;
             //- span4
             .span4
               h2 An Issue or a Bug?

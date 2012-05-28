@@ -1,4 +1,4 @@
-/*globals $ Stativus*/
+/*globals $ Stativus _trackEvent*/
 var statechart = Stativus.createStatechart();
 // *********************************
 // DEFAULT STATES
@@ -22,6 +22,7 @@ statechart.addState("#modal_ready", {
   
   // events
   underConstruction: function(id){
+    _trackEvent('UnderConstruction', id, id);
     this.goToState('#underConstruction');
   }
 });
