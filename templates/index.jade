@@ -1,4 +1,4 @@
-//- Late loading JS  
+include mixins/quick-start
 !!!
 html(lang='en')
   head
@@ -81,7 +81,7 @@ html(lang='en')
               li: a.eventable.underContruction(href="#", data='versionBasic') *Basic
               li: a.eventable.underContruction(href="#", data='versionEventable') *Eventable
               li.nav-header Examples
-              li: a.eventable.underContruction(href="#", data='MenuQuickStart') *Quick Start
+              li: a.eventable.quick-start-act(href="#", data='MenuQuickStart') Quick Start
               li: a.eventable.underContruction(href="#", data='BasicExample') *Basic
               li: a.eventable.underContruction(href="#", data='AdvancedExample') *Advanced
               li.nav-header Demos
@@ -99,7 +99,7 @@ html(lang='en')
                 span(style='font-weight: normal') 0.6
             .pull-right
               - var space=" "
-              a.btn.btn-success.btn-large.underContruction(data='MainQuickStart') *Quick Start &raquo;
+              a.eventable.btn.btn-success.btn-large.quick-start-act(data='MainQuickStart') Quick Start &raquo;
               //- Weird bug that needs to have a space here...between the <a> tags
               #{space} 
               a.btn.btn-primary.btn-large.underContruction(data='LearnMorePrimer') *Learn More &raquo;
@@ -125,6 +125,13 @@ html(lang='en')
             //- span4
           //- row-fluid
         //- span9
+        
+        //- Quick Start Page Mixin
+        mixin quick-start
+            
+               
+        //- End Quick Start
+        //- ***********************************
       //- row-fluid
 
       //- Modals

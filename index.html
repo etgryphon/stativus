@@ -77,7 +77,7 @@
               <li><a href="#" data="versionBasic" class="eventable underContruction">*Basic</a></li>
               <li><a href="#" data="versionEventable" class="eventable underContruction">*Eventable</a></li>
               <li class="nav-header">Examples</li>
-              <li><a href="#" data="MenuQuickStart" class="eventable underContruction">*Quick Start</a></li>
+              <li><a href="#" data="MenuQuickStart" class="eventable quick-start-act">Quick Start</a></li>
               <li><a href="#" data="BasicExample" class="eventable underContruction">*Basic</a></li>
               <li><a href="#" data="AdvancedExample" class="eventable underContruction">*Advanced</a></li>
               <li class="nav-header">Demos</li>
@@ -96,7 +96,7 @@
             <p>Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.
               <h4>Version: <span style="font-weight: normal">0.6</span></h4>
             </p>
-            <div class="pull-right"><a data="MainQuickStart" class="btn btn-success btn-large underContruction">*Quick Start &raquo;</a>  <a data="LearnMorePrimer" class="btn btn-primary btn-large underContruction">*Learn More &raquo;</a>
+            <div class="pull-right"><a data="MainQuickStart" class="eventable btn btn-success btn-large quick-start-act">Quick Start &raquo;</a>  <a data="LearnMorePrimer" class="btn btn-primary btn-large underContruction">*Learn More &raquo;</a>
             </div>
           </div>
           <div class="row-fluid">
@@ -115,6 +115,143 @@
               <p class="info-text">The code is hosted on Github: Watch, Fork, Play!</p>
               <p><a href="https://github.com/etgryphon/stativus" class="btn">View code &raquo;</a></p>
             </div>
+          </div>
+        </div>
+        <div style="display: none;" class="span9 quick-start-page">
+          <div style="display: none;" class="hero-unit quick-start-banner">
+            <h1>Quick Start!</h1>
+            <p>the very basics of getting a Stativus Statechart up and running</p>
+            <div class="pull-right"><a data="QuickStartBegin" class="eventable btn btn-success btn-large qs-step1-act">Begin &raquo;</a></div>
+          </div>
+        </div>
+        <div style="display: none;" class="span9 qs-steps">
+          <div style="display: none;" class="qs-step1">
+            <h3>Step #1: Setup HTML...</h3>
+            <p>Create a directory put in the  <em>stativus.js</em> create some simple HTML in a file called <em>index.html</em> fill it will the following code...</p>
+            <pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html lang=&quot;en&quot;&gt;
+ &lt;head&gt;
+   &lt;!- I'm using JQuery, but you can use whatever -!&gt;
+   &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+   &lt;script src=&quot;./stativus.js&quot;&gt;&lt;/script&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+   &lt;div id=&quot;state-one&quot; style=&quot;display: none; background-color: red; color: white;&quot;&gt; 
+     &lt;h1&gt;State One (#1)&lt;/h1&gt;
+   &lt;/div&gt;
+   &lt;div id=&quot;state-two&quot; style=&quot;display: none; background-color: blue; color: white;&quot;&gt; 
+     &lt;h1&gt;State Two (#2)&lt;/h1&gt;
+   &lt;/div&gt;
+   &lt;script type=&quot;text/javascript&quot;&gt;
+      // Statechart code goes here...
+   &lt;/script&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step2-act">Next &raquo;</a></div>
+          </div>
+          <div style="display: none;" class="qs-step2">
+            <h3>Step #2: Create Statechart...</h3>
+            <p>You need to create the statechart:</p>
+            <pre>var statechart = Stativus.createStatechart();</pre>
+            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step1-act">&laquo; Prev </a></div>
+            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step3-act">Next &raquo;</a></div>
+          </div>
+          <div style="display: none;" class="qs-step3">
+            <h3>Step #3: Create First State...</h3>
+            <p>you need to define your first state:</p>
+            <pre>statechart.addState(&quot;#state-one&quot;, {
+  enterState: function(){
+    $('#state-one').show(); // Using JQuery, but you can use whatever...
+  },
+  exitState: function(){
+    $('#state-one').hide(); // Using JQuery, but you can use whatever...
+  },
+  fireEvent: function(){
+    this.goToState('#state-two');
+  }
+});</pre>
+            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step2-act">&laquo; Prev </a></div>
+            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step4-act">Next &raquo;</a></div>
+          </div>
+          <div style="display: none;" class="qs-step4">
+            <h3>Step #4: Create Second State...</h3>
+            <p>you need to define your second state:</p>
+            <pre>statechart.addState(&quot;#state-two&quot;, {
+  enterState: function(){
+    $('#state-two').show(); // Using JQuery, but you can use whatever...
+  },
+  exitState: function(){
+    $('#state-two').hide(); // Using JQuery, but you can use whatever...
+  }
+  fireEvent: function(){
+    this.goToState('#state-one');
+  }
+});</pre>
+            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step3-act">&laquo; Prev </a></div>
+            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step5-act">Next &raquo;</a></div>
+          </div>
+          <div style="display: none;" class="qs-step5">
+            <h3>Step #5: Initializing the Statechart...</h3>
+            <p>initalizing the statechart to tell Stativus where the start state is...</p>
+            <pre>statechart.initStates('#state-one');</pre>
+            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step4-act">&laquo; Prev </a></div>
+            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step6-act">Next &raquo;</a></div>
+          </div>
+          <div style="display: none;" class="qs-step6">
+            <h2>Finally,</h2>
+            <p>with everything put together it should look like this:</p>
+            <pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
+&lt;html lang=&quot;en&quot;&gt;
+ &lt;head&gt;
+   &lt;!- I'm using JQuery, but you can use whatever -!&gt;
+   &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js&quot;&gt;&lt;/script&gt;
+   &lt;script src=&quot;./stativus.js&quot;&gt;   &lt;/script&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+   &lt;div id=&quot;state-one&quot; style=&quot;display: none; background-color: red; color: white;&quot;&gt; 
+     &lt;h1&gt;State One (#1)&lt;/h1&gt;
+   &lt;/div&gt;
+   &lt;div id=&quot;state-two&quot; style=&quot;display: none; background-color: blue; color: white;&quot;&gt; 
+     &lt;h1&gt;State Two (#2)&lt;/h1&gt;
+   &lt;/div&gt;
+   &lt;script type=&quot;text/javascript&quot;&gt;
+     var statechart = Stativus.createStatechart();
+     statechart.addState(&quot;#state-one&quot;, {
+       enterState: function(){
+         console.log('boom');
+         $('#state-one').show(); // Using JQuery, but you can use whatever...
+       },
+       exitState: function(){
+         $('#state-one').hide(); // Using JQuery, but you can use whatever...
+       },
+       fireEvent: function(){
+         this.goToState('#state-two');
+       }
+     });
+     statechart.addState(&quot;#state-two&quot;, {
+       enterState: function(){
+         $('#state-two').show(); // Using JQuery, but you can use whatever...
+       },
+       exitState: function(){
+         $('#state-two').hide(); // Using JQuery, but you can use whatever...
+       },
+       fireEvent: function(){
+         this.goToState('#state-one');
+       }
+     });
+     statechart.initStates('#state-one');
+|
+   &lt;/script&gt;
+ &lt;/body&gt;
+&lt;/html&gt;</pre>
+            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step5-act">&laquo; Prev </a></div>
+            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-stepFinal-act">Finish &raquo;</a></div>
+          </div>
+          <div style="display: none;" class="qs-stepFinal">
+            <h2>Use It!</h2>
+            <p>Open the command console and run the following commands:</p>
+            <pre>statechart.sendEvent('firstEvent');</pre>
+            <div class="pull-right"><a href="./quick-start.html" class="eventable btn btn-success btn-large">Working Demo &raquo;</a></div>
           </div>
         </div>
       </div>
