@@ -1,4 +1,4 @@
-/*globals $ Stativus _trackEvent*/
+/*globals $ Stativus _trackEvent _gat*/
 var statechart = Stativus.createStatechart();
 // *********************************
 // DEFAULT STATES
@@ -20,9 +20,15 @@ statechart.addState("#home", {
 statechart.addState("#modal_ready", {
   globalConcurrentState: 'modal_states',
   
+  actions: {
+    '.underContruction click': 'underConstruction'
+  },
+  
   // events
   underConstruction: function(id){
-    _trackEvent('UnderConstruction', id, id);
+    debugger;
+    var evtTracker = window.gaEventTracker || _gat._createTracker('UA-32146791-1', 'eventTracker');
+    evtTracker._trackEvent('UnderConstruction', id, id);
     this.goToState('#underConstruction');
   }
 });
@@ -52,7 +58,7 @@ statechart.addState("#underConstruction", {
 // *********************************
 $(document).ready(function() {
   // Handler for .ready() called.
-  statechart.initStates({'default': '#home', 'modal_states': '#underConstruction'});
+  statechart.initStates({'default': '#home', 'modal_states': '#modal_ready'});
 });
 
 $(document).bind('click', function(evt){
