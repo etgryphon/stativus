@@ -68,7 +68,7 @@
               <li><a href="#" data="MenuPrimer" class="eventable underContruction">*Primer</a></li>
               <li><a href="#" data="External Resources" class="eventable underContruction">*External Resources</a></li>
               <li class="nav-header">API</li>
-              <li><a href="#" data="BasicAPI" class="eventable underContruction">*Basic</a></li>
+              <li><a href="#" data="BasicAPI" class="eventable basic-api-act">Basic</a></li>
               <li><a href="#" data="AdvancedAPI" class="eventable underContruction">*Advanced</a></li>
               <li class="nav-header">Versions</li>
               <li><a href="#" data="versionDebug" class="eventable underContruction">*Debug-Mode</a></li>
@@ -270,6 +270,81 @@
             <pre>statechart.sendEvent('firstEvent');</pre>
             <div class="pull-right"><a href="./quick-start.html" class="eventable btn btn-success btn-large">Working Demo &raquo;</a></div>
           </div>
+        </div>
+        <div style="display: none;" class="span9 basic-api-page">
+          <div class="hero-unit">
+            <h1>Basic API</h1>
+          </div>
+          <h2>Stativus</h2>
+          <h6>namespace</h6><br/>
+          <h3> <code>createStatechart()</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><em>none</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>This is the function to actually create the statechart.  This is the only function that needs to be called <strong><em>first</em></strong> in order for the other functions to work.  This returns a <strong><em>Stativus.Statechart</em></strong> object.  You can create as many statecharts as you want. You can even create them in your views to control
+             how the view works in any of the MVC frameworks out there
+          </p>
+          <h4>Example</h4>
+          <pre>var statechart = Stativus.createStatechart();</pre>
+          <hr/>
+          <h2>Stativus.Statechart
+            <h6>namespace</h6>
+          </h2>
+          <h3><code>addState( name, def1, def2, ... )</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'name' :: </strong><em>String  - REQUIRED</em></li>
+            <li> <strong>'def</strong><em>n</em><strong>' :: </strong><em> Object | Hash - REQUIRED &raquo; see Stativus.State.DefinitionParameters</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>
+            this function creates the state and you pass in the definition of the state.  An interesting bonus is that you 
+            can send in as many of these as you would like.  This helps when you have the same action or configuration that 
+            needs to go in several states.
+          </p>
+          <h4>Example</h4>
+          <pre>statechart.addState( 'first_state', {
+  // Stativus.State.DefinitionParameters
+});</pre>
+          <hr/>
+          <h3><code>initStates( name )</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'name' :: </strong><em>String | Hash  - REQUIRED</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>This actually initializes the statechart and make the statechart enter the initial state. If the <strong>'name' </strong>is a <em>String </em>then it represents the name of the state in the <em>DEFAULT </em>statechart. If the value is an <em>Hash | Object </em>then it represents a key-value pair of the initial states for all the global concurrent states. 
+            global state = <em>KEY </em>and initial state name = <em>VALUE</em>
+          </p>
+          <h4>Example</h4>
+          <pre>// Example #1: String
+statechart.initStates('first_state');
+// Example #2: Hash | Object
+statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');</pre>
+          <hr/>
+          <h3><code>sendEvent( name, param1, param2, ... )</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'name' :: </strong><em>String - REQUIRED</em></li>
+            <li><strong>'param</strong><em>n</em><strong>' :: </strong><em> OPTIONAL</em></li>
+            <li></li>
+          </ul>
+          <h4>Description</h4>
+          <p>
+            This sends an event to all the global concurrent states.  If you are in a state that has the event/action
+            defined then it will respond with this trigger.  You can have <em>N</em>-number of parameters of any type and they will be passed to the function definition for the event on
+            the current states.
+          </p>
+          <h4>Example</h4>
+          <pre>// Example #1: no params
+statechart.sendEvent('viewMenu');
+// Example #2: one param
+statechart.sendEvent('openMenuItem', 3);
+// Example #3: n-params
+statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});</pre>
+          <hr/>
         </div>
       </div>
       <div id="info-modal" class="modal fade hide">

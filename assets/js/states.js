@@ -11,7 +11,8 @@ statechart.addState("#app", {
   initialSubstate: '#home',
   actions: {
     '.home-act click': 'viewHomePage',
-    '.quick-start-act click': 'viewQuickStartPage'
+    '.quick-start-act click': 'viewQuickStartPage',
+    '.basic-api-act click': 'viewBasicAPI'
   },
   
   viewHomePage: function(){
@@ -22,6 +23,11 @@ statechart.addState("#app", {
   viewQuickStartPage: function(id){
     sendGoogleAnalyticEvent('Examples', id, 'viewQuickStartPage');
     this.goToState('#quick-start');
+  },
+  
+  viewBasicAPI: function(id){
+    sendGoogleAnalyticEvent('API', 'viewBasicAPI', 'viewBasicAPI');
+    this.goToState('#basic-api');
   }
 });
 
@@ -159,6 +165,20 @@ statechart.addState("#qs-stepFinal", {
     $('.qs-stepFinal').hide('fast');
   }
 });
+
+// *********************************
+// API STATES > Basic
+// *********************************
+statechart.addState("#basic-api", {
+  parentState: '#app',
+  enterState: function(){
+    $('.basic-api-page').show('fast');
+  },
+  exitState: function(){
+    $('.basic-api-page').hide('fast');
+  }
+});
+
 
 
 

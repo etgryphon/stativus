@@ -1,0 +1,45 @@
+mixin home
+  .span9.home-page
+    .hero-unit
+      h1 Welcome to Stativus!
+      p Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.
+        h3 Features:
+        ul
+          li Hierarchical \(composite, nested\) states
+          li Local & Global Orthogonal \(concurrent\) states
+          li Entry, exit, and transition-action control
+          li Shallow/deep history
+          li Event deferral
+          li Support for asynchronous transitions
+          li State-local Storage
+          li Runtime Statechart construction
+        h4 Version: 
+          span(style='font-weight: normal') 0.6
+      .pull-right
+        - var space=" "
+        a.eventable.btn.btn-success.btn-large.quick-start-act(data='MainQuickStart') Quick Start &raquo;
+        //- Weird bug that needs to have a space here...between the <a> tags
+        #{space} 
+        a.btn.btn-primary.btn-large.underContruction(data='LearnMorePrimer') *Learn More &raquo;
+        
+    .row-fluid
+      .span4
+        h2 What Is a Statechart?
+        p.info-text A Statechart is a hierarchical finite state machine that is very useful in building and organizing user interfaces...  </p>
+        p
+          a.btn.underContruction(href="#", data='WhatIsPrimer') *Read Primer &raquo;
+      //- span4
+      .span4
+        h2 An Issue or a Bug?
+        p.info-text We are always working to constantly improve Stativus, so please submit any questions, issues or bugs at the github account... </p>
+        p
+          a.btn(href="https://github.com/etgryphon/stativus/issues") Submit an Issue &raquo;
+      //- span4
+      .span4
+        h2 Where's the Code?
+        p.info-text The code is hosted on Github: Watch, Fork, Play!
+        p
+          a.btn(href="https://github.com/etgryphon/stativus") View code &raquo;
+      //- span4
+    //- row-fluid
+  //- span9

@@ -1,0 +1,113 @@
+mixin basic-api
+  //- ***********************************
+  //- HTML for the Basic API
+  .span9.basic-api-page(style='display: none;')
+    .hero-unit
+      h1 Basic API
+    //- Stativus Definitions
+    //- ***************************
+    h2 Stativus
+    h6 namespace
+    br
+    h3 
+      code createStatechart\(\)
+    h4 Parameters
+    ul
+      li: em none
+    h4 Description
+    p This is the function to actually create the statechart.  This is the only function that needs to be called 
+      strong: em first
+      |  in order for the other functions to work.  This returns a 
+      strong: em Stativus.Statechart
+      |  object.  You can create as many statecharts as you want. You can even create them in your views to control
+      |  how the view works in any of the MVC frameworks out there
+    h4 Example
+    pre
+      | var statechart = Stativus.createStatechart();
+    hr
+    //- Stativus.Statechart Definitions
+    //- ***************************
+    h2 Stativus.Statechart
+      h6 namespace
+    
+    //- Section
+    h3
+      code addState\( name, def1, def2, ... \)
+    h4 Parameters
+    ul
+      li
+        strong 'name' :: 
+        em String  - REQUIRED
+      li 
+        strong 'def
+        em n
+        strong ' :: 
+        em  Object | Hash - REQUIRED &raquo; see Stativus.State.DefinitionParameters
+    h4 Description
+    p this function creates the state and you pass in the definition of the state.  An interesting bonus is that you 
+      | can send in as many of these as you would like.  This helps when you have the same action or configuration that 
+      | needs to go in several states.
+    h4 Example
+    pre
+      | statechart.addState( 'first_state', {
+      |   // Stativus.State.DefinitionParameters
+      | });
+    hr
+    //- Section
+    h3
+      code initStates\( name \)
+    h4 Parameters
+    ul
+      li
+        strong 'name' :: 
+        em String | Hash  - REQUIRED
+    h4 Description
+    p This actually initializes the statechart and make the statechart enter the initial state. If the 
+      strong 'name' 
+      | is a 
+      em String 
+      | then it represents the name of the state in the 
+      em DEFAULT 
+      | statechart. If the value is an 
+      em Hash | Object 
+      | then it represents a key-value pair of the initial states for all the global concurrent states. 
+      | global state = 
+      em KEY 
+      | and initial state name = 
+      em VALUE
+    h4 Example
+    pre
+      | // Example #1: String
+      | statechart.initStates('first_state');
+      | // Example #2: Hash | Object
+      | statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');
+    hr
+    //- Section
+    h3
+      code sendEvent\( name, param1, param2, ... \)
+    h4 Parameters
+    ul
+      li
+        strong 'name' :: 
+        em String - REQUIRED
+      li
+        strong 'param
+        em n
+        strong ' :: 
+        em  OPTIONAL
+      li
+    h4 Description
+    p This sends an event to all the global concurrent states.  If you are in a state that has the event/action
+      | defined then it will respond with this trigger.  You can have 
+      em N
+      | -number of parameters of any type and they will be passed to the function definition for the event on
+      | the current states.
+    h4 Example
+    pre
+      | // Example #1: no params
+      | statechart.sendEvent('viewMenu');
+      | // Example #2: one param
+      | statechart.sendEvent('openMenuItem', 3);
+      | // Example #3: n-params
+      | statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});
+    hr
