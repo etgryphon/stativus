@@ -28,7 +28,7 @@ mixin basic-api
     //- Stativus.Statechart Definitions
     //- ***************************
     h2 Stativus.Statechart
-      h6 namespace
+    h6 namespace
     
     //- Section
     h3
@@ -95,7 +95,6 @@ mixin basic-api
         em n
         strong ' :: 
         em  OPTIONAL
-      li
     h4 Description
     p This sends an event to all the global concurrent states.  If you are in a state that has the event/action
       | defined then it will respond with this trigger.  You can have 
@@ -111,3 +110,175 @@ mixin basic-api
       | // Example #3: n-params
       | statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});
     hr
+    //- Section
+    h3
+      code getState\( name, globalState\)
+    h4 Parameters
+    ul
+      li
+        strong 'name' :: 
+        em String - REQUIRED
+      li
+        strong 'globalState' :: 
+        em String - OPTIONAL
+    h4 Description
+    p This is what you call to fetch a state. The second param, 
+      em 'globalState' 
+      | is an optional param set to the global concurrent state name.  If you don't pass anything in
+      | it defaults to 
+      em 'default'
+      | .
+    h4 Example
+    pre
+      | // Example #1: no global param
+      | var state = statechart.getState('state_one');
+      | // Example #2: global conncurrent state param
+      | var state = statechart.sendEvent('other_state', 'modal_states');
+    hr
+    //- Section
+    h3
+      code currentState\(globalState\)
+    h4 Parameters
+    ul
+      li
+        strong 'globalState' :: 
+        em String - OPTIONAL
+    h4 Description
+    p This is a helper function that will give you an array of all the current states that your are in. The param
+      em 'globalState' 
+      | is an optional param set to the global concurrent state name.  If you don't pass anything in
+      | it defaults to 
+      em 'default'
+      | .
+    h4 Example
+    pre
+      | // Example #1: no global param
+      | var states = statechart.currentState();
+      | // Example #2: global conncurrent state param
+      | var states = statechart.currentState('modal_states');
+    hr
+    //- Stativus.State.DefinitionParameters
+    //- ***************************
+    h2 Stativus.State.DefinitionParameters
+    h6 definitions
+    //- substatesAreConcurrent: true || false <= *optional: in case you have parallel substates, defaults to <false>
+    //- parentState: 'some_parent', <= If 'null', then defaults to a top level state for the global concurrent state
+    //- initialSubstate: 'really_loading' <= *optional: if you have substates
+    //- Section
+    h3
+      code globalConcurrentState
+    ul
+      li
+        strong Type :: 
+        em String - OPTIONAL
+      li
+        strong Default Value :: 
+        em 'default'
+    h4 Description
+    p This is the name of the global concurrent state that this state belongs to.  This is set in the
+      code addState()
+      | function and does not ever change.
+    h4 Example
+    pre
+      | statechart.addState('state_one', {
+      |   globalConcurrentState: 'modal_states'
+      |   // more Stativus.State.DefinitionParameters...
+      | });
+    hr
+    //- Section
+    h3
+      code parentState
+    ul
+      li
+        strong Type :: 
+        em String - OPTIONAL
+      li
+        strong Default Value :: 
+        em undefined
+    h4 Description
+    p This value sets who the parent state of this substate is.  You do not need to add these in order, even though
+      | its a good idea.  If you do not set a value or set it to 
+      em null 
+      | the statechart assumes that this is a top level state. It is added once in
+      code addState()
+      | function and never changes.
+    h4 Example
+    pre
+      | statechart.addState('substate_one', {
+      |   parentState: 'state_one'
+      |   // more Stativus.State.DefinitionParameters...
+      | });
+    hr
+    //- Section
+    h3
+      code initialSubstate
+    ul
+      li
+        strong Type :: 
+        em String - REQUIRED if you have substates
+      li
+        strong Default Value :: 
+        em undefined
+    h4 Description
+    p This value sets in a parent state to tell it what substate to enter when someone calls
+      code this.goToState('\< parentStateName \>')
+      | . Technically, it isn't 
+      em required 
+      | persay, but it bad practice to just enter a parent state with substates and not go to a substate. 
+      | This is added in the 
+      code addState()
+      | function and never changes.
+    h4 Example
+    pre
+      | statechart.addState('state_one', {
+      |   initialSubstate: 'substate_one',
+      |   // more Stativus.State.DefinitionParameters...
+      | });
+    hr
+    //- Stativus.State.DefinitionParameters
+    //- ***************************
+    h2 Stativus.State.DefinitionEvents
+    h6 definitions
+    //- Section
+    h3: code enterState: function\(\)
+    h4 Parameters - 
+      em none
+    p This is the first of the important default state events that need to be defined.  This event gets called when a state
+      | gets entered.  This is 
+      em optional 
+      | and is added in the 
+      code addState()
+      | function and never changes.
+    h4 Example
+    pre
+      | statechart.addState('state_one', {
+      |   // Stativus.State.DefinitionParameters...
+      |   enterState: function(){
+      |     // code that sets up the view or state.
+      |   },
+      |   // more Stativus.State.DefinitionEvents...
+      | });
+    hr
+    //- Section
+    h3: code exitState: function\(\)
+    h4 Parameters - 
+      em none
+    p This is the second most important of the default state events that need to be defined.  This event gets called when a state
+      | gets exited.  This is 
+      em optional 
+      | and is added in the 
+      code addState()
+      | function and never changes.
+    h4 Example
+    pre
+      | statechart.addState('state_one', {
+      |   // Stativus.State.DefinitionParameters...
+      |   exitState: function(){
+      |     // code that tears down the view or state.
+      |   },
+      |   // more Stativus.State.DefinitionEvents...
+      | });
+    hr
+    
+    
+    

@@ -289,9 +289,8 @@
           <h4>Example</h4>
           <pre>var statechart = Stativus.createStatechart();</pre>
           <hr/>
-          <h2>Stativus.Statechart
-            <h6>namespace</h6>
-          </h2>
+          <h2>Stativus.Statechart</h2>
+          <h6>namespace</h6>
           <h3><code>addState( name, def1, def2, ... )</code></h3>
           <h4>Parameters</h4>
           <ul>
@@ -329,7 +328,6 @@ statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');
           <ul>
             <li><strong>'name' :: </strong><em>String - REQUIRED</em></li>
             <li><strong>'param</strong><em>n</em><strong>' :: </strong><em> OPTIONAL</em></li>
-            <li></li>
           </ul>
           <h4>Description</h4>
           <p>
@@ -344,6 +342,115 @@ statechart.sendEvent('viewMenu');
 statechart.sendEvent('openMenuItem', 3);
 // Example #3: n-params
 statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});</pre>
+          <hr/>
+          <h3><code>getState( name, globalState)</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'name' :: </strong><em>String - REQUIRED</em></li>
+            <li><strong>'globalState' :: </strong><em>String - OPTIONAL</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>This is what you call to fetch a state. The second param, <em>'globalState' </em>is an optional param set to the global concurrent state name.  If you don't pass anything in
+            it defaults to <em>'default'</em>.
+          </p>
+          <h4>Example</h4>
+          <pre>// Example #1: no global param
+var state = statechart.getState('state_one');
+// Example #2: global conncurrent state param
+var state = statechart.sendEvent('other_state', 'modal_states');</pre>
+          <hr/>
+          <h3><code>currentState(globalState)</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'globalState' :: </strong><em>String - OPTIONAL</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>This is a helper function that will give you an array of all the current states that your are in. The param<em>'globalState' </em>is an optional param set to the global concurrent state name.  If you don't pass anything in
+            it defaults to <em>'default'</em>.
+          </p>
+          <h4>Example</h4>
+          <pre>// Example #1: no global param
+var states = statechart.currentState();
+// Example #2: global conncurrent state param
+var states = statechart.currentState('modal_states');</pre>
+          <hr/>
+          <h2>Stativus.State.DefinitionParameters</h2>
+          <h6>definitions</h6>
+          <h3><code>globalConcurrentState</code></h3>
+          <ul>
+            <li><strong>Type :: </strong><em>String - OPTIONAL</em></li>
+            <li><strong>Default Value :: </strong><em>'default'</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>This is the name of the global concurrent state that this state belongs to.  This is set in the<code>addState()</code>function and does not ever change.</p>
+          <h4>Example</h4>
+          <pre>statechart.addState('state_one', {
+  globalConcurrentState: 'modal_states'
+  // more Stativus.State.DefinitionParameters...
+});</pre>
+          <hr/>
+          <h3><code>parentState</code></h3>
+          <ul>
+            <li><strong>Type :: </strong><em>String - OPTIONAL</em></li>
+            <li><strong>Default Value :: </strong><em>undefined</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>
+            This value sets who the parent state of this substate is.  You do not need to add these in order, even though
+            its a good idea.  If you do not set a value or set it to <em>null </em>the statechart assumes that this is a top level state. It is added once in<code>addState()</code>function and never changes.
+          </p>
+          <h4>Example</h4>
+          <pre>statechart.addState('substate_one', {
+  parentState: 'state_one'
+  // more Stativus.State.DefinitionParameters...
+});</pre>
+          <hr/>
+          <h3><code>initialSubstate</code></h3>
+          <ul>
+            <li><strong>Type :: </strong><em>String - REQUIRED if you have substates</em></li>
+            <li><strong>Default Value :: </strong><em>undefined</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>This value sets in a parent state to tell it what substate to enter when someone calls<code>this.goToState('< parentStateName >')</code>. Technically, it isn't <em>required </em>persay, but it bad practice to just enter a parent state with substates and not go to a substate. 
+            This is added in the <code>addState()</code>function and never changes.
+          </p>
+          <h4>Example</h4>
+          <pre>statechart.addState('state_one', {
+  initialSubstate: 'substate_one',
+  // more Stativus.State.DefinitionParameters...
+});</pre>
+          <hr/>
+          <h2>Stativus.State.DefinitionEvents</h2>
+          <h6>definitions</h6>
+          <h3><code>enterState: function()</code></h3>
+          <h4>Parameters - <em>none</em></h4>
+          <p>
+            This is the first of the important default state events that need to be defined.  This event gets called when a state
+            gets entered.  This is <em>optional </em>and is added in the <code>addState()</code>function and never changes.
+          </p>
+          <h4>Example</h4>
+          <pre>statechart.addState('state_one', {
+  // Stativus.State.DefinitionParameters...
+  enterState: function(){
+    // code that sets up the view or state.
+  },
+  // more Stativus.State.DefinitionEvents...
+});</pre>
+          <hr/>
+          <h3><code>exitState: function()</code></h3>
+          <h4>Parameters - <em>none</em></h4>
+          <p>
+            This is the second most important of the default state events that need to be defined.  This event gets called when a state
+            gets exited.  This is <em>optional </em>and is added in the <code>addState()</code>function and never changes.
+          </p>
+          <h4>Example</h4>
+          <pre>statechart.addState('state_one', {
+  // Stativus.State.DefinitionParameters...
+  exitState: function(){
+    // code that tears down the view or state.
+  },
+  // more Stativus.State.DefinitionEvents...
+});</pre>
           <hr/>
         </div>
       </div>
