@@ -61,6 +61,18 @@ Stativus.State = {
   setData: function(key, value){
     if (this._isNone(key)) return value;
     this._data[key] = value;
+  },
+  
+  setHistoryState: function(state){
+    this.history = this.history || {};
+    if (this.substatesAreConcurrent){
+      this.history[this.localConcurrentState] = state.name;
+      if (DEBUG_MODE) console.log(['HISTORY STATE: For',this.name,':: substree =', this.localConcurrentState,'=> history state set to:', state.name].join(' '));
+    }
+    else {
+      this.history = state.name;
+      if (DEBUG_MODE) console.log(['HISTORY STATE: For',this.name,'=> history state set to:', state.name].join(' '));
+    }
   }
 };
 // Our Maker function:  Thank you D.Crockford.
@@ -507,16 +519,20 @@ Stativus.Statechart = {
   },
   
   _fullEnter: function(state){
+    var pState, enterStateHandled = false;
     if (!state) return;
-    // run all the enter state functions
-    var enterStateHandled = false;
     if (DEBUG_MODE) console.log('ENTER: '+state.name);
     if (state.enterState) state.enterState();
     if (state.didEnterState) state.didEnterState();
+    if (state.parentState) {
+      pState = state.statechart.getState(state.parentState, state.globalConcurrentState);
+      pState.setHistoryState(state);
+    }
     this._unwindEnterStateStack();
   },
   
   _fullExit: function(state){
+    var pState;
     if (!state) return;
     var exitStateHandled = false;
     if (state.exitState) state.exitState();
@@ -594,16 +610,7 @@ Stativus.Statechart = {
     else {
       // now we can trigger the lower levels of the state
       cState = requiredStates[index];
-      if (cState){
-        pState = allStates[cState.parentState];
-        if (pState) {
-          if (pState.substatesAreConcurrent){
-            pState.history[tree] = cState.name;
-          }
-          else {
-            pState.history = cState.name;
-          }
-        } 
+      if (cState){ 
         if (index > -1 && requiredStates[index] === cState) index -= 1;
         this._cascadeEnterSubstates( cState, requiredStates, index, tree, allStates);
       }
