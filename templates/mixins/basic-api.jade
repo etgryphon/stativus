@@ -190,6 +190,66 @@ mixin basic-api
     h6 namespace
     //- Section
     h4 Function
+    h3: code goToState\(stateName\)
+    h4 Parameters
+    ul
+      li
+        strong 'stateName' :: 
+        em String - REQUIRED
+    h4 Description
+    p This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
+      | this is 
+      strong: em ONLY 
+      | to be called inside an event and as the last line after you 
+      em do 
+      | what you need to do.
+    h4 Example
+    pre
+      | statechart.addState('loading', {
+      |   // Stativus.State.DefinitionParameters...
+      |   Stativus.State.DefinedEvents...
+      |   completeLoad: function(data){ // <= Event Definition
+      |     // do stuff with the 'data'
+      |     this.goToState('ready');
+      |   },
+      |   // other events
+      | });
+    hr
+    //- Section
+    h4 Function
+    h3: code goToHistoryState\(stateName, isRecursive\)
+    h4 Parameters
+    ul
+      li
+        strong 'stateName' :: 
+        em String - REQUIRED
+      li
+        strong 'isRecursive' :: 
+        em Boolean - OPTIONAL
+    h4 Description
+    p Must like 
+      code goToState() 
+      | This will transition to the last substate of 
+      em 'stateName'
+      | . This is 
+      strong: em ONLY 
+      | to be called inside an event and as the last line after you 
+      em do 
+      | what you need to do.
+    h4 Example
+    pre
+      | statechart.addState('loading', {
+      |   // Stativus.State.DefinitionParameters...
+      |   Stativus.State.DefinedEvents...
+      |   completeLoad: function(data){ // <= Event Definition
+      |     // do stuff with the 'data'
+      |     this.goToState('ready');
+      |   },
+      |   // other events
+      | });
+    hr
+    //- Section
+    h4 Function
     h3: code setData\(key, value\)
     h4 Parameters
     ul

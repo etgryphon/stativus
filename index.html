@@ -399,6 +399,48 @@ var states = statechart.currentState('modal_states');</pre>
           <h2>Stativus.State</h2>
           <h6>namespace</h6>
           <h4>Function</h4>
+          <h3><code>goToState(stateName)</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'stateName' :: </strong><em>String - REQUIRED</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>
+            This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
+            this is <strong><em>ONLY </em></strong>to be called inside an event and as the last line after you <em>do </em>what you need to do.
+          </p>
+          <h4>Example</h4>
+          <pre>statechart.addState('loading', {
+  // Stativus.State.DefinitionParameters...
+  Stativus.State.DefinedEvents...
+  completeLoad: function(data){ // &lt;= Event Definition
+    // do stuff with the 'data'
+    this.goToState('ready');
+  },
+  // other events
+});</pre>
+          <hr/>
+          <h4>Function</h4>
+          <h3><code>goToHistoryState(stateName, isRecursive)</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'stateName' :: </strong><em>String - REQUIRED</em></li>
+            <li><strong>'isRecursive' :: </strong><em>Boolean - OPTIONAL</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>Must like <code>goToState() </code>This will transition to the last substate of <em>'stateName'</em>. This is <strong><em>ONLY </em></strong>to be called inside an event and as the last line after you <em>do </em>what you need to do.</p>
+          <h4>Example</h4>
+          <pre>statechart.addState('loading', {
+  // Stativus.State.DefinitionParameters...
+  Stativus.State.DefinedEvents...
+  completeLoad: function(data){ // &lt;= Event Definition
+    // do stuff with the 'data'
+    this.goToState('ready');
+  },
+  // other events
+});</pre>
+          <hr/>
+          <h4>Function</h4>
           <h3><code>setData(key, value)</code></h3>
           <h4>Parameters</h4>
           <ul>
