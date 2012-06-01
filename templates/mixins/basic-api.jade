@@ -9,8 +9,8 @@ mixin basic-api
     h2 Stativus
     h6 namespace
     br
-    h3 
-      code createStatechart\(\)
+    h4 Function
+    h3: code createStatechart\(\)
     h4 Parameters
     ul
       li: em none
@@ -31,8 +31,8 @@ mixin basic-api
     h6 namespace
     
     //- Section
-    h3
-      code addState\( name, def1, def2, ... \)
+    h4 Function
+    h3: code addState\( name, def1, def2, ... \)
     h4 Parameters
     ul
       li
@@ -54,8 +54,8 @@ mixin basic-api
       | });
     hr
     //- Section
-    h3
-      code initStates\( name \)
+    h4 Function
+    h3: code initStates\( name \)
     h4 Parameters
     ul
       li
@@ -83,8 +83,8 @@ mixin basic-api
       | statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');
     hr
     //- Section
-    h3
-      code sendEvent\( name, param1, param2, ... \)
+    h4 Function
+    h3: code sendEvent\( name, param1, param2, ... \)
     h4 Parameters
     ul
       li
@@ -111,8 +111,8 @@ mixin basic-api
       | statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});
     hr
     //- Section
-    h3
-      code getState\( name, globalState\)
+    h4 Function
+    h3: code getState\( name, globalState\)
     h4 Parameters
     ul
       li
@@ -136,8 +136,8 @@ mixin basic-api
       | var state = statechart.sendEvent('other_state', 'modal_states');
     hr
     //- Section
-    h3
-      code currentState\(globalState\)
+    h4 Function
+    h3: code currentState\(globalState\)
     h4 Parameters
     ul
       li
@@ -157,16 +157,79 @@ mixin basic-api
       | // Example #2: global conncurrent state param
       | var states = statechart.currentState('modal_states');
     hr
+    //- Section
+    h4 Function 
+      em - DEBUG_MODE ONLY!
+    h3: code inState\(name, globalState\)
+    h4 Parameters
+    ul
+      li 
+        strong 'name' :: 
+        em String - REQUIRED
+      li
+        strong 'globalState' :: 
+        em String - REQUIRED
+    h4 Description
+    p This is a helper function when you are using the 
+      em DEBUG_MODE 
+      | version of the code. It will return 
+      em true 
+      | or 
+      em false 
+      | if you are in a state. This can be helpful for debugging. Not to be used in production.
+      | .
+    h4 Example
+    pre
+      | if ( statechart.inState('state_one', 'default') ) {
+      |   // do something ;
+      | } 
+    hr
+    //- Stativus.State
+    //- ***************************
+    h2 Stativus.State
+    h6 namespace
+    //- Section
+    h4 Function
+    h3: code setData\(key, value\)
+    h4 Parameters
+    ul
+      li
+        strong 'key' :: 
+        em String - REQUIRED
+      li
+        strong 'value' :: 
+        em ANY - REQUIRED
+    h4 Description
+    p This is the function that sets the local data to the state.  You would use this when you need to pass/set data to 
+      | be used in a state.
+    h4 Example
+    pre
+      | var state = statechart.getState('state_one');
+      | state.setData('id', 123);
+    hr
+    //- Section
+    h4 Function
+    h3: code getData\(key\)
+    h4 Parameters
+    ul
+      li
+        strong 'key' :: 
+        em String - REQUIRED
+    h4 Description
+    p This is the function that gets the local data to the state.  You would use this when you need to retrieve local state data. 
+      | The beauty of the state data storage is that it won't conflict with any other states local data.
+    h4 Example
+    pre
+      | var state = statechart.getState('state_one');
+      | state.getData('id');
+    hr
     //- Stativus.State.DefinitionParameters
     //- ***************************
     h2 Stativus.State.DefinitionParameters
     h6 definitions
-    //- substatesAreConcurrent: true || false <= *optional: in case you have parallel substates, defaults to <false>
-    //- parentState: 'some_parent', <= If 'null', then defaults to a top level state for the global concurrent state
-    //- initialSubstate: 'really_loading' <= *optional: if you have substates
     //- Section
-    h3
-      code globalConcurrentState
+    h4 Parameter
+    h3: code globalConcurrentState
     ul
       li
         strong Type :: 
@@ -186,8 +249,8 @@ mixin basic-api
       | });
     hr
     //- Section
-    h3
-      code parentState
+    h4 Parameter
+    h3: code parentState
     ul
       li
         strong Type :: 
@@ -210,8 +273,8 @@ mixin basic-api
       | });
     hr
     //- Section
-    h3
-      code initialSubstate
+    h4 Parameter
+    h3: code initialSubstate
     ul
       li
         strong Type :: 
@@ -240,6 +303,7 @@ mixin basic-api
     h2 Stativus.State.DefinitionEvents
     h6 definitions
     //- Section
+    h4 Function
     h3: code enterState: function\(\)
     h4 Parameters - 
       em none
@@ -260,6 +324,7 @@ mixin basic-api
       | });
     hr
     //- Section
+    h4 Function
     h3: code exitState: function\(\)
     h4 Parameters - 
       em none
@@ -279,6 +344,5 @@ mixin basic-api
       |   // more Stativus.State.DefinitionEvents...
       | });
     hr
-    
     
     

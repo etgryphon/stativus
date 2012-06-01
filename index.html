@@ -277,7 +277,8 @@
           </div>
           <h2>Stativus</h2>
           <h6>namespace</h6><br/>
-          <h3> <code>createStatechart()</code></h3>
+          <h4>Function</h4>
+          <h3><code>createStatechart()</code></h3>
           <h4>Parameters</h4>
           <ul>
             <li><em>none</em></li>
@@ -291,6 +292,7 @@
           <hr/>
           <h2>Stativus.Statechart</h2>
           <h6>namespace</h6>
+          <h4>Function</h4>
           <h3><code>addState( name, def1, def2, ... )</code></h3>
           <h4>Parameters</h4>
           <ul>
@@ -308,6 +310,7 @@
   // Stativus.State.DefinitionParameters
 });</pre>
           <hr/>
+          <h4>Function</h4>
           <h3><code>initStates( name )</code></h3>
           <h4>Parameters</h4>
           <ul>
@@ -323,6 +326,7 @@ statechart.initStates('first_state');
 // Example #2: Hash | Object
 statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');</pre>
           <hr/>
+          <h4>Function</h4>
           <h3><code>sendEvent( name, param1, param2, ... )</code></h3>
           <h4>Parameters</h4>
           <ul>
@@ -343,6 +347,7 @@ statechart.sendEvent('openMenuItem', 3);
 // Example #3: n-params
 statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});</pre>
           <hr/>
+          <h4>Function</h4>
           <h3><code>getState( name, globalState)</code></h3>
           <h4>Parameters</h4>
           <ul>
@@ -359,6 +364,7 @@ var state = statechart.getState('state_one');
 // Example #2: global conncurrent state param
 var state = statechart.sendEvent('other_state', 'modal_states');</pre>
           <hr/>
+          <h4>Function</h4>
           <h3><code>currentState(globalState)</code></h3>
           <h4>Parameters</h4>
           <ul>
@@ -374,8 +380,58 @@ var states = statechart.currentState();
 // Example #2: global conncurrent state param
 var states = statechart.currentState('modal_states');</pre>
           <hr/>
+          <h4>Function <em>- DEBUG_MODE ONLY!</em></h4>
+          <h3><code>inState(name, globalState)</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li> <strong>'name' :: </strong><em>String - REQUIRED</em></li>
+            <li><strong>'globalState' :: </strong><em>String - REQUIRED</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>This is a helper function when you are using the <em>DEBUG_MODE </em>version of the code. It will return <em>true </em>or <em>false </em>if you are in a state. This can be helpful for debugging. Not to be used in production.
+            .
+          </p>
+          <h4>Example</h4>
+          <pre>if ( statechart.inState('state_one', 'default') ) {
+  // do something ;
+} </pre>
+          <hr/>
+          <h2>Stativus.State</h2>
+          <h6>namespace</h6>
+          <h4>Function</h4>
+          <h3><code>setData(key, value)</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'key' :: </strong><em>String - REQUIRED</em></li>
+            <li><strong>'value' :: </strong><em>ANY - REQUIRED</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>
+            This is the function that sets the local data to the state.  You would use this when you need to pass/set data to 
+            be used in a state.
+          </p>
+          <h4>Example</h4>
+          <pre>var state = statechart.getState('state_one');
+state.setData('id', 123);</pre>
+          <hr/>
+          <h4>Function</h4>
+          <h3><code>getData(key)</code></h3>
+          <h4>Parameters</h4>
+          <ul>
+            <li><strong>'key' :: </strong><em>String - REQUIRED</em></li>
+          </ul>
+          <h4>Description</h4>
+          <p>
+            This is the function that gets the local data to the state.  You would use this when you need to retrieve local state data. 
+            The beauty of the state data storage is that it won't conflict with any other states local data.
+          </p>
+          <h4>Example</h4>
+          <pre>var state = statechart.getState('state_one');
+state.getData('id');</pre>
+          <hr/>
           <h2>Stativus.State.DefinitionParameters</h2>
           <h6>definitions</h6>
+          <h4>Parameter</h4>
           <h3><code>globalConcurrentState</code></h3>
           <ul>
             <li><strong>Type :: </strong><em>String - OPTIONAL</em></li>
@@ -389,6 +445,7 @@ var states = statechart.currentState('modal_states');</pre>
   // more Stativus.State.DefinitionParameters...
 });</pre>
           <hr/>
+          <h4>Parameter</h4>
           <h3><code>parentState</code></h3>
           <ul>
             <li><strong>Type :: </strong><em>String - OPTIONAL</em></li>
@@ -405,6 +462,7 @@ var states = statechart.currentState('modal_states');</pre>
   // more Stativus.State.DefinitionParameters...
 });</pre>
           <hr/>
+          <h4>Parameter</h4>
           <h3><code>initialSubstate</code></h3>
           <ul>
             <li><strong>Type :: </strong><em>String - REQUIRED if you have substates</em></li>
@@ -422,6 +480,7 @@ var states = statechart.currentState('modal_states');</pre>
           <hr/>
           <h2>Stativus.State.DefinitionEvents</h2>
           <h6>definitions</h6>
+          <h4>Function</h4>
           <h3><code>enterState: function()</code></h3>
           <h4>Parameters - <em>none</em></h4>
           <p>
@@ -437,6 +496,7 @@ var states = statechart.currentState('modal_states');</pre>
   // more Stativus.State.DefinitionEvents...
 });</pre>
           <hr/>
+          <h4>Function</h4>
           <h3><code>exitState: function()</code></h3>
           <h4>Parameters - <em>none</em></h4>
           <p>
