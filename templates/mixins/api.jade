@@ -37,7 +37,7 @@ mixin api_header(functionName, params, isDef)
     - }
   h4 Description
   
-mixin basic-api
+mixin api
   //- ***********************************
   //- HTML for the Basic API
   .span9.api-page(style='display: none;')
@@ -49,10 +49,11 @@ mixin basic-api
       h1 Complete API
     //- Stativus Definitions
     //- ***************************
-    h2 Stativus
-    h6 namespace
-    br
-    .basic-api
+    .basic-api(style='display: none;')
+      h2 Stativus
+      h6 namespace
+      br
+    .basic-api(style='display: none;')
       mixin api_header('createStatechart()')
       p This is the function to actually create the statechart.  This is the only function that needs to be called 
         strong: em first
@@ -66,11 +67,12 @@ mixin basic-api
       hr
     //- Stativus.Statechart Definitions
     //- ***************************
-    h2 Stativus.Statechart
-    h6 namespace
-    br
+    .basic-api(style='display: none;')
+      h2 Stativus.Statechart
+      h6 namespace
+      br
     //- Section
-    .basic-api
+    .basic-api(style='display: none;')
       h4 Function
       h3: code addState\( name, def1, def2, ... \)
       h4 Parameters
@@ -94,7 +96,7 @@ mixin basic-api
         | });
       hr
     //- Section
-    .basic-api
+    .basic-api(style='display: none;')
       mixin api_header('initStates( name )', [{name: 'name', type: 'String | Hash'}])
       p This actually initializes the statechart and make the statechart enter the initial state. If the 
         strong 'name' 
@@ -117,7 +119,7 @@ mixin basic-api
         | statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');
       hr
     //- Section
-    .basic-api
+    .basic-api(style='display: none;')
       h4 Function
       h3: code sendEvent\( name, param1, param2, ... \)
       h4 Parameters
@@ -146,7 +148,7 @@ mixin basic-api
         | statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});
       hr
     //- Section
-    .basic-api
+    .basic-api(style='display: none;')
       - params = [{name: 'name', type: 'String'}, {name: 'globalState', type: 'String', isOpt: true}]
       mixin api_header('getState( name, globalState)', params)
       p This is what you call to fetch a state. The second param, 
@@ -163,7 +165,7 @@ mixin basic-api
         | var state = statechart.sendEvent('other_state', 'modal_states');
       hr
     //- Section
-    .basic-api
+    .basic-api(style='display: none;')
       mixin api_header('currentState( globalState )', [{name: 'globalState', type: 'String', isOpt: true}])
       p This is a helper function that will give you an array of all the current states that your are in. The param
         em 'globalState' 
@@ -187,7 +189,7 @@ mixin basic-api
         code currentState\( ... \)
       hr
     //- Section
-    .basic-api
+    .basic-api(style='display: none;')
       - params = [{name: 'name', type: 'String'}, {name: 'globalState', type: 'String', isOpt: true}]
       mixin api_header('inState( globalState )', params)
       p This is a helper function when you are using the 
@@ -206,10 +208,11 @@ mixin basic-api
       hr
     //- Stativus.State
     //- ***************************
-    h2 Stativus.State
-    h6 namespace
-    br
-    .basic-api
+    .basic-api(style='display: none;')
+      h2 Stativus.State
+      h6 namespace
+      br
+    .basic-api(style='display: none;')
       //- Section
       mixin api_header('goToState( name )', [{name: 'name', type: 'String'}])
       p This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
@@ -230,7 +233,7 @@ mixin basic-api
         |   // other events
         | });
       hr
-    .basic-api
+    .basic-api(style='display: none;')
       //- Section
       - params = [{name: 'name', type: 'String'}, {name: 'isRecursive', type: 'Boolean', isOpt: !0}]
       mixin api_header('goToHistoryState( name )', params)
@@ -255,7 +258,7 @@ mixin basic-api
         |   // other events
         | });
       hr
-    .basic-api
+    .basic-api(style='display: none;')
       //- Section
       - params = [{name: 'key', type: 'String'}, {name: 'value', type: 'ANY'}]
       mixin api_header('setData( key, value )', params)
@@ -266,7 +269,7 @@ mixin basic-api
         | var state = statechart.getState('state_one');
         | state.setData('id', 123);
       hr
-    .basic-api
+    .basic-api(style='display: none;')
       //- Section
       mixin api_header('getData( key )', [{name: 'key', type: 'String'}])
       p This is the function that gets the local data to the state.  You would use this when you need to retrieve local state data. 
@@ -281,7 +284,7 @@ mixin basic-api
     h2 Stativus.State.DefinitionParameters
     h6 definitions
     br
-    .basic-api
+    .basic-api(style='display: none;')
       //- Section
       mixin api_header('globalConcurrentState', {isOpt: !0, type: 'String', default: 'default'}, !0)
       p This is the name of the global concurrent state that this state belongs to.  This is set in the
@@ -294,7 +297,7 @@ mixin basic-api
         |   // more Stativus.State.DefinitionParameters...
         | });
       hr
-    .basic-api
+    .basic-api(style='display: none;')
       //- Section
       mixin api_header('parentState', {isOpt: !0, type: 'String', default: 'undefined'}, !0)
       p This value sets who the parent state of this substate is.  You do not need to add these in order, even though
@@ -310,8 +313,8 @@ mixin basic-api
         |   // more Stativus.State.DefinitionParameters...
         | });
       hr
-    .basic-api
-      //- Section
+    //- Section
+    .basic-api(style='display: none;')
       mixin api_header('parentState', {type: 'String', default: 'undefined'}, !0)
       p This value sets in a parent state to tell it what substate to enter when someone calls
         code this.goToState('\< parentStateName \>')
@@ -328,12 +331,96 @@ mixin basic-api
         |   // more Stativus.State.DefinitionParameters...
         | });
       hr
-    //- Stativus.State.DefinitionParameters
+    //- Section
+    .advanced-api(style='display: none;')
+      mixin api_header('substatesAreConcurrent', {type: 'Boolean', default: 'undefined'}, !0)
+      p This value sets in a parent state to tell it that it should enter all of its substates. This gives you the fine 
+        | grain control in substates to do multiple things at the same time. You do not use 
+        code initialSubstate
+        |  with this because it doesn't make any sense. 
+        | This is added in the 
+        code addState()
+        | function and never changes.
+      h4 Example
+      pre
+        | statechart.addState('state_one', {
+        |   substatesAreConcurrent: true,
+        |   // more Stativus.State.DefinitionParameters...
+        | });
+      hr
+    //- Section
+    .advanced-api(style='display: none;')
+      mixin api_header('states', {type: 'Array', default: 'undefined'}, !0)
+      p You can define substates within a state for a more concise way of defining your statechart. You do this by defining an 
+        | array of hashes with the same APIs as 
+        strong Stativus.State.DefinitionParameters 
+        | and
+        strong Stativus.State.DefinitionEvents
+        | . There are two ways 
+        | to do this. This is added in the 
+        code addState()
+        | function and never changes.
+      h4 Example Type #1: 
+      h5 create configuration code as a HASH
+      pre
+        | // Example #1:
+        | statechart.addState('state_one', {
+        |   states: [
+        |     {
+        |       name: 'substate_one',
+        |       enterState: function(){
+        |         // define function
+        |       }
+        |     }
+        |   ],
+        |   // more Stativus.State.DefinitionParameters...
+        | });
+        | // Example #2: n-level nesting
+        | statechart.addState('state_one', {
+        |   states: [
+        |     {
+        |       name: 'substate_one',
+        |       enterState: function(){
+        |         // define function
+        |       },
+        |       states: [
+        |         {
+        |           name: 'sub-substate_one'
+        |           // more Stativus.State.DefinitionParameters...
+        |         }
+        |       ]
+        |     }
+        |   ],
+        |   // more Stativus.State.DefinitionParameters...
+        | });
+      h4 Example Type #2:
+      h5 You can also pass an array where the first argument 
+        strong \(String - REQUIRED\) 
+        | is the name, next n-argument are config hashes
+      pre
+        | // Example #3: With shared functionality
+        | statechart.addState('state_one', {
+        |   states: [
+        |     ['#substate_one', mySharedFunctions, /* <= shared function hash >*/ {
+        |       enterState: function(){
+        |         // define function
+        |       }
+        |     }],
+        |     ['#substate_two', mySharedFunctions, /* <= shared function hash >*/ {
+        |       enterState: function(){
+        |         // define function
+        |       }
+        |     }],
+        |   // more Stativus.State.DefinitionParameters...
+        | });
+        | 
+      hr
+    //- Stativus.State.DefinitionEvents
     //- ***************************
     h2 Stativus.State.DefinitionEvents
     h6 definitions
     br
-    .basic-api
+    .basic-api(style='display: none;')
       //- Section
       mixin api_header('enterState: function()')
       p This is the first of the important default state events that need to be defined.  This event gets called when a state
@@ -353,7 +440,7 @@ mixin basic-api
         | });
       hr
     //- Section
-    .basic-api
+    .basic-api(style='display: none;')
       mixin api_header('exitState: function()')
       p This is the second most important of the default state events that need to be defined.  This event gets called when a state
         | gets exited.  This is 

@@ -69,7 +69,8 @@
               <li><a href="#" data="External Resources" class="eventable underContruction">*External Resources</a></li>
               <li class="nav-header">API</li>
               <li><a href="#" data="BasicAPI" class="eventable basic-api-act">Basic</a></li>
-              <li><a href="#" data="AdvancedAPI" class="eventable underContruction">*Advanced</a></li>
+              <li><a href="#" data="AdvancedAPI" class="eventable advanced-api-act">Advanced</a></li>
+              <li><a href="#" data="AllAPI" class="eventable all-api-act">All</a></li>
               <li class="nav-header">Versions</li>
               <li><a href="#" data="versionDebug" class="eventable underContruction">*Debug-Mode</a></li>
               <li><a href="#" data="versionBasic" class="eventable underContruction">*Basic</a></li>
@@ -281,9 +282,11 @@
           <div style="display: none;" class="hero-unit all-api-header">
             <h1>Complete API</h1>
           </div>
-          <h2>Stativus</h2>
-          <h6>namespace</h6><br/>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
+            <h2>Stativus</h2>
+            <h6>namespace</h6><br/>
+          </div>
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>createStatechart()</code></h3>
             <h4>Parameters</h4>
@@ -298,9 +301,11 @@
             <pre>var statechart = Stativus.createStatechart();</pre>
             <hr/>
           </div>
-          <h2>Stativus.Statechart</h2>
-          <h6>namespace</h6><br/>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
+            <h2>Stativus.Statechart</h2>
+            <h6>namespace</h6><br/>
+          </div>
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>addState( name, def1, def2, ... )</code></h3>
             <h4>Parameters</h4>
@@ -320,7 +325,7 @@
 });</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>initStates( name )</code></h3>
             <h4>Parameters</h4>
@@ -339,7 +344,7 @@ statechart.initStates('first_state');
 statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>sendEvent( name, param1, param2, ... )</code></h3>
             <h4>Parameters</h4>
@@ -362,7 +367,7 @@ statechart.sendEvent('openMenuItem', 3);
 statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>getState( name, globalState)</code></h3>
             <h4>Parameters</h4>
@@ -383,7 +388,7 @@ var state = statechart.getState('state_one');
 var state = statechart.sendEvent('other_state', 'modal_states');</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>currentState( globalState )</code></h3>
             <h4>Parameters</h4>
@@ -407,7 +412,7 @@ var states = statechart.currentState('modal_states');</pre>
             <p>This is an <em>alias </em>for<code>currentState( ... )</code></p>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>inState( globalState )</code></h3>
             <h4>Parameters</h4>
@@ -427,9 +432,11 @@ var states = statechart.currentState('modal_states');</pre>
 } </pre>
             <hr/>
           </div>
-          <h2>Stativus.State</h2>
-          <h6>namespace</h6><br/>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
+            <h2>Stativus.State</h2>
+            <h6>namespace</h6><br/>
+          </div>
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>goToState( name )</code></h3>
             <h4>Parameters</h4>
@@ -454,7 +461,7 @@ var states = statechart.currentState('modal_states');</pre>
 });</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>goToHistoryState( name )</code></h3>
             <h4>Parameters</h4>
@@ -478,7 +485,7 @@ var states = statechart.currentState('modal_states');</pre>
 });</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>setData( key, value )</code></h3>
             <h4>Parameters</h4>
@@ -498,7 +505,7 @@ var states = statechart.currentState('modal_states');</pre>
 state.setData('id', 123);</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>getData( key )</code></h3>
             <h4>Parameters</h4>
@@ -518,7 +525,7 @@ state.getData('id');</pre>
           </div>
           <h2>Stativus.State.DefinitionParameters</h2>
           <h6>definitions</h6><br/>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Definition</h4>
             <h3><code>globalConcurrentState</code></h3>
             <h4>Parameters</h4>
@@ -535,7 +542,7 @@ state.getData('id');</pre>
 });</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Definition</h4>
             <h3><code>parentState</code></h3>
             <h4>Parameters</h4>
@@ -555,7 +562,7 @@ state.getData('id');</pre>
 });</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Definition</h4>
             <h3><code>parentState</code></h3>
             <h4>Parameters</h4>
@@ -574,9 +581,96 @@ state.getData('id');</pre>
 });</pre>
             <hr/>
           </div>
+          <div style="display: none;" class="advanced-api">
+            <h4>Definition</h4>
+            <h3><code>substatesAreConcurrent</code></h3>
+            <h4>Parameters</h4>
+            <ul>
+              <li><strong>Type :: </strong><em>Boolean - <strong>REQUIRED</strong></em></li>
+              <li><strong>Default Value :: </strong><em>undefined</em></li>
+            </ul>
+            <h4>Description</h4>
+            <p>
+              This value sets in a parent state to tell it that it should enter all of its substates. This gives you the fine 
+              grain control in substates to do multiple things at the same time. You do not use <code>initialSubstate</code> with this because it doesn't make any sense. 
+              This is added in the <code>addState()</code>function and never changes.
+            </p>
+            <h4>Example</h4>
+            <pre>statechart.addState('state_one', {
+  substatesAreConcurrent: true,
+  // more Stativus.State.DefinitionParameters...
+});</pre>
+            <hr/>
+          </div>
+          <div style="display: none;" class="advanced-api">
+            <h4>Definition</h4>
+            <h3><code>states</code></h3>
+            <h4>Parameters</h4>
+            <ul>
+              <li><strong>Type :: </strong><em>Array - <strong>REQUIRED</strong></em></li>
+              <li><strong>Default Value :: </strong><em>undefined</em></li>
+            </ul>
+            <h4>Description</h4>
+            <p>
+              You can define substates within a state for a more concise way of defining your statechart. You do this by defining an 
+              array of hashes with the same APIs as <strong>Stativus.State.DefinitionParameters </strong>and<strong>Stativus.State.DefinitionEvents</strong>. There are two ways 
+              to do this. This is added in the <code>addState()</code>function and never changes.
+            </p>
+            <h4>Example Type #1: </h4>
+            <h5>create configuration code as a HASH</h5>
+            <pre>// Example #1:
+statechart.addState('state_one', {
+  states: [
+    {
+      name: 'substate_one',
+      enterState: function(){
+        // define function
+      }
+    }
+  ],
+  // more Stativus.State.DefinitionParameters...
+});
+// Example #2: n-level nesting
+statechart.addState('state_one', {
+  states: [
+    {
+      name: 'substate_one',
+      enterState: function(){
+        // define function
+      },
+      states: [
+        {
+          name: 'sub-substate_one'
+          // more Stativus.State.DefinitionParameters...
+        }
+      ]
+    }
+  ],
+  // more Stativus.State.DefinitionParameters...
+});</pre>
+            <h4>Example Type #2:</h4>
+            <h5>You can also pass an array where the first argument <strong>(String - REQUIRED) </strong>is the name, next n-argument are config hashes</h5>
+            <pre>// Example #3: With shared functionality
+statechart.addState('state_one', {
+  states: [
+    ['#substate_one', mySharedFunctions, /* &lt;= shared function hash &gt;*/ {
+      enterState: function(){
+        // define function
+      }
+    }],
+    ['#substate_two', mySharedFunctions, /* &lt;= shared function hash &gt;*/ {
+      enterState: function(){
+        // define function
+      }
+    }],
+  // more Stativus.State.DefinitionParameters...
+});
+ </pre>
+            <hr/>
+          </div>
           <h2>Stativus.State.DefinitionEvents</h2>
           <h6>definitions</h6><br/>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>enterState: function()</code></h3>
             <h4>Parameters</h4>
@@ -598,7 +692,7 @@ state.getData('id');</pre>
 });</pre>
             <hr/>
           </div>
-          <div class="basic-api">
+          <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>exitState: function()</code></h3>
             <h4>Parameters</h4>

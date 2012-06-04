@@ -12,7 +12,9 @@ statechart.addState("#app", {
   actions: {
     '.home-act click': 'viewHomePage',
     '.quick-start-act click': 'viewQuickStartPage',
-    '.basic-api-act click': 'viewBasicAPI'
+    '.basic-api-act click': 'viewBasicAPI',
+    '.advanced-api-act click': 'viewAdvancedAPI',
+    '.all-api-act click': 'viewAPI'
   },
   
   viewHomePage: function(){
@@ -28,6 +30,16 @@ statechart.addState("#app", {
   viewBasicAPI: function(id){
     sendGoogleAnalyticEvent('API', 'viewBasicAPI', 'viewBasicAPI');
     this.goToState('#basic-api');
+  },
+  
+  viewAdvancedAPI: function(id){
+    sendGoogleAnalyticEvent('API', 'viewAdvancedAPI', 'viewAdvancedAPI');
+    this.goToState('#advanced-api');
+  },
+  
+  viewAPI: function(id){
+    sendGoogleAnalyticEvent('API', 'viewAPI', 'viewAPI');
+    this.goToState('#all-api');
   }
 });
 
