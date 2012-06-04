@@ -167,20 +167,56 @@ statechart.addState("#qs-stepFinal", {
 });
 
 // *********************************
-// API STATES > Basic
+// API STATES
 // *********************************
-statechart.addState("#basic-api", {
+statechart.addState("#api", {
   parentState: '#app',
+  initialSubstate: '#basic-api',
   enterState: function(){
-    $('.basic-api-page').show('fast');
+    $('.api-page').show('fast');
   },
   exitState: function(){
-    $('.basic-api-page').hide('fast');
+    $('.api-page').hide('fast');
   }
 });
 
+statechart.addState("#basic-api", {
+  parentState: '#api',
+  enterState: function(){
+    $('.basic-api-header').show('fast');
+    $('.basic-api').show('fast');
+  },
+  exitState: function(){
+    $('.basic-api-header').hide('fast');
+    $('.basic-api').hide('fast');
+  }
+});
 
+statechart.addState("#advanced-api", {
+  parentState: '#api',
+  enterState: function(){
+    $('.advanced-api-header').show('fast');
+    $('.advanced-api').show('fast');
+  },
+  exitState: function(){
+    $('.advanced-api-header').hide('fast');
+    $('.advanced-api').hide('fast');
+  }
+});
 
+statechart.addState("#all-api", {
+  parentState: '#api',
+  enterState: function(){
+    $('.all-api-header').show('fast');
+    $('.basic-api').show('fast');
+    $('.advanced-api').show('fast');
+  },
+  exitState: function(){
+    $('.all-api-header').hide('fast');
+    $('.basic-api').hide('fast');
+    $('.advanced-api').hide('fast');
+  }
+});
 
 // *********************************
 // MODAL STATES
