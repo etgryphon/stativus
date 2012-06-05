@@ -237,21 +237,35 @@ statechart.addState("#modal_ready", {
   globalConcurrentState: 'modal_states',
   
   actions: {
-    '.underContruction click': 'underConstruction'
+    '.underContruction click': 'underConstruction',
+    '.license-act click': 'viewLicense'
   },
   
   // events
   underConstruction: function(id){
-    
     this.goToState('#underConstruction');
+  },
+  
+  viewLicense: function(){
+    sendGoogleAnalyticEvent('Misc', 'License', 'viewLicense');
+    this.goToState('#license');
+  }
+});
+
+statechart.addState("#showModal", {
+  globalConcurrentState: 'modal_states',
+  actions: {
+    '.close-action click': 'closeModal'
+  },
+  
+  closeModal: function(){
+    this.goToState('#modal_ready');
   }
 });
 
 statechart.addState("#underConstruction", {
   globalConcurrentState: 'modal_states',
-  actions: {
-    '.close-action click': 'closeModal'
-  },
+  parentState: '#showModal',
   enterState: function(){
     $('#info-modal .modal-header').html('<h2>Under Construction!</h2>');
     $('#info-modal .modal-body').html('Page is under construction.  Anything with a \'*\' hasn\'t been completed');
@@ -259,13 +273,20 @@ statechart.addState("#underConstruction", {
   },
   exitState: function(){
     $('#info-modal').modal('hide');
-  },
-  
-  // Events
-  closeModal: function(){
-    this.goToState('#modal_ready');
   }
 });
+
+statechart.addState("#license", {
+  globalConcurrentState: 'modal_states',
+  parentState: '#showModal',
+  enterState: function(){
+    $('#license-modal').modal('show');
+  },
+  exitState: function(){
+    $('#license-modal').modal('hide');
+  }
+});
+
 
 // *********************************
 // JQuery Startup functions

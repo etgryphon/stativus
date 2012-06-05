@@ -1,6 +1,7 @@
 include mixins/home
 include mixins/quick-start
 include mixins/api
+include mixins/modals
 !!!
 html(lang='en')
   head
@@ -23,6 +24,9 @@ html(lang='en')
       }
       .info-text {
         font-size: 115%;
+      }
+      #license-modal {
+        width: 610px;
       }
     link(href="./assets/css/bootstrap-responsive.css", rel="stylesheet")
 
@@ -90,7 +94,7 @@ html(lang='en')
               li: a(href="http://demo.stativ.us/html5-canvas/index.html") Redflix \(jQuery, HTML5\)
               li.nav-header Miscellaneous
               li: a.eventable.underContruction(href="#", data='Browsers') *Browser Compatibility
-              li: a.eventable.underContruction(href="#", data='License') *License
+              li: a.eventable.license-act(href="#", data='License') License
               li: a.eventable.underContruction(href="#", data='Acknowledgements') *Acknowledgements
         
         
@@ -108,12 +112,7 @@ html(lang='en')
       //- row-fluid
 
       //- Modals
-      .modal.fade.hide#info-modal
-        .modal-header Header
-        .modal-body Info Text
-        .modal-footer
-          a.eventable.btn.btn-primary.close-action Close
-          
+      mixin modals    
       hr
 
       footer
