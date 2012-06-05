@@ -5,6 +5,7 @@ mixin modals
     .modal-footer
       a.eventable.btn.btn-primary.close-action Close
   
+  //- License Modal
   .modal.fade.hide#license-modal
     .modal-header
       h2 Stativus is licensed under MIT
@@ -38,5 +39,58 @@ mixin modals
         | 
         | ==========================================================================
         | @license */
+    .modal-footer
+      a.eventable.btn.btn-primary.close-action Close
+
+  //- License Modal
+  .modal.fade.hide#acknowledge-modal
+    .modal-header
+      h2 Acknowledgements
+    .modal-body
+      h3 Jesus Christ
+      p How often I am arrogant and impressed with myself. And then I am gently reminded:
+        pre
+          | For who sees anything different in you? What do you have 
+          | that you did not receive? If then you received it, 
+          | why do you boast as if you did not receive it?
+          | - (1 Corinthians 4:7 ESV)
+        | I am in need of a rescuer and that rescuer is Jesus Christ.
+        pre
+          | And there is salvation in no one else, for there is no other name 
+          | under heaven given among men by which we must be saved.
+          | - (Acts 4:12 ESV)
+      h6 Contact Info:
+      strong Pray to Him
+      |  -- 
+      strong Bible: 
+      a(href='http://www.esvbible.org/esv/browse/') Read ESV
+      hr
+      h3 Mike Ball
+      p Mike is my technical partner in crime.  He did most of the development for the SproutCore Statecharts 
+        | of which Stativus is derived.  He has been a constant friend and pushes me to make better and bolder 
+        | choices.
+      h6 Contact Info:
+      strong Twitter: 
+      a(href='http://twitter.com/#!/onkis') @onkis
+      |  -- 
+      strong Github: 
+      a(href='https://github.com/onkis') onkis
+      |  -- 
+      strong LinkedIn: 
+      a(href='http://www.linkedin.com/pub/mike-ball/12/854/976') Mike Ball
+      hr
+      h3 Erich Ocean
+      p Erich was the first to introduce me to Statecharts and I will forever be grateful.  Erich has
+        | to be one of the smartest and most well rounded technologists I have ever met.
+      h6 Contact Info:
+      strong Twitter: 
+      a(href='http://twitter.com/#!/erichocean') @erichocean
+      |  -- 
+      strong Github: 
+      a(href='https://github.com/erichocean') erichocean
+      |  -- 
+      strong Website: 
+      a(href='http://erichocean.com/') http://erichocean.com/
+      
     .modal-footer
       a.eventable.btn.btn-primary.close-action Close

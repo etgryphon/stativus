@@ -238,7 +238,8 @@ statechart.addState("#modal_ready", {
   
   actions: {
     '.underContruction click': 'underConstruction',
-    '.license-act click': 'viewLicense'
+    '.license-act click': 'viewLicense',
+    '.ack-act click': 'viewAcknowledgements'
   },
   
   // events
@@ -249,6 +250,11 @@ statechart.addState("#modal_ready", {
   viewLicense: function(){
     sendGoogleAnalyticEvent('Misc', 'License', 'viewLicense');
     this.goToState('#license');
+  },
+  
+  viewAcknowledgements: function(){
+    sendGoogleAnalyticEvent('Misc', 'License', 'viewLicense');
+    this.goToState('#acknowledgements');
   }
 });
 
@@ -284,6 +290,17 @@ statechart.addState("#license", {
   },
   exitState: function(){
     $('#license-modal').modal('hide');
+  }
+});
+
+statechart.addState("#acknowledgements", {
+  globalConcurrentState: 'modal_states',
+  parentState: '#showModal',
+  enterState: function(){
+    $('#acknowledge-modal').modal('show');
+  },
+  exitState: function(){
+    $('#acknowledge-modal').modal('hide');
   }
 });
 
