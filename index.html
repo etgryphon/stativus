@@ -692,6 +692,46 @@ statechart.addState('state_one', {
 });</pre>
             <hr/>
           </div>
+          <div style="display: none;" class="advanced-api">
+            <h4>Function</h4>
+            <h3><code>willEnterState: function( statechart )</code></h3>
+            <h4>Parameters</h4>
+            <ul>
+              <li> <strong>'statechart' :: </strong><em>Stativus.Statechart - <strong>REQUIRED</strong></em>
+              </li>
+            </ul>
+            <h4>Description</h4>
+            <p>This is the pre-loading event to be used for async functionality. You would need to return <strong>true </strong>from this function to pause the statechart allowing the async event to happen then you need to call <code>statechart.restart()</code> to restart the statechart transition from state to state</p>
+            <pre>sc.addState(&quot;#second&quot;, {
+  willEnterState: function(statechart){
+    $('#content .boosh').animate({
+      left: 911,
+      complete: function () {
+        statechart.restart(); // REQUIRED!!: call this function to 
+                             // restart the statechart transitions
+      }
+    });
+    return true; // REQUIRED!!: return true so Stativus knows to stop the 
+                 // transitions and wait for animation or other async code.
+  },
+  enterState: function(){ ... }
+});</pre>
+          </div>
+          <div style="display: none;" class="advanced-api">
+            <h4>Function</h4>
+            <h3><code>didEnterState: function()</code></h3>
+            <h4>Parameters</h4>
+            <ul>
+              <li><em>none</em></li>
+            </ul>
+            <h4>Description</h4>
+            <p>This is the post-loading event that you can use to do any last minute functionality</p>
+            <pre>sc.addState(&quot;#second&quot;, {
+  didEnterState: function(){
+    // setup refresh timers or fire an event
+  }
+});</pre>
+          </div>
           <div style="display: none;" class="basic-api">
             <h4>Function</h4>
             <h3><code>exitState: function()</code></h3>
@@ -713,6 +753,46 @@ statechart.addState('state_one', {
   // more Stativus.State.DefinitionEvents...
 });</pre>
             <hr/>
+          </div>
+          <div style="display: none;" class="advanced-api">
+            <h4>Function</h4>
+            <h3><code>willExitState: function( statechart )</code></h3>
+            <h4>Parameters</h4>
+            <ul>
+              <li> <strong>'statechart' :: </strong><em>Stativus.Statechart - <strong>REQUIRED</strong></em>
+              </li>
+            </ul>
+            <h4>Description</h4>
+            <p>This is the pre-exit event to be used for async functionality. You would need to return <strong>true </strong>from this function to pause the statechart allowing the async event to happen then you need to call <code>statechart.restart()</code> to restart the statechart transition from state to state</p>
+            <pre>sc.addState(&quot;#second&quot;, {
+  willExitState: function(statechart){
+    $('#content .boosh').animate({
+      right: 911,
+      complete: function () {
+        statechart.restart(); // REQUIRED!!: call this function to 
+                             // restart the statechart transitions
+      }
+    });
+    return true; // REQUIRED!!: return true so Stativus knows to stop the 
+                 // transitions and wait for animation or other async code.
+  },
+  exitState: function(){ ... }
+});</pre>
+          </div>
+          <div style="display: none;" class="advanced-api">
+            <h4>Function</h4>
+            <h3><code>didExitState: function()</code></h3>
+            <h4>Parameters</h4>
+            <ul>
+              <li><em>none</em></li>
+            </ul>
+            <h4>Description</h4>
+            <p>This is the post-exiting event that you can use to do any last minute functionality</p>
+            <pre>sc.addState(&quot;#second&quot;, {
+  didExitState: function(){
+    // kill variables; fire events; or send data.
+  }
+});</pre>
           </div>
         </div>
       </div>
