@@ -1,6 +1,7 @@
 include mixins/home
 include mixins/quick-start
 include mixins/api
+include mixins/versions
 include mixins/modals
 !!!
 html(lang='en')
@@ -53,9 +54,20 @@ html(lang='en')
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
-      
     
-    
+    //- Twitter follow stuff...
+    script(type="text/javascript")
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    //- Twitter tweet stuff
+    script(type="text/javascript")
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+    //- Google +1
+    script(type="text/javascript")
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
   body
     .navbar.navbar-fixed-top
       .navbar-inner
@@ -68,6 +80,11 @@ html(lang='en')
           .nav-collapse.pull-right
             ul.nav
               li: a.eventable.contact-act(href="#") Contact
+              //- li: a.btn#follow-button(target="_blank", title="Follow @stativus on Twitter" href="https://twitter.com/intent/follow?original_referer=http%3A%2F%2Ftwitter.github.com%2Fbootstrap%2Findex.html&amp;region=follow_link&amp;screen_name=twbootstrap&amp;source=followbutton&amp;variant=2.0"><i></i><span class="label" id="l">Follow <b>@twbootstrap</b></span></a></div><div class="count-o" id="c"><i></i><u></u><a id="count" class="note" target="_blank" href="https://twitter.com/intent/user?original_referer=http%3A%2F%2Ftwitter.github.com%2Fbootstrap%2Findex.html&amp;region=count_link&amp;screen_name=twbootstrap&amp;source=followbutton&amp;variant=2.0">25.2K followers</a></div></div>
+              li: span
+                a.btn.btn-primary.twitter-follow-button(href="https://twitter.com/stativus", data-show-count="false", data-size="small") Follow @stativus
+              li: span
+                a.btn.btn-primary.twitter-share-button(href="https://twitter.com/share", data-via="etgryphon", data-related="etgryphon", data-hashtags="statecharts") Tweet
     
     .container-fluid
       .row-fluid
@@ -82,7 +99,7 @@ html(lang='en')
               li: a.eventable.advanced-api-act(href="#", data='AdvancedAPI') Advanced
               li: a.eventable.all-api-act(href="#", data='AllAPI') All
               li.nav-header Versions
-              li: a.eventable.underContruction(href="#", data='versionDebug') *Debug-Mode
+              li: a.eventable.debug-version-act(href="#", data='versionDebug') Debug-Mode
               li: a.eventable.underContruction(href="#", data='versionBasic') *Basic
               li: a.eventable.underContruction(href="#", data='versionEventable') *Eventable
               li.nav-header Examples
@@ -107,8 +124,8 @@ html(lang='en')
         //- API Page Mixin
         mixin api
                
-        //- End Quick Start
-        //- ***********************************
+        //- Versions Page Mixin
+        mixin versions
       //- row-fluid
 
       //- Modals

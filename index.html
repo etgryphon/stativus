@@ -46,8 +46,15 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
       
-      
-      
+    </script>
+    <script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
     </script>
   </head>
   <body>
@@ -57,6 +64,8 @@
           <div class="nav-collapse pull-right">
             <ul class="nav">
               <li><a href="#" class="eventable contact-act">Contact</a></li>
+              <li><span><a href="https://twitter.com/stativus" data-show-count="false" data-size="small" class="btn btn-primary twitter-follow-button">Follow @stativus</a></span></li>
+              <li><span><a href="https://twitter.com/share" data-via="etgryphon" data-related="etgryphon" data-hashtags="statecharts" class="btn btn-primary twitter-share-button">Tweet</a></span></li>
             </ul>
           </div>
         </div>
@@ -75,7 +84,7 @@
               <li><a href="#" data="AdvancedAPI" class="eventable advanced-api-act">Advanced</a></li>
               <li><a href="#" data="AllAPI" class="eventable all-api-act">All</a></li>
               <li class="nav-header">Versions</li>
-              <li><a href="#" data="versionDebug" class="eventable underContruction">*Debug-Mode</a></li>
+              <li><a href="#" data="versionDebug" class="eventable debug-version-act">Debug-Mode</a></li>
               <li><a href="#" data="versionBasic" class="eventable underContruction">*Basic</a></li>
               <li><a href="#" data="versionEventable" class="eventable underContruction">*Eventable</a></li>
               <li class="nav-header">Examples</li>
@@ -796,6 +805,35 @@ statechart.addState('state_one', {
     // kill variables; fire events; or send data.
   }
 });</pre>
+          </div>
+        </div>
+        <div style="display: none;" class="span9 debug-version-page">
+          <div class="hero-unit">
+            <h1>Debug Version</h1>
+            <h6>For development</h6>
+          </div>
+          <p>This is the version that is un-minified version of the code that has all of the functionality of the <a href="#" class="eventable basic-version-act"></a>
+            <Basic>Version</Basic>. In addition it has some helpful<code>console.log</code>and <code>errors</code> when your code is in correctly designed.  These errors include the following:
+          </p>
+          <ul>
+            <li>All <code>enterState() </code>are documented with <code>ENTER: *state_name*</code></li>
+            <li>All <code>exitState()</code>'s are documented with <code>EXIT: <state_name></code></li>
+            <li>All events are documented with <code>EVENT: <state_name> fired [<event_name>] with <n> argument(s)</code></li>
+            <li>Any time your application is configured in such a way that it will break, you will get a console or exception</li>
+            <li>All Async starts and stops will be outputted to the console.</li>
+            <li>Will warn you if you forgot to return true when using <code>willEnterState()</code></li>
+          </ul>
+        </div>
+        <div style="display: none;" class="span9 basic-version-page">
+          <div style="display: none;" class="hero-unit advanced-api-header">
+            <h1>Basic Version</h1>
+            <h6>For production</h6>
+          </div>
+        </div>
+        <div style="display: none;" class="span9 evt-version-page">
+          <div style="display: none;" class="hero-unit all-api-header">
+            <h1>Eventable Version</h1>
+            <h6>For production</h6>
           </div>
         </div>
       </div>

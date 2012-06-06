@@ -1,0 +1,42 @@
+mixin versions
+  //- ***********************
+  //- DEBUG VERSION
+  //- ***********************
+  .span9.debug-version-page(style='display: none;')
+    .hero-unit
+      h1 Debug Version
+      h6 For development
+    p This is the version that is un-minified version of the code that has all of the functionality of the 
+      a.eventable.basic-version-act(href='#')Basic Version
+      | . In addition it has some helpful
+      code console.log
+      | and 
+      code errors
+      |  when your code is in correctly designed.  These errors include the following:
+    ul
+      li All 
+        code enterState() 
+        | are documented with 
+        code ENTER: *state_name*
+      li All 
+        code exitState()
+        | 's are documented with 
+        code EXIT: <state_name>
+      li All events are documented with 
+        code EVENT: \<state_name\> fired [\<event_name\>] with \<n\> argument\(s\)
+      li Any time your application is configured in such a way that it will break, you will get a console or exception
+      li All Async starts and stops will be outputted to the console.
+      li Will warn you if you forgot to return true when using 
+        code willEnterState\(\)
+      
+  //- ***********************
+  //- BASIC VERSION
+  //- ***********************
+  .span9.basic-version-page(style='display: none;')
+    .hero-unit.advanced-api-header(style='display: none;')
+      h1 Basic Version
+      h6 For production
+  .span9.evt-version-page(style='display: none;')
+    .hero-unit.all-api-header(style='display: none;')
+      h1 Eventable Version
+      h6 For production

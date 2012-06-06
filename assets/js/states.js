@@ -14,7 +14,8 @@ statechart.addState("#app", {
     '.quick-start-act click': 'viewQuickStartPage',
     '.basic-api-act click': 'viewBasicAPI',
     '.advanced-api-act click': 'viewAdvancedAPI',
-    '.all-api-act click': 'viewAPI'
+    '.all-api-act click': 'viewAPI',
+    '.debug-version-act click': 'viewDebugVersion'
   },
   
   viewHomePage: function(){
@@ -40,6 +41,11 @@ statechart.addState("#app", {
   viewAPI: function(id){
     sendGoogleAnalyticEvent('API', 'viewAPI', 'viewAPI');
     this.goToState('#all-api');
+  },
+  
+  viewDebugVersion: function(){
+    sendGoogleAnalyticEvent('Versions', 'Debug', 'viewDebugVersion');
+    this.goToState('#debug-version');
   }
 });
 
@@ -229,6 +235,21 @@ statechart.addState("#all-api", {
     $('.advanced-api').hide('fast');
   }
 });
+
+// *********************************
+// VERSION STATES
+// *********************************
+statechart.addState("#debug-version", {
+  parentState: '#app',
+  enterState: function(){
+    $('.debug-version-page').show('fast');
+  },
+  
+  exitState: function(){
+    $('.debug-version-page').hide('fast');
+  }
+});
+
 
 // *********************************
 // MODAL STATES
