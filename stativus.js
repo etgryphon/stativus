@@ -588,11 +588,11 @@ Stativus.Statechart = {
     start.localConcurrentState = tree;
     if (start.substatesAreConcurrent){
       tree = start.globalConcurrentState || Stativus.DEFAULT_TREE;
-      nTree = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
+      nTreeBase = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
       start.history = start.history || {};
       subStates = start.substates || [];
       subStates.forEach( function(x){
-        nTree = tree+'=>'+x;
+        nTree = nTreeBase+'=>'+x;
         cState = allStates[x];
 
         // Now, we have to push the item onto the active subtrees for
