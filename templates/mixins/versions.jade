@@ -6,6 +6,8 @@ mixin versions
     .hero-unit
       h1 Debug Version
       h6 For development
+      h4 Size:
+        span(style='font-weight: normal') <30k \(unminified and not gzipped\)
     p This is the version that is un-minified version of the code that has all of the functionality of the 
       a.eventable.basic-version-act(href='#')Basic Version
       | . In addition it has some helpful
@@ -36,7 +38,13 @@ mixin versions
     .hero-unit.advanced-api-header(style='display: none;')
       h1 Basic Version
       h6 For production
+      h4 Size:
+        span(style='font-weight: normal') <3k \(minified and gzipped\)
+    p This is the minified version of the code for production use.
   .span9.evt-version-page(style='display: none;')
     .hero-unit.all-api-header(style='display: none;')
       h1 Eventable Version
       h6 For production
+      h4 Size:
+        span(style='font-weight: normal') ~3.3k \(minified and gzipped\)
+    p This is a special version of the code that does event propigation from user events.  
