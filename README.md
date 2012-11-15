@@ -63,3 +63,6 @@ Please read the complete API documentation at [Stativ.us](http://stativ.us)
 
 Stativus is under the MIT license that can be read in license.js  Just remember who brought this to you.
 
+## TypeScript declaration file
+
+There is a TypeScript declartion file (stativus.d.ts) available for TypeScript users.
