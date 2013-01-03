@@ -4,7 +4,7 @@
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.5
+  @version: 0.6
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -140,11 +140,13 @@ Stativus.Statechart = {
 	},
   
   addState: function(name){
-	  var tree, obj, hasConcurrentSubstates, pState, states,
+	  var tree, obj, hasConcurrentSubstates = false, pState, states,
 	      cTree, nState, config, configs = [], len, i, that = this;
 	  
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
+      hasConcurrentSubstates = hasConcurrentSubstates || !!config.substatesAreConcurrent;
+      pState = pState || config.parentState;
     }
     if (len === 1) configs[0] = config = {};
 	  // primary config is always the last config
@@ -157,8 +159,6 @@ Stativus.Statechart = {
 	  
 	  // Concurrent Substate checks: 
 	  // Do i have substates?
-	  hasConcurrentSubstates = config.substatesAreConcurrent;
-	  pState = config.parentState;
     cTree = this._states_with_concurrent_substates[tree];
 	  if (hasConcurrentSubstates){
 	    obj = this._states_with_concurrent_substates[tree] || {};
@@ -491,8 +491,8 @@ Stativus.Statechart = {
   
   _checkAllCurrentStates: function(reqState, tree){
     var currentStates = this.currentState(tree) || [];
-    if (currentStates === reqState) return true
-    else if (typeof currentStates === 'string' && reqState === this._all_states[tree][currentStates]) return true
+    if (currentStates === reqState) return true;
+    else if (typeof currentStates === 'string' && reqState === this._all_states[tree][currentStates]) return true;
     else if (currentStates.indexOf && currentStates.indexOf(reqState) > -1) return true;
     else return false;
   },
@@ -578,7 +578,7 @@ Stativus.Statechart = {
   
   _cascadeEnterSubstates: function(start, requiredStates, index, tree, allStates){
     var cState, len = requiredStates.length, pState, subStates,
-        that = this, nTree, bTree, name, currStates, aTrees;
+        that = this, nTree, bTree, name, currStates, aTrees, nTreeBase;
         
     if (!start) return;
         
