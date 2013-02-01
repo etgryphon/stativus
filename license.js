@@ -1,8 +1,8 @@
 /*! @license
 ==========================================================================
 Statechart -- A Micro Library
-Copyright: ©2011 Evin Grano All rights reserved.
-          Portions ©2011 Evin Grano
+Copyright: ©2011-2013 Evin Grano All rights reserved.
+          Portions ©2011-2013 Evin Grano
 
 Permission is hereby granted, free of charge, to any person obtaining a 
 copy of this software and associated documentation files (the "Software"), 
@@ -12,7 +12,8 @@ and/or sell copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in 
-all copies or substantial portions of the Software.
+all copies or substantial portions of the Software and the Software is used 
+for Good, and not Evil.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
