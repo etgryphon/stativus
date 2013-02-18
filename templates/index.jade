@@ -1,3 +1,4 @@
+include mixins/sidenav
 include mixins/home
 include mixins/quick-start
 include mixins/api
@@ -88,32 +89,7 @@ html(lang='en')
     
     .container-fluid
       .row-fluid
-        .span2
-          .well.sidebar-nav
-            ul.nav.nav-list
-              li.nav-header Statecharts
-              li: a.eventable.underContruction(href="#", data='MenuPrimer') *Primer
-              li: a.eventable.underContruction(href="#", data='External Resources') *External Resources
-              li.nav-header API
-              li: a.eventable.basic-api-act(href="#", data='BasicAPI') Basic
-              li: a.eventable.advanced-api-act(href="#", data='AdvancedAPI') Advanced
-              li: a.eventable.all-api-act(href="#", data='AllAPI') All
-              li.nav-header Versions
-              li: a.eventable.debug-version-act(href="#", data='versionDebug') Debug-Mode
-              li: a.eventable.underContruction(href="#", data='versionBasic') *Basic
-              li: a.eventable.underContruction(href="#", data='versionEventable') *Eventable
-              li.nav-header Examples
-              li: a.eventable.quick-start-act(href="#", data='MenuQuickStart') Quick Start
-              li: a.eventable.underContruction(href="#", data='BasicExample') *Basic
-              li: a.eventable.underContruction(href="#", data='AdvancedExample') *Advanced
-              li.nav-header Demos
-              li: a(href="http://demo.stativ.us") All Demos
-              li: a(href="http://demo.stativ.us/html5-canvas/index.html") Redflix \(jQuery, HTML5\)
-              li.nav-header Miscellaneous
-              li: a.eventable.underContruction(href="#", data='Browsers') *Browser Compatibility
-              li: a.eventable.license-act(href="#", data='License') License
-              li: a.eventable.ack-act(href="#", data='Acknowledgements') Acknowledgements
-        
+        mixin sidenav
         
         //- Home Page Mixin
         mixin home

@@ -1,4 +1,4 @@
-Jj<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
@@ -212,7 +212,7 @@ Jj<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
   },
   exitState: function(){
     $('#state-two').hide(); // Using JQuery, but you can use whatever...
-  },
+  }
   fireEvent: function(){
     this.goToState('#state-one');
   }
@@ -327,7 +327,7 @@ Jj<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.
             </ul>
             <h4>Description</h4>
             <p>
-              this function creates the state and you pass in the definition of the state.  An interesting bonus is that you 
+              This function creates the state and you pass in the definition of the state.  An interesting bonus is that you 
               can send in as many of these as you would like.  This helps when you have the same action or configuration that 
               needs to go in several states.
             </p>
@@ -459,7 +459,7 @@ var states = statechart.currentState('modal_states');</pre>
             <h4>Description</h4>
             <p>
               This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
-              this is <strong><em>ONLY </em></strong>to be called inside an event and as the last line after you <em>do </em>what you need to do.
+              This is <strong><em>ONLY </em></strong>to be called inside an event and as the last line after you <em>do </em>what you need to do.
             </p>
             <h4>Example</h4>
             <pre>statechart.addState('loading', {
@@ -491,7 +491,7 @@ var states = statechart.currentState('modal_states');</pre>
   Stativus.State.DefinedEvents...
   completeLoad: function(data){ // &lt;= Event Definition
     // do stuff with the 'data'
-    this.goToState('ready');
+    this.goToHistoryState('ready');
   },
   // other events
 });</pre>
@@ -576,7 +576,7 @@ state.getData('id');</pre>
           </div>
           <div style="display: none;" class="basic-api">
             <h4>Definition</h4>
-            <h3><code>parentState</code></h3>
+            <h3><code>initialSubstate</code></h3>
             <h4>Parameters</h4>
             <ul>
               <li><strong>Type :: </strong><em>String - <strong>REQUIRED</strong></em></li>
@@ -811,6 +811,7 @@ statechart.addState('state_one', {
           <div class="hero-unit">
             <h1>Debug Version</h1>
             <h6>For development</h6>
+            <h4>Size:<span style="font-weight: normal"><30k (unminified and not gzipped)</span></h4>
           </div>
           <p>This is the version that is un-minified version of the code that has all of the functionality of the <a href="#" class="eventable basic-version-act"></a>
             <Basic>Version</Basic>. In addition it has some helpful<code>console.log</code>and <code>errors</code> when your code is in correctly designed.  These errors include the following:
@@ -828,13 +829,17 @@ statechart.addState('state_one', {
           <div style="display: none;" class="hero-unit advanced-api-header">
             <h1>Basic Version</h1>
             <h6>For production</h6>
+            <h4>Size:<span style="font-weight: normal"><3k (minified and gzipped)</span></h4>
           </div>
+          <p>This is the minified version of the code for production use.</p>
         </div>
         <div style="display: none;" class="span9 evt-version-page">
           <div style="display: none;" class="hero-unit all-api-header">
             <h1>Eventable Version</h1>
             <h6>For production</h6>
+            <h4>Size:<span style="font-weight: normal">~3.3k (minified and gzipped)</span></h4>
           </div>
+          <p>This is a special version of the code that does event propigation from user events.  </p>
         </div>
       </div>
       <div id="info-modal" class="modal fade hide">

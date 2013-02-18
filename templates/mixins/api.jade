@@ -86,7 +86,7 @@ mixin api
           strong ' :: 
           em  Object | Hash - REQUIRED &raquo; see Stativus.State.DefinitionParameters
       h4 Description
-      p this function creates the state and you pass in the definition of the state.  An interesting bonus is that you 
+      p This function creates the state and you pass in the definition of the state.  An interesting bonus is that you 
         | can send in as many of these as you would like.  This helps when you have the same action or configuration that 
         | needs to go in several states.
       h4 Example
@@ -216,7 +216,7 @@ mixin api
       //- Section
       mixin api_header('goToState( name )', [{name: 'name', type: 'String'}])
       p This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
-        | this is 
+        | This is 
         strong: em ONLY 
         | to be called inside an event and as the last line after you 
         em do 
@@ -253,7 +253,7 @@ mixin api
         |   Stativus.State.DefinedEvents...
         |   completeLoad: function(data){ // <= Event Definition
         |     // do stuff with the 'data'
-        |     this.goToState('ready');
+        |     this.goToHistoryState('ready');
         |   },
         |   // other events
         | });
@@ -315,7 +315,7 @@ mixin api
       hr
     //- Section
     .basic-api(style='display: none;')
-      mixin api_header('parentState', {type: 'String', default: 'undefined'}, !0)
+      mixin api_header('initialSubstate', {type: 'String', default: 'undefined'}, !0)
       p This value sets in a parent state to tell it what substate to enter when someone calls
         code this.goToState('\< parentStateName \>')
         | . Technically, it isn't 
