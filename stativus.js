@@ -8,6 +8,7 @@
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
+  COLOR_MODE = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
 }
 
 // Pre-processor for eventable code
@@ -477,7 +478,10 @@ Stativus.Statechart = {
     
     while(!handled && responder){
       if (responder[evt]){
-        if (DEBUG_MODE) console.log(['EVENT:',responder.name,'fires','['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' '));
+        if (DEBUG_MODE) {
+        	var msg = ['EVENT:',responder.name,'fires','['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' ');
+        	(COLOR_MODE) ? console.log('%c' + msg, "color:#CC00FF") : console.log(msg);
+        }
         handled = responder[evt].apply(responder, args);
         found = true;
       }
@@ -521,7 +525,7 @@ Stativus.Statechart = {
   _fullEnter: function(state){
     var pState, enterStateHandled = false;
     if (!state) return;
-    if (DEBUG_MODE) console.log('ENTER: '+state.name);
+    if (DEBUG_MODE) (COLOR_MODE) ? console.log('%cENTER: '+state.name, "color:#009900;font-weight:bold;") : console.log('ENTER: '+state.name);
     if (state.enterState) state.enterState();
     if (state.didEnterState) state.didEnterState();
     if (state.parentState) {
@@ -537,7 +541,7 @@ Stativus.Statechart = {
     var exitStateHandled = false;
     if (state.exitState) state.exitState();
     if (state.didExitState) state.didExitState();
-    if (DEBUG_MODE) console.log('EXIT: '+state.name);
+    if (DEBUG_MODE) (COLOR_MODE) ? console.log('%cEXIT: '+state.name, "color:#880000") : console.log('EXIT: '+state.name);
     this._unwindExitStateStack();
   },
   
