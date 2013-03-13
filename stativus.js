@@ -4,7 +4,7 @@
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.6
+  @version: 0.6.1
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -21,7 +21,7 @@ if (typeof EVENTABLE === "undefined"){
   EVENTABLE = true;
 }
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.5' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.6.1' };
 Stativus.State = {
   
   // walk like a duck
@@ -397,24 +397,26 @@ Stativus.Statechart = {
       args[i-1] = arguments[i];
     }
     
-    if (this._inInitialSetup || this._sendEventLocked || this._goToStateLocked){
-      // We want to prevent any events from occurring until
-      // we have completed the state transitions and events
-      this._pendingEvents.push({
-        evt: evt,
-        args: args
-      });
+	  try {
+      if (this._inInitialSetup || this._sendEventLocked || this._goToStateLocked){
+        // We want to prevent any events from occurring until
+        // we have completed the state transitions and events
+        this._pendingEvents.push({
+          evt: evt,
+          args: args
+        });
 
-      return;
-    }
-    this._sendEventLocked = true;
+        return;
+      }
+      this._sendEventLocked = true;
     
-    this._structureCrawl('_cascadeEvents', evt, args);
+      this._structureCrawl('_cascadeEvents', evt, args);
+    } catch(err) {
+      this._restartEvents();
+      throw err;
+    }
 
-    // Now, that the states have a chance to process the first action
-    // we can go ahead and flush the queued events
-    this._sendEventLocked = false;
-    if (!this._inInitialSetup) this._flushPendingEvents();
+    this._restartEvents();
   },
   
   getData: function(key, stateName, tree){
@@ -431,6 +433,13 @@ Stativus.Statechart = {
     if (!allStates) return null;
     ret = allStates[name];
     return ret;
+  },
+  
+  _restartEvents: function(){
+  	// Now, that the states have a chance to process the first action
+    // we can go ahead and flush the queued events
+    this._sendEventLocked = false;
+    if (!this._inInitialSetup) this._flushPendingEvents();
   },
   
   _structureCrawl: function(func, evt, args){
