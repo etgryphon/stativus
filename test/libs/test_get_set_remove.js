@@ -49,5 +49,29 @@ var runGetSetTests = function(){
     ok(state, "State exists...");
     equal(state.getData('#application'), '#application_data', "Current state has root parent data" );
   });
+
+  test("Can remove local value", function() {
+    expect(2);
+    var state = SC.getState('#first');
+    ok(state, "State exists...");
+    state.removeData('#first');
+    equal(typeof state.getData('#first'), 'undefined', "Local data has been removed from current state");
+  });
+
+  test("Can remove parent value", function() {
+    expect(2);
+    var state = SC.getState('#first');
+    ok(state, "State exists...");
+    state.removeData('#subapplication');
+    equal(typeof state.getData('#subapplication'), 'undefined', "Local data has been removed from current state");
+  });
+
+  test("Can remove root parent value", function() {
+    expect(2);
+    var state = SC.getState('#first');
+    ok(state, "State exists...");
+    state.removeData('#application');
+    equal(typeof state.getData('#application'), 'undefined', "Local data has been removed from current state");
+  });
   
 };
