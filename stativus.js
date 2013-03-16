@@ -4,7 +4,7 @@
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.6.1
+  @version: 0.6.2
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -67,6 +67,14 @@ Stativus.State = {
   setData: function(key, value){
     if (this._isNone(key)) return value;
     this._data[key] = value;
+  },
+
+  removeData: function(key){
+    if (this._isNone(key)) return key;
+    var sc = this.statechart, ret = this._data[key];
+    if (this._isNone(ret)) {
+      sc.removeData(key, this.parentState, this.globalConcurrentState);
+    } else delete this._data[key];
   },
   
   setHistoryState: function(state){
@@ -424,6 +432,13 @@ Stativus.Statechart = {
     if (!allStates) return null;
     state = allStates[stateName];
     if (state && state.isState) return state.getData(key);
+  },
+
+  removeData: function(key, statename, tree){
+    var allStates = this._all_states[tree], state;
+    if (!allStates) return null;
+    state = allStates[statename];
+    if (state && state.isState) return state.removeData(key);
   },
   
   getState: function(name, tree){
