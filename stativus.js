@@ -4,7 +4,7 @@
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.6.4
+  @version: 0.6.3
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -516,14 +516,13 @@ Stativus.Statechart = {
         }
         handled = responder[evt].apply(responder, args);
 
+        if (!found) this._trackEvent(evt, responder.name, args);
+
         found = true;
       }
 
       // check to see if we have reached the end of this tree
-      if (tree && ssName === responder.name) {
-        if (found) this._trackEvent(evt, responder.name, args);
-        return [handled, found];
-      }
+      if (tree && ssName === responder.name) return [handled, found];
       responder = !handled && responder.parentState ? allStates[responder.parentState] : null ;
     }
     
