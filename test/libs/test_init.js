@@ -160,5 +160,41 @@ var runInitTests = function(){
       ok( testNames.indexOf(x.name) > -1, "In the Default State: there is current state named: "+x.name );
     });
   });
+
+ module("Module: Test Tracking Initializations", {
+    setup: function(){      
+      // statechart with hashs as substates
+      SC = Stativus.createStatechart();
+      SC.addState("application", {
+        initialSubstate: 'untracked',
+        states: [ 
+          {
+            name: 'untracked',
+            goToTracked: function() {
+              this.goToState('tracked');
+            }
+          },
+          {
+            name: 'tracked',
+            track: true
+          }
+        ]
+      });
+      SC.initStates("application");
+    }
+  });
+  
+  test("Test that tracking defaults to false", function() {
+    expect(1);
+    var cStates = SC.currentState();
+    equal(cStates[0].track, false, 'Tracking should default to false');
+  });
+
+  test("Test that tracking can be set to true", function() {
+    expect(1);
+    SC.sendEvent('goToTracked');
+    var cStates = SC.currentState();
+    equal(cStates[0].track, true, 'Tracking should be set to true');
+  });
   
 };
