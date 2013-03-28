@@ -109,7 +109,7 @@ var runAnalyticsTests = function() {
     expect(1);
     window._gaq = [];
 
-    SC.sendEvent('_nonTrackedEvent');
+    SC.sendEvent('_noTracking');
 
     equal(window._gaq.length, 0, 'After first event: Should have zero event activities');
   });
