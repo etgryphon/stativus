@@ -4,7 +4,7 @@
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.6.2
+  @version: 0.6.4
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -37,7 +37,7 @@ Stativus.State = {
     var sc = this.statechart;
     if (sc){ sc.goToState(name, this.globalConcurrentState, this.localConcurrentState); }
     else { // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE){ throw 'Cannot goToState cause state doesnt have a statechart'; }
+      if (DEBUG_MODE){ throw 'Cannot goToState because state doesnt have a statechart'; }
     }
   },
   
@@ -45,15 +45,15 @@ Stativus.State = {
     var sc = this.statechart;
     if (sc){ sc.goToHistoryState(name, this.globalConcurrentState, this.localConcurrentState, isRecursive); }
     else { // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE){ throw 'Cannot goToState cause state doesnt have a statechart'; }
+      if (DEBUG_MODE){ throw 'Cannot goToState because state doesnt have a statechart'; }
     }
   },
   
   sendEvent: function(evt){
     var sc = this.statechart;
-    if (sc){ sc.sendEvent.apply(sc, arguments); }
+    if (sc) sc.sendEvent.apply(sc, arguments);
     else { // weird format for UglifyJS preprocessing
-      if (DEBUG_MODE){ throw 'Cannot sendEvent cause state doesnt have a statechart'; }
+      if (DEBUG_MODE){ throw 'Cannot sendEvent because state doesnt have a statechart'; }
     }
   },
   
@@ -137,7 +137,7 @@ Stativus.Statechart = {
 		sc._pendingStateTransitions = [];
 		sc._pendingEvents = [];
 		sc._active_subtrees = {};
-		
+
 		if(DEBUG_MODE){
 		  sc.inState = function(name, tree){
 		    var ret = false, cStates = this.currentState(tree);
@@ -155,12 +155,15 @@ Stativus.Statechart = {
   
   addState: function(name){
 	  var tree, obj, hasConcurrentSubstates = false, pState, states,
-	      cTree, nState, config, configs = [], len, i, that = this;
+	      cTree, nState, config, configs = [], len, i, that = this,
+        track = false;
 	  
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
       hasConcurrentSubstates = hasConcurrentSubstates || !!config.substatesAreConcurrent;
       pState = pState || config.parentState;
+      track = config.track || false;
+      config.track = track;
     }
     if (len === 1) configs[0] = config = {};
 	  // primary config is always the last config
@@ -404,7 +407,7 @@ Stativus.Statechart = {
     for(i = 1; i < len; i++){
       args[i-1] = arguments[i];
     }
-    
+   
 	  try {
       if (this._inInitialSetup || this._sendEventLocked || this._goToStateLocked){
         // We want to prevent any events from occurring until
@@ -512,16 +515,40 @@ Stativus.Statechart = {
         	(COLOR_MODE) ? console.log('%c' + msg, "color:" + EVENT_COLOR) : console.log(msg);
         }
         handled = responder[evt].apply(responder, args);
+
         found = true;
       }
+
       // check to see if we have reached the end of this tree
-      if (tree && ssName === responder.name) return [handled, found];
+      if (tree && ssName === responder.name) {
+        if (found) this._trackEvent(evt, responder.name, args);
+        return [handled, found];
+      }
       responder = !handled && responder.parentState ? allStates[responder.parentState] : null ;
     }
     
     return [handled, found];
   },
-  
+
+  /**
+    @private
+    name: _trackEvent
+  **/
+  _trackEvent: function(evt, responder, args) {
+    if (typeof window._gaq === 'undefined' || !window._gaq || !window._gaq.push) return;
+    if (!!evt.match(/^_/)) return;
+    window._gaq.push(['_trackEvent', 'Event', responder+':'+evt, args.join(',') ]);
+  },
+
+  /**
+    @private
+    name: _trackPageView
+  **/
+  _trackPageView: function() {
+    if (typeof window._gaq === 'undefined' || !window._gaq || !window._gaq.push) return;
+    window._gaq.push(['_trackPageview']);
+  },
+
   _checkAllCurrentStates: function(reqState, tree){
     var currentStates = this.currentState(tree) || [];
     if (currentStates === reqState) return true;
@@ -738,7 +765,10 @@ Stativus.Statechart = {
           restart: function(){
             var sc = this._statechart;
             if (DEBUG_MODE) console.log(['RESTART: after async processing on,', this._start.name, 'is about to fully enter'].join(' '));
-            if (sc) sc._fullEnter(this._start);
+            if (sc) {
+              if (this._start.track) sc._trackPageView();
+              sc._fullEnter(this._start);
+            }
           }
         };
         delayForAsync = stateToEnter.willEnterState(stateRestart);
@@ -747,7 +777,10 @@ Stativus.Statechart = {
           else { console.warn('ASYNC: Didn\'t return \'true\' willExitState on '+stateToEnter.name+' which is needed if you want async'); }
         }
       }
-      if (!delayForAsync) this._fullEnter(stateToEnter);
+      if (!delayForAsync) {
+        if (stateToEnter.track) this._trackPageView();
+        this._fullEnter(stateToEnter);
+      }
     }
     else {
       delete this._enterStateStack;
