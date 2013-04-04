@@ -1,4 +1,4 @@
-/*globals $ equal module expect myStatechart Stativus*/
+/*globals equal, module, expect, Stativus*/
 var SC, stateTransitions;
 var runEventTests = function(){
     
@@ -38,6 +38,7 @@ var runEventTests = function(){
           this.goToState('#first.second');
           return true;
         }
+
       });
       
       sc.addState("#first.second", allEnterExit, {
@@ -47,6 +48,7 @@ var runEventTests = function(){
       sc.addState("#second", allEnterExit, {
         parentState: "#subapplication"
       });
+
       sc.initStates("#application");
       SC = sc;
     }
@@ -65,4 +67,5 @@ var runEventTests = function(){
       ok( x.indexOf(expectedEvents[i]) > -1, "The ["+i+"] transition is => "+x );
     });
   });
+
 };
