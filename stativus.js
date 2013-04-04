@@ -536,6 +536,10 @@ Stativus.Statechart = {
   _trackEvent: function(evt, responder, args) {
     if (typeof window._gaq === 'undefined' || !window._gaq || !window._gaq.push) return;
     if (!!evt.match(/^_/)) return;
+    if (DEBUG_MODE) {
+      var msg = ['TRACKING EVENT:',responder,'['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' ');
+      (COLOR_MODE) ? console.log('%c' + msg, "color:" + EVENT_COLOR) : console.log(msg);
+    }
     window._gaq.push(['_trackEvent', 'Event', responder+':'+evt, args.join(',') ]);
   },
 
@@ -545,6 +549,10 @@ Stativus.Statechart = {
   **/
   _trackPageView: function() {
     if (typeof window._gaq === 'undefined' || !window._gaq || !window._gaq.push) return;
+    if (DEBUG_MODE) {
+      var msg = 'TRACKING PAGE VIEW';
+      (COLOR_MODE) ? console.log('%c' + msg, "color:" + EVENT_COLOR) : console.log(msg);
+    }
     window._gaq.push(['_trackPageview']);
   },
 
