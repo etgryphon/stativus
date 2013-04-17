@@ -1,4 +1,4 @@
-/*globals Stativus DEBUG_MODE EVENTABLE exports $ */
+/*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ */
 
 /**
   This is the code for creating statecharts in your javascript files
@@ -20,6 +20,12 @@ if (typeof DEBUG_MODE === "undefined"){
 if (typeof EVENTABLE === "undefined"){
   EVENTABLE = true;
 }
+
+var creator = function(){
+  function F() {}
+  F.prototype = this;
+  return new F();
+};
 
 Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.6.1' };
 Stativus.State = {
@@ -93,9 +99,7 @@ Stativus.State = {
 Stativus.State.create = function (configs) {
   var nState, k, config, i, len;
   configs = configs || [];
-  function F() {}
-  F.prototype = this;
-  nState = new F();
+  nState = creator.call(this);
   nState._data = {};
   // You can have 0...n configuration objects
   for (i = 0, len = configs.length || 0; i < len; i++){
@@ -119,11 +123,7 @@ Stativus.Statechart = {
   isStatechart: true,
   
   create: function(config){
-		var sc;
-		
-		function F() {}
-    F.prototype = this;
-    sc = new F();
+		var sc = creator.call(this);
 		
 		// config all the internal information 
 		sc._all_states = {};
