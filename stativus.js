@@ -80,6 +80,9 @@ Stativus.State = {
       if (DEBUG_MODE){ throw 'Cannot sendEvent cause state doesnt have a statechart'; }
     }
   },
+  sendAction: function(evt){
+    return this.sendEvent.apply(this, arguments);
+  },
   
   getData: function(key){
     if (this._isNone(key)) return key;
@@ -207,11 +210,9 @@ Stativus.Statechart = {
 	  }
 	  
 	  nState = Stativus.State.create(configs);
-	  nState.sendAction = nState.sendEvent;
 	  
 	  // Actually add the state to our statechart
-	  obj = this._all_states[tree]; 
-	  if (!obj) obj = {};
+	  obj = this._all_states[tree] || {}; 
 	  if (DEBUG_MODE){
 	    if (obj[name]) throw ['Trying to add state', name, 'to state tree', tree, 'and it already exists'].join(' ');
 	  }
