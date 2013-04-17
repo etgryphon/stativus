@@ -21,10 +21,27 @@ if (typeof EVENTABLE === "undefined"){
   EVENTABLE = true;
 }
 
+// Helper function for creating prototypical objects...
 var creator = function(){
   function F() {}
   F.prototype = this;
   return new F();
+};
+
+// helper function for merging in properties
+var merge = function(obj, configs){
+  var config, i, len, k;
+  obj = obj || {};
+  for (i = 1, len = configs.length || 0; i < len; i++){
+    config = configs[i];
+    if (typeof config === 'object'){
+      for (k in config){ 
+        if(config.hasOwnProperty(k)) obj[k] = config[k]; 
+      }
+    }
+  }
+  
+  return obj;
 };
 
 Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.6.1' };
