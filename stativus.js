@@ -532,7 +532,7 @@ Stativus.Statechart = {
       if (responder[evt]){
         if (DEBUG_MODE) {
         	var msg = ['EVENT:',responder.name,'fires','['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' ');
-        	(COLOR_MODE) ? console.log('%c' + msg, "color:" + EVENT_COLOR) : console.log(msg);
+          // (COLOR_MODE) ? console.log('%c' + msg, "color:" + EVENT_COLOR) : console.log(msg);
         }
         handled = responder[evt].apply(responder, args);
         found = true;
@@ -817,6 +817,123 @@ Stativus.Statechart = {
 };
 
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
+
+if (DEBUG_MODE){
+  Stativus.TestStateObject = {
+    
+    _eventsCalled: null,
+    _eventHandled: null,
+    
+    create: function(statechart){
+      console.log("Creating TestStateObject...");
+      var tso = creator.call(this);
+      
+      tso._eventsCalled = {};
+      tso._eventHandled = {};
+      tso._eventTransition = {};
+      tso._statechart = statechart;
+      
+      return tso;
+    },
+    
+    enterState: function(){
+      this._statechart.sendEvent('enterState');
+    },
+    
+    exitState: function(){
+      this._statechart.sendEvent('exitState');
+    },
+    
+    wasEvent: function(name){
+      var ret, eventCount = this._eventsCalled[name] || 0,
+          evtHandled = this._eventHandled[name] || false,
+          evtTrans = this._eventTransition[name];
+      
+      ret = { 
+        called: function(count) { 
+          return count ? count === eventCount : eventCount;
+        },
+        handled: function(){
+          return evtHandled;
+        },
+        transitionedTo: function(name){
+          return name === evtTrans;
+        }
+      };
+      return ret;
+    },
+    
+    transitionedTo: function(name){
+      return name === this._transitionTo;
+    },
+    
+    reset: function(){
+      delete this._eventsCalled;
+      delete this._eventHandled;
+      delete this._eventTransition;
+      
+      this._eventsCalled = {};
+      this._eventHandled = {};
+      this._eventTransition = {};
+    },
+    
+    // protected functions only used by new statechart functions: sendEvent, goToState
+    _eventCalled: function(evt, handled){
+      var cnt = this._eventsCalled[evt] || 0;
+      this._eventsCalled[evt] = cnt+1;
+      this._eventHandled[evt] = handled;
+    },
+    
+    _setTransitionState: function(evt, stateName){
+      this._eventTransition[evt] = stateName;
+      this._transitionTo = stateName;
+    }
+  };
+  
+  
+  // Code to convert the Statechart to a Testing Statechart
+  Stativus.Statechart.loadState = function(name, tree){
+    var key, state, allStates;
+    tree = tree || Stativus.DEFAULT_TREE;
+    
+    this._overloadFunctionsForTesting();
+    this.isTestingStatechart = true;
+    
+    this._test_stateObjects = this._test_stateObjects || {};
+    key = name+'_'+tree;
+    allStates = this._all_states[tree];
+    
+    state = this._test_stateObjects[key] || Stativus.TestStateObject.create(this);
+    
+    this._current_test_state_object = state;
+    this._current_loaded_state = allStates[name];
+    
+    return state;
+  };
+  
+  Stativus.Statechart._overloadFunctionsForTesting = function(){
+    if (this.isTestingStatechart) return;
+    
+    this._processEvent = function(evt, args){
+      var handled = false,
+          currState = this._current_loaded_state,
+          currTestObj = this._current_test_state_object;
+
+      if (currState[evt]){
+        this._current_testing_event = evt;
+        handled = currState[evt].apply(currState, args);
+        currTestObj._eventCalled(evt, handled);
+        delete this._current_testing_event;
+      }
+    };
+    
+    this.goToState = function(requestedStateName, tree, concurrentTree){
+      var currTestObj = this._current_test_state_object,
+          evt = this._current_testing_event;
+      currTestObj._setTransitionState(evt, requestedStateName);
+    };
+  };
+}
 
 // All this code will add some awesome eventing structure that looks like backbone.js
 // 
