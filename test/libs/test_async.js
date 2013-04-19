@@ -15,11 +15,8 @@ var runAsyncTests = function(){
       });
   
       sc.addState("#second", {
-        willEnterState: function(statechart){
-          var func = function(){
-            statechart.restart();
-          };
-          window.setTimeout(func, 2000);
+        willEnterState: function(done){
+          window.setTimeout(done, 2000);
           return true;
         },
         enterState: function(){

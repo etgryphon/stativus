@@ -435,13 +435,19 @@ Stativus.Statechart = {
       }
       this._sendEventLocked = true;
     
-      this._structureCrawl('_cascadeEvents', evt, args);
+      // function that processes the event, diff for testing v. production
+      this._processEvent(evt, args);
+      
     } catch(err) {
       this._restartEvents();
       throw err;
     }
 
     this._restartEvents();
+  },
+  
+  _processEvent: function(evt, args){
+    this._structureCrawl('_cascadeEvents', evt, args);
   },
   
   getData: function(key, stateName, tree){
@@ -740,7 +746,7 @@ Stativus.Statechart = {
   // @private
   // this function unwinds the next item on the enterStateStack...
   _unwindEnterStateStack: function(){
-    var stateToEnter, delayForAsync = false, stateRestart, more;
+    var stateToEnter, delayForAsync = false, stateRestart, more, that = this;
     this._exitStateStack = this._exitStateStack || [];
     stateToEnter = this._enterStateStack.shift();
     if(stateToEnter){
@@ -749,14 +755,9 @@ Stativus.Statechart = {
         // We are going to create a temporary object that gets passed
         // into the willExitState call that will restart the state
         // exit for this path as needed
-        stateRestart = {
-          _statechart: this,
-          _start: stateToEnter,
-          restart: function(){
-            var sc = this._statechart;
-            if (DEBUG_MODE) console.log(['RESTART: after async processing on,', this._start.name, 'is about to fully enter'].join(' '));
-            if (sc) sc._fullEnter(this._start);
-          }
+        stateRestart = function(){
+          if (DEBUG_MODE) console.log(['RESTART: after async processing on,', stateToEnter.name, 'is about to fully enter'].join(' '));
+          if (that) that._fullEnter(stateToEnter);
         };
         delayForAsync = stateToEnter.willEnterState(stateRestart);
         if (DEBUG_MODE) {
