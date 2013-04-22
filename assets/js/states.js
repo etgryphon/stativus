@@ -14,6 +14,7 @@ statechart.addState("#app", {
     '.quick-start-act click': 'viewQuickStartPage',
     '.basic-api-act click': 'viewBasicAPI',
     '.advanced-api-act click': 'viewAdvancedAPI',
+    '.testing-api-act click': 'viewTestingAPI',
     '.all-api-act click': 'viewAPI',
     '.debug-version-act click': 'viewDebugVersion'
   },
@@ -36,6 +37,11 @@ statechart.addState("#app", {
   viewAdvancedAPI: function(id){
     sendGoogleAnalyticEvent('API', 'viewAdvancedAPI', 'viewAdvancedAPI');
     this.goToState('#advanced-api');
+  },
+  
+  viewTestingAPI: function(id){
+    sendGoogleAnalyticEvent('API', 'viewTestingAPI', 'viewTestingAPI');
+    this.goToState('#testing-api');
   },
   
   viewAPI: function(id){
@@ -222,17 +228,31 @@ statechart.addState("#advanced-api", {
   }
 });
 
+statechart.addState("#testing-api", {
+  parentState: '#api',
+  enterState: function(){
+    $('.testing-api-header').show('fast');
+    $('.testing-api').show('fast');
+  },
+  exitState: function(){
+    $('.testing-api-header').hide('fast');
+    $('.testing-api').hide('fast');
+  }
+});
+
 statechart.addState("#all-api", {
   parentState: '#api',
   enterState: function(){
     $('.all-api-header').show('fast');
     $('.basic-api').show('fast');
     $('.advanced-api').show('fast');
+    $('.testing-api').show('fast');
   },
   exitState: function(){
     $('.all-api-header').hide('fast');
     $('.basic-api').hide('fast');
     $('.advanced-api').hide('fast');
+    $('.testing-api').hide('fast');
   }
 });
 
