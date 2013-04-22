@@ -1,12 +1,14 @@
-/*globals $ equal module expect myStatechart Stativus*/
+/*globals $ equal module expect myStatechart Stativus start stop*/
 var SC, stateTransitions, mockObject;
 var runStatechartTestingTests = function(){
     
   module("Module: Test Statechart Testing", {
     setup: function(){
       mockObject = {
+        willEnterCount: 0,
         enterCount: 0,
-        exitCount: 0
+        exitCount: 0,
+        willExitCount: 0
       };
       var sc = Stativus.createStatechart();
       sc.addState("#application", {
@@ -40,6 +42,24 @@ var runStatechartTestingTests = function(){
         parentState: "#application",
         enterState: function(){
           this.goToState('#subapplication1');
+        }
+      });
+      sc.addState("#async", {
+        willEnterState: function(done){
+          var foo = function(){
+            mockObject.willEnterCount = mockObject.willEnterCount+1;
+            done();
+          };
+          window.setTimeout(foo, 2000);
+          return true;
+        },
+        willExitState: function(done){
+          var foo = function(){
+            mockObject.willExitCount = mockObject.willExitCount+1;
+            done();
+          };
+          window.setTimeout(foo, 2000);
+          return true;
         }
       });
       SC = sc;
@@ -81,5 +101,25 @@ var runStatechartTestingTests = function(){
     var state = SC.loadState("#subapplication2");
     state.enterState();
     ok(state.transitionedTo('#subapplication1'), 'switch state had proper transition');
+  });
+  
+  test("Check to see if async enter calls work", function(){
+    var state = SC.loadState("#async");
+    state.willEnterState(function(){
+      start();
+      ok(state.willEnterCompleted(), 'Will enter async call was completed');
+      equal(mockObject.willEnterCount, 1, 'willEnterCount was successfully called');
+    });
+    stop();
+  });
+  
+  test("Check to see if async exit calls work", function(){
+    var state = SC.loadState("#async");
+    state.willExitState(function(){
+      start();
+      ok(state.willExitCompleted(), 'Will exit async call was completed');
+      equal(mockObject.willExitCount, 1, 'willExitCount was successfully called');
+    });
+    stop();
   });
 };

@@ -840,10 +840,29 @@ if (DEBUG_MODE){
       this._statechart.sendEvent('enterState');
     },
     
+    willEnterState: function(done){
+      var that = this, innerDone = function(){
+        that._willEnterStateDone = true;
+        done();
+      };
+      this._statechart.sendEvent('willEnterState', innerDone);
+    },
+    
+    willExitState: function(done){
+      var that = this, innerDone = function(){
+        that._willExitStateDone = true;
+        done();
+      };
+      this._statechart.sendEvent('willExitState', innerDone);
+    },
+    
     exitState: function(){
       this._statechart.sendEvent('exitState');
     },
     
+    // **********************
+    // TESTING API
+    // **********************
     wasEvent: function(name){
       var ret, eventCount = this._eventsCalled[name] || 0,
           evtHandled = this._eventHandled[name] || false,
@@ -865,6 +884,14 @@ if (DEBUG_MODE){
     
     transitionedTo: function(name){
       return name === this._transitionTo;
+    },
+    
+    willEnterCompleted: function(){
+      return !!this._willEnterStateDone;
+    },
+    
+    willExitCompleted: function(){
+      return !!this._willExitStateDone;
     },
     
     reset: function(){
