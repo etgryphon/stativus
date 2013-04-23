@@ -812,6 +812,67 @@ Stativus.Statechart = {
     var ret = this._parentStates(state);
     ret.push('root');
     return ret;
+  },
+
+  _addToTree: function(name, state, modelTree) {
+    function addToModel(parentState, stateName, state, model) {
+
+      if(model[parentState]) {
+        model[parentState][stateName] = createModel(state);
+        return true;
+      }
+
+      for(key in model){
+        if(model.hasOwnProperty(key)) {
+          if(key === 'initialSubstate' || key === 'hasConcurrentSubstates') 
+            continue;
+          if(addToModel(parentState, stateName, state, model[key])) return true;
+        }
+      }
+    }
+
+    function createModel(state) {
+      var model = {};
+      if(state.initialSubstate) model.initialSubstate = state.initialSubstate;
+      if(state.hasConcurrentSubstates) model.hasConcurrentSubstates = state.hasConcurrentSubstates;
+      return model;
+    }
+
+    function addStateToModel(name, state){
+      if(!state.parentState) {
+        modelTree[name] = createModel(state);
+      }
+      else{
+        addToModel(state.parentState, name, state, modelTree);
+      }
+      if(state.states) {
+        state.states.forEach(function(substate) {
+          addToModel(name, substate.name, substate, modelTree);
+        });
+      }
+    }
+
+    addStateToModel(name, state);
+  },
+
+  createScvizModel: function(){
+    var allStatesTree = { hasConcurrentSubstates: true },
+        addedStates;
+
+    for (globalState in this._all_states) {
+      if (!this._all_states.hasOwnProperty(globalState)) continue;
+
+      allStatesTree[globalState] = {};
+      addedStates = [];
+      for (key in this._all_states[globalState]) {
+        if (!this._all_states[globalState].hasOwnProperty(key)) 
+          continue;
+        this._addToTree(key, 
+                   this._all_states[globalState][key], 
+                   allStatesTree[globalState])
+      }
+    }
+    return { application: allStatesTree };
   }
 	
 };
