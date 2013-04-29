@@ -29,6 +29,7 @@ var creator = function(){
 };
 
 // helper function for merging in properties
+// from multiple sources
 var merge = function(obj, configs){
   var config, i, len, k;
   obj = obj || {};
