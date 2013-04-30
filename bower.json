@@ -1,0 +1,8 @@
+{
+  "name": "stativus",
+  "version": "0.7.0",
+  "main": "libs/stativus-min.js",
+  "ignore": [
+    "**/.*"
+  ]
+}
