@@ -4,7 +4,7 @@
   "main": "./libs/stativus-min.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:etgryphon/stativus.git"
+    "url": "git://github.com/etgryphon/stativus.git"
   },
   "ignore": [
     "**/.*",
