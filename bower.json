@@ -1,8 +1,14 @@
 {
   "name": "stativus",
   "version": "0.7.0",
-  "main": "libs/stativus-min.js",
+  "main": "./libs/stativus-min.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:etgryphon/stativus.git"
+  },
   "ignore": [
-    "**/.*"
+    "**/.*",
+    "node_modules",
+    "components"
   ]
 }
