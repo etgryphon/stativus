@@ -4,7 +4,7 @@
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.7.0
+  @version: 0.7.1
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -45,7 +45,7 @@ var merge = function(obj, configs){
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.7.0' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.7.1' };
 Stativus.State = {
   
   // walk like a duck
@@ -818,6 +818,102 @@ Stativus.Statechart = {
 };
 
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
+
+if (DEBUG_MODE){
+  Stativus.Statechart.createStateTree = function() {
+
+    var unprocessedStates = [];
+
+    var addToTree = function(name, state, rootTree) {
+
+      function addSubstateToTree(parentState, stateName, state, tree) {
+        if(tree.name == parentState) {
+          tree.substates.push(createNode(state, stateName, tree));
+          return true;
+        }
+        return tree.substates.some(function(subtree) {
+          return addSubstateToTree(parentState, stateName, state, subtree);
+        });
+      }
+
+      function addStateToTree(name, state){
+        if(!state.parentState) {
+          rootTree.substates.push(createNode(state, name, rootTree));
+          return true;
+        }
+        return addSubstateToTree(state.parentState, name, state, rootTree);
+      }
+
+      return addStateToTree(name, state);
+
+    };
+
+    function createNode(state, name, parentTree) {
+      var events =  Object.keys(state).filter(function(key) {
+        return key.slice(0,1) !== '_' && 
+          state[key] && 
+          ['name', 'gotoState', 'sendAction', 'parentState', 
+          'states', 'globalConcurrentState', 'history', 'statechart', 
+          'initialSubstate', 'actions', 'hasConcurrentSubstates']
+          .every(function(excludedKey) { return key !== excludedKey;});
+      }).map(function(key) {
+        return {name: key, content: state[key].toString()};
+      });
+
+      return { 
+        substates: [],
+        name: name,
+        initialSubstate: state.initialSubstate,
+        hasConcurrentSubstates: state.hasConcurrentSubstates ||
+          !!state.substatesAreConcurrent,
+        isConcurrentSubstate:
+          parentTree && parentTree.hasConcurrentSubstates,
+        isInitialSubstate: parentTree && parentTree.initialSubstate === name,
+        events: events
+      };
+    }
+
+    var allStatesTree = createNode({hasConcurrentSubstates: true }, "global");
+
+    function processState(stateHash, stateTree) {
+      return function(state) {
+        return !addToTree(state, stateHash[state], stateTree);
+      };
+    }
+
+    function processFailedState(stateHash, stateTree) {
+      return function(invalidStateName) {
+        invalidState = createNode(stateHash[invalidStateName],
+                                   invalidStateName);
+        invalidState.isInvalidState = true;
+        stateTree.substates.push(invalidState);
+      };
+    }
+
+    for (var globalStateName in this._all_states) {
+      if (this._all_states.hasOwnProperty(globalStateName)) {
+        var globalStateTree = createNode({}, globalStateName),
+            globalState = this._all_states[globalStateName];
+
+        allStatesTree.substates.push(globalStateTree);
+
+        unprocessedStates = Object.keys(globalState);
+        do {
+          var statesToProcess = unprocessedStates.length;
+          unprocessedStates = unprocessedStates.filter(
+            processState(globalState, globalStateTree));
+
+          if (statesToProcess === unprocessedStates.length) {
+            unprocessedStates.forEach(
+              processFailedState(globalState, globalStateTree));
+            break;
+          }
+        } while(unprocessedStates.length > 0);
+      }
+    }
+    return allStatesTree;
+  };
+}
 
 if (DEBUG_MODE){
   Stativus.TestStateObject = {
