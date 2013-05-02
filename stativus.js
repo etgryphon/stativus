@@ -1,10 +1,39 @@
 /*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ */
+/*
+==========================================================================
+Statechart -- A Micro Library
+Copyright: ©2011-2013 Evin Grano All rights reserved.
+          Portions ©2011-2013 Evin Grano
+
+Permission is hereby granted, free of charge, to any person obtaining a 
+copy of this software and associated documentation files (the "Software"), 
+to deal in the Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+and/or sell copies of the Software, and to permit persons to whom the 
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in 
+all copies or substantial portions of the Software and the Software is used 
+for Good, and not Evil.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.
+
+For more information about Statechart, visit http://www.itsgotwhatplanscrave.com
+
+==========================================================================
+*/
 
 /**
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.7.0
+  @version: 0.8.0
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -29,7 +58,6 @@ var creator = function(){
 };
 
 // helper function for merging in properties
-// from multiple sources
 var merge = function(obj, configs){
   var config, i, len, k;
   obj = obj || {};
@@ -45,7 +73,54 @@ var merge = function(obj, configs){
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.7.0' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.8.0' };
+
+// This creates the Debug object that is used to output statements
+if(DEBUG_MODE){
+  Stativus.DebugMessagingObject = {
+    
+    level: 0,
+    
+    _buildOutput: function(type, state, details, tree){
+      tree = tree || Stativus.DEFAULT_TREE;
+      var msg = "Global::["+tree+"] ";
+      msg = msg + "=> State::["+state+"]: ";
+      msg = msg + '{'+type+'} > '+details;
+      return msg;
+    },
+    
+    sendLog: function(type, state, details, tree){
+      if (this.level > 0) return;
+      var msg = this._buildOutput(type, state, details, tree);
+      console.log(msg);
+      return msg;
+    },
+    
+    sendInfo: function(type, state, details, tree){
+      if (this.level > 1) return;
+      var msg = this._buildOutput(type, state, details, tree);
+      console.info(msg);
+      return msg;
+    },
+    
+    sendWarn: function(type, state, details, tree){
+      if (this.level > 2) return;
+      var msg = this._buildOutput(type, state, details, tree);
+      console.error(msg);
+      return msg;
+    },
+    
+    sendError: function(type, state, details, tree){
+      if (this.level > 3) return;
+      var msg = this._buildOutput(type, state, details, tree);
+      console.error(msg);
+      return msg;
+    }
+  };
+}
+// ******************
+// State Object
+// ******************
 Stativus.State = {
   
   // walk like a duck
@@ -108,11 +183,15 @@ Stativus.State = {
     this.history = this.history || {};
     if (this.substatesAreConcurrent){
       this.history[this.localConcurrentState] = state.name;
-      if (DEBUG_MODE) console.log(['HISTORY STATE: For',this.name,':: substree =', this.localConcurrentState,'=> history state set to:', state.name].join(' '));
+      if (DEBUG_MODE) {
+        Stativus.DebugMessagingObject.sendLog('HISTORY STATE SET', this.name, ' substree = '+this.localConcurrentState+' => history state set to: '+state.name, this.globalConcurrentState);
+      }
     }
     else {
       this.history = state.name;
-      if (DEBUG_MODE) console.log(['HISTORY STATE: For',this.name,'=> history state set to:', state.name].join(' '));
+      if (DEBUG_MODE) {
+        Stativus.DebugMessagingObject.sendLog('HISTORY STATE SET', this.name, ' history state set to: '+state.name, this.globalConcurrentState);
+      }
     }
   }
 };
@@ -511,7 +590,9 @@ Stativus.Statechart = {
         }
       }
       if (DEBUG_MODE){
-        if(!found) console.log(['ACTION/EVENT:{'+evt+'} with', args.length || 0, 'argument(s)','found NO state to handle this'].join(' '));
+        if(!found) {
+          Stativus.DebugMessagingObject.sendLog('EVENT', this.name, 'Fired {'+evt+'} with '+(args.length || 0)+' argument(s) found NO state to handle this', this.globalConcurrentState);
+        }
       }
     }
   },
@@ -533,8 +614,7 @@ Stativus.Statechart = {
     while(!handled && responder){
       if (responder[evt]){
         if (DEBUG_MODE) {
-        	var msg = ['EVENT:',responder.name,'fires','['+evt+']', 'with', args.length || 0, 'argument(s)'].join(' ');
-          // (COLOR_MODE) ? console.log('%c' + msg, "color:" + EVENT_COLOR) : console.log(msg);
+          var msg = Stativus.DebugMessagingObject.sendInfo('EVENT', responder.name, 'Fired \''+evt+'\' with '+(args.length || 0)+' argument(s)', responder.globalConcurrentState);
         }
         handled = responder[evt].apply(responder, args);
         found = true;
@@ -579,7 +659,9 @@ Stativus.Statechart = {
   _fullEnter: function(state){
     var pState, enterStateHandled = false;
     if (!state) return;
-    if (DEBUG_MODE) (COLOR_MODE) ? console.log('%cENTER: '+state.name, "color:" + ENTER_COLOR + ";font-weight:bold;") : console.log('ENTER: '+state.name);
+    if (DEBUG_MODE) {
+      Stativus.DebugMessagingObject.sendInfo('ENTER STATE', state.name, 'Completed', state.globalConcurrentState);
+    }
     if (state.enterState) state.enterState();
     if (state.didEnterState) state.didEnterState();
     if (state.parentState) {
@@ -595,7 +677,9 @@ Stativus.Statechart = {
     var exitStateHandled = false;
     if (state.exitState) state.exitState();
     if (state.didExitState) state.didExitState();
-    if (DEBUG_MODE) (COLOR_MODE) ? console.log('%cEXIT: '+state.name, "color:" + EXIT_COLOR) : console.log('EXIT: '+state.name);
+    if (DEBUG_MODE) {
+      Stativus.DebugMessagingObject.sendInfo('EXIT STATE', state.name, 'Completed', state.globalConcurrentState);
+    }
     this._unwindExitStateStack();
   },
   
@@ -727,14 +811,16 @@ Stativus.Statechart = {
           _start: stateToExit,
           restart: function(){
             var sc = this._statechart;
-            if (DEBUG_MODE) console.log(['RESTART: after async processing on,', this._start.name, 'is about to fully exit'].join(' '));
+            if (DEBUG_MODE) {
+              Stativus.DebugMessagingObject.sendLog('ASYNC', this._start.name, 'willExitState() completed!', this._start.globalConcurrentState);
+            }
             if (sc) sc._fullExit(this._start);
           }
         };
         delayForAsync = stateToExit.willExitState(stateRestart);
         if (DEBUG_MODE) {
-          if (delayForAsync) { console.log('ASYNC: Delayed exit '+stateToExit.name); }
-          else { console.warn('ASYNC: Didn\'t return \'true\' willExitState on '+stateToExit.name+' which is needed if you want async'); }
+          if (delayForAsync) { Stativus.DebugMessagingObject.sendLog('ASYNC', stateToExit.name, 'exitState() delayed', stateToExit.globalConcurrentState); }
+          else { Stativus.DebugMessagingObject.sendWarn('ASYNC', stateToExit.name, 'Didn\'t return \'true\' willExitState() which is needed if you want async', stateToExit.globalConcurrentState); }
         }
       }
       if (!delayForAsync) this._fullExit(stateToExit);
@@ -758,13 +844,15 @@ Stativus.Statechart = {
         // into the willExitState call that will restart the state
         // exit for this path as needed
         stateRestart = function(){
-          if (DEBUG_MODE) console.log(['RESTART: after async processing on,', stateToEnter.name, 'is about to fully enter'].join(' '));
+          if (DEBUG_MODE) {
+            Stativus.DebugMessagingObject.sendLog('ASYNC', this._start.name, 'willEnterState() completed!', this._start.globalConcurrentState);
+          }
           if (that) that._fullEnter(stateToEnter);
         };
         delayForAsync = stateToEnter.willEnterState(stateRestart);
         if (DEBUG_MODE) {
-          if (delayForAsync) { console.log('ASYNC: Delayed enter '+stateToEnter.name); }
-          else { console.warn('ASYNC: Didn\'t return \'true\' willExitState on '+stateToEnter.name+' which is needed if you want async'); }
+          if (delayForAsync) { Stativus.DebugMessagingObject.sendLog('ASYNC', stateToEnter.name, 'enterState() delayed', stateToEnter.globalConcurrentState); }
+          else { Stativus.DebugMessagingObject.sendWarn('ASYNC', stateToEnter.name, 'Didn\'t return \'true\' willEnterState() which is needed if you want async', stateToEnter.globalConcurrentState); }
         }
       }
       if (!delayForAsync) this._fullEnter(stateToEnter);
@@ -992,7 +1080,9 @@ if (EVENTABLE){
     while(!handled && responder){
       evt = responder.actions ? responder.actions[lookup] : null;
       if (evt){
-        if (DEBUG_MODE) console.log(['ACTION LOOKUP:',responder.name,'will fire [',evt,'] for','['+lookup+']', 'with', args.length || 0, 'argument(s)'].join(' '));
+        if (DEBUG_MODE) {
+          Stativus.DebugMessagingObject.sendLog('EVENT LOOKUP', responder.name, ['Will fire [',evt,'] for','['+lookup+']', 'with', args.length || 0, 'argument(s)'].join(' '), responder.globalConcurrentState);
+        }
         args.unshift(evt);
         this.sendEvent.apply(this, args);
         return [true, true];
