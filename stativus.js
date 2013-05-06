@@ -892,7 +892,7 @@ if (DEBUG_MODE){
 
     for (var globalStateName in this._all_states) {
       if (this._all_states.hasOwnProperty(globalStateName)) {
-        var globalStateTree = createNode({}, globalStateName),
+        var globalStateTree = createNode({}, globalStateName, allStatesTree),
             globalState = this._all_states[globalStateName];
 
         allStatesTree.substates.push(globalStateTree);
