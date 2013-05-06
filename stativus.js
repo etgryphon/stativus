@@ -854,7 +854,8 @@ if (DEBUG_MODE){
           state[key] && 
           ['name', 'gotoState', 'sendAction', 'parentState', 
           'states', 'globalConcurrentState', 'history', 'statechart', 
-          'initialSubstate', 'actions', 'hasConcurrentSubstates']
+          'localConcurrentState', 'initialSubstate', 'actions',
+          'hasConcurrentSubstates']
           .every(function(excludedKey) { return key !== excludedKey;});
       }).map(function(key) {
         return {name: key, content: state[key].toString()};
