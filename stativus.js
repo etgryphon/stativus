@@ -132,9 +132,9 @@ Stativus.State = {
     return (value === undefined || value === null);
   },
   
-  goToState: function(name){
+  goToState: function(name, data){
     var sc = this.statechart;
-    if (sc){ sc.goToState(name, this.globalConcurrentState, this.localConcurrentState); }
+    if (sc){ sc.goToState(name, this.globalConcurrentState, this.localConcurrentState, data); }
     else { // weird format for UglifyJS preprocessing
       if (DEBUG_MODE){ throw 'Cannot goToState cause state doesnt have a statechart'; }
     }
@@ -365,7 +365,7 @@ Stativus.Statechart = {
     return this;
   },
   
-  goToState: function(requestedStateName, tree, concurrentTree){
+  goToState: function(requestedStateName, tree, concurrentTree, data){
     var cState, allStates = this._all_states[tree], idx, len,
         enterStates = [], exitStates = [], haveExited,
         enterMatchIndex, exitMatchIndex, that,
@@ -375,18 +375,28 @@ Stativus.Statechart = {
     if (DEBUG_MODE){
       if (!tree) throw '#goToState: invalid global parallel state';
     }
-  
+
     // First, find the current tree off of the concurrentTree, then the main tree
     cState = concurrentTree ? this._current_state[concurrentTree] : this._current_state[tree];
     
     reqState = allStates[requestedStateName];
     
-    // if the current state is the same as the requested state do nothing
-    if (this._checkAllCurrentStates(reqState, concurrentTree || tree)) return;
-    
     if (DEBUG_MODE) {
       if (!reqState) throw '#goToState: Could not find requested state: '+requestedStateName;
     } 
+
+    // if the current state is the same as the requested state do nothing
+    if (this._checkAllCurrentStates(reqState, concurrentTree || tree)) return;
+
+    if (typeof data !== 'undefined' && data !== null) {
+      Stativus.DebugMessagingObject.sendLog('SETTING DATA FOR TRANSITION FOR => '+requestedStateName);
+      if (typeof data === 'string') reqState.setData(data, data);
+      if (typeof data === 'object') {
+        for (var key in data) {
+          if(data.hasOwnProperty(key)) reqState.setData(key, data[key]);
+        }
+      }
+    }
     
     if (this._goToStateLocked){
       // There is a state transition currently happening. Add this requested
