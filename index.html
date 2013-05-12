@@ -466,6 +466,30 @@ var state = sc.loadState("#testingState2", "error");</pre>
             <ul>
               <li> <strong>Type :: </strong><em>Stativus.TestStateObject</em></li>
             </ul>
+            <h4>Function</h4>
+            <h3><code>createStateTree: function()</code></h3>
+            <h4>Parameters</h4>
+            <ul>
+            </ul>
+            <h4>Description</h4>
+            <p>This creates a tree representation of the statechart. Where each state
+              <is>represented similarly to the following example. Additionally, global</is>
+              <concurrent>states are represented as concurrent states underneath a</concurrent>
+              <state>named global.</state>
+            </p>
+            <pre>{
+  events: Array[0]
+  hasConcurrentSubstates: true
+  initialSubstate: undefined
+  isConcurrentSubstate: undefined
+  isInitialSubstate: undefined
+  name: "global"
+  substates: Array[3]
+}</pre>
+            <h4>Returns</h4>
+            <ul>
+              <li> <strong>Type :: </strong><em>Hash</em></li>
+            </ul>
           </div>
           <div style="display: none;" class="basic-api">
             <h2>Stativus.State</h2>
