@@ -33,7 +33,7 @@ For more information about Statechart, visit http://www.itsgotwhatplanscrave.com
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.8.0
+  @version: 0.9.0
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -73,7 +73,7 @@ var merge = function(obj, configs){
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.8.0' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.0' };
 
 // This creates the Debug object that is used to output statements
 if(DEBUG_MODE){
