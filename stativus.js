@@ -142,7 +142,7 @@ Stativus.State = {
   
   goToHistoryState: function(name, isRecursive){
     var sc = this.statechart;
-    if (sc){ sc.goToHistoryState(name, this.globalConcurrentState, this.localConcurrentState, isRecursive); }
+    if (sc){ sc.goToHistoryState(name, this.globalConcurrentState, isRecursive); }
     else { // weird format for UglifyJS preprocessing
       if (DEBUG_MODE){ throw 'Cannot goToState cause state doesnt have a statechart'; }
     }
@@ -180,18 +180,9 @@ Stativus.State = {
   },
   
   setHistoryState: function(state){
-    this.history = this.history || {};
-    if (this.substatesAreConcurrent){
-      this.history[this.localConcurrentState] = state.name;
-      if (DEBUG_MODE) {
-        Stativus.DebugMessagingObject.sendLog('HISTORY STATE SET', this.name, ' substree = '+this.localConcurrentState+' => history state set to: '+state.name, this.globalConcurrentState);
-      }
-    }
-    else {
-      this.history = state.name;
-      if (DEBUG_MODE) {
-        Stativus.DebugMessagingObject.sendLog('HISTORY STATE SET', this.name, ' history state set to: '+state.name, this.globalConcurrentState);
-      }
+    this.history = state.name;
+    if (DEBUG_MODE) {
+      Stativus.DebugMessagingObject.sendLog('HISTORY STATE SET', this.name, ' history state set to: '+state.name, this.globalConcurrentState);
     }
   }
 };
@@ -458,25 +449,35 @@ Stativus.Statechart = {
     this._unwindExitStateStack();
   },
     
-  goToHistoryState: function(requestedState, tree, concurrentTree, isRecursive){
+  goToHistoryState: function(requestedState, tree, isRecursive){
     var allStateForTree = this._all_states[tree],
-        pState, realHistoryState;
+        pState, substateName, substate, subsubstate;
     
     if (DEBUG_MODE){
       if (!tree || !allStateForTree) throw '#goToHistoryState: State requesting does not have a valid global parallel tree';
     }
-  
+
     pState = allStateForTree[requestedState];
-    if (pState) realHistoryState = pState.history || pState.initialSubstate;
-    
-    if(!realHistoryState){
-      realHistoryState = requestedState;
+    substateName = pState.history || pState.initialSubstate;
+    substate = allStateForTree[substateName];
+
+    if(substate.substatesAreConcurrent && isRecursive) {
+      //goto all concurrentsubstates
+      Object.keys(allStateForTree).map(function(key) {
+        return allStateForTree[key];
+      }).filter(function(value) {
+        return value.parentState === substateName;
+      }).forEach(function(state) {
+        substate.goToHistoryState(state.name, isRecursive);
+      });
     }
-    else if (isRecursive){
-      this.goToHistoryState(realHistoryState, tree, isRecursive);
-      return;
+    else if(isRecursive && substate && 
+            (subsubstate = (substate.history || substate.initialSubstate))){
+      substate.goToHistoryState(subsubstate, isRecursive);
     }
-    this.goToState(realHistoryState, tree);
+    else {
+      this.goToState(substateName || requestedState, tree);
+    }
   },
   
 	currentState: function(tree){
@@ -741,7 +742,6 @@ Stativus.Statechart = {
     if (start.substatesAreConcurrent){
       tree = start.globalConcurrentState || Stativus.DEFAULT_TREE;
       nTreeBase = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
-      start.history = start.history || {};
       subStates = start.substates || [];
       subStates.forEach( function(x){
         nTree = nTreeBase+'=>'+x;
