@@ -947,6 +947,18 @@ if (DEBUG_MODE){
 
     };
 
+    function getTransitions(func) {
+      var pattern = 
+        "goToState\\s*\\(\\s*['\"]([a-zA-Z\ \\-_0-9]+)['\"]\\s*\\)";
+      var globalRegEx = new RegExp(pattern, 'g');
+      var regExp = new RegExp(pattern);
+      var matches = func.toString().match(globalRegEx);
+      if(matches) return matches.map(function(m){
+        return m.match(regExp)[1];
+      });
+      else return [];
+    }
+
     function createNode(state, name, parentTree) {
       var events =  Object.keys(state).filter(function(key) {
         return key.slice(0,1) !== '_' && 
@@ -957,7 +969,11 @@ if (DEBUG_MODE){
             'substatesAreConcurrent', 'hasConcurrentSubstates']
           .every(function(excludedKey) { return key !== excludedKey;});
       }).map(function(key) {
-        return {name: key, content: state[key].toString()};
+        return {
+          name: key, 
+          content: state[key].toString(),
+          transitions: getTransitions(state[key])
+        };
       });
 
       return { 
