@@ -478,13 +478,21 @@ var state = sc.loadState("#testingState2", "error");</pre>
               <state>named global.</state>
             </p>
             <pre>{
-  events: Array[0]
-  hasConcurrentSubstates: true
-  initialSubstate: undefined
-  isConcurrentSubstate: undefined
-  isInitialSubstate: undefined
-  name: "global"
-  substates: Array[3]
+  events: [
+    {
+      name: 'eventName',
+      content: 'function(){goToState("aState");}',
+      transitions: [ 'aState' ]
+    }
+  ],
+  hasConcurrentSubstates: true,
+  initialSubstate: undefined,
+  isConcurrentSubstate: undefined,
+  isInitialSubstate: undefined,
+  name: "global",
+  substates: [
+  ...
+  ]
 }</pre>
             <h4>Returns</h4>
             <ul>
