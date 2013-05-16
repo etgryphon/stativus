@@ -56,7 +56,13 @@ Please read the complete API documentation at [Stativ.us](http://stativ.us)
 
 + Architect: Evin Grano
   + twitter: @etgryphon
-  + contact: etgryphon@sproutcore.com
+  + contact: etgryphon@icloud.com
++ Contributors
+  + Seth Carney
+    + twitter: @SethCarney
+    + github: @scarney80
+  + Mike Atkins
+    + github: @apechimp
 + Beta Tester: Johnny Luu
 
 ## License
