@@ -57,7 +57,7 @@ Please read the complete API documentation at [Stativ.us](http://stativ.us)
 + Architect: Evin Grano
   + twitter: @etgryphon
   + contact: etgryphon@icloud.com
-+ Contributors
++ Contributors:
   + Seth Carney
     + twitter: @SethCarney
     + github: @scarney80
