@@ -1,4 +1,4 @@
-/*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ */
+/*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ createNode*/
 /*
 ==========================================================================
 Statechart -- A Micro Library
@@ -33,7 +33,7 @@ For more information about Statechart, visit http://www.itsgotwhatplanscrave.com
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.9.0
+  @version: 0.9.1
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -73,7 +73,7 @@ var merge = function(obj, configs){
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.0' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.1' };
 
 // This creates the Debug object that is used to output statements
 if(DEBUG_MODE){
@@ -855,7 +855,7 @@ Stativus.Statechart = {
         // exit for this path as needed
         stateRestart = function(){
           if (DEBUG_MODE) {
-            Stativus.DebugMessagingObject.sendLog('ASYNC', this._start.name, 'willEnterState() completed!', this._start.globalConcurrentState);
+            Stativus.DebugMessagingObject.sendLog('ASYNC', stateToEnter.name, 'willEnterState() completed!', stateToEnter.globalConcurrentState);
           }
           if (that) that._fullEnter(stateToEnter);
         };
@@ -926,7 +926,7 @@ if (DEBUG_MODE){
     var addToTree = function(name, state, rootTree) {
 
       function addSubstateToTree(parentState, stateName, state, tree) {
-        if(tree.name == parentState) {
+        if(tree.name === parentState) {
           tree.substates.push(createNode(state, stateName, tree));
           return true;
         }
@@ -983,7 +983,7 @@ if (DEBUG_MODE){
 
     function processFailedState(stateHash, stateTree) {
       return function(invalidStateName) {
-        invalidState = createNode(stateHash[invalidStateName],
+        var invalidState = createNode(stateHash[invalidStateName],
                                    invalidStateName);
         invalidState.isInvalidState = true;
         stateTree.substates.push(invalidState);
