@@ -33,7 +33,6 @@ For more information about Statechart, visit http://www.itsgotwhatplanscrave.com
   This is the code for creating statecharts in your javascript files
   
   @author: Evin Grano
-  @version: 0.9.1
 */
 if (typeof DEBUG_MODE === "undefined"){
   DEBUG_MODE = true;
@@ -73,7 +72,7 @@ var merge = function(obj, configs){
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.1' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.2' };
 
 // This creates the Debug object that is used to output statements
 if(DEBUG_MODE){
@@ -807,7 +806,8 @@ Stativus.Statechart = {
   // @private
   // this function unwinds the next item on the exitStateStack...
   _unwindExitStateStack: function(){
-    var stateToExit, delayForAsync = false, stateRestart;
+    var stateToExit, delayForAsync = false, stateRestart,
+        sc = this;
     this._exitStateStack = this._exitStateStack || [];
     stateToExit = this._exitStateStack.shift();
     if(stateToExit){
@@ -816,16 +816,12 @@ Stativus.Statechart = {
         // We are going to create a temporary object that gets passed
         // into the willExitState call that will restart the state
         // exit for this path as needed
-        stateRestart = {
-          _statechart: this,
-          _start: stateToExit,
-          restart: function(){
-            var sc = this._statechart;
-            if (DEBUG_MODE) {
-              Stativus.DebugMessagingObject.sendLog('ASYNC', this._start.name, 'willExitState() completed!', this._start.globalConcurrentState);
-            }
-            if (sc) sc._fullExit(this._start);
+        stateRestart = function(){
+          var sc = this._statechart;
+          if (DEBUG_MODE) {
+            Stativus.DebugMessagingObject.sendLog('ASYNC', stateToExit.name, 'willExitState() completed!', stateToExit.globalConcurrentState);
           }
+          if (sc) sc._fullExit(stateToExit);
         };
         delayForAsync = stateToExit.willExitState(stateRestart);
         if (DEBUG_MODE) {
