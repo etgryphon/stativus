@@ -248,13 +248,17 @@ mixin api
       br
     .basic-api(style='display: none;')
       //- Section
-      mixin api_header('goToState( name )', [{name: 'name', type: 'String'}])
+      mixin api_header('goToState( name, data )', [{name: 'name', type: 'String'},{name: 'data', type: 'Object || String', isOpt: true}])
       p This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
         | This is 
         strong: em ONLY 
         | to be called inside an event and as the last line after you 
         em do 
         | what you need to do.
+      p When you use the optional 
+        strong data 
+        | paramter, the data that is included will be passed along and attached to the destination state. The data 
+        | paramter can be either a String or an Object.
       h4 Example
       pre
         | statechart.addState('loading', {
@@ -262,10 +266,26 @@ mixin api
         |   Stativus.State.DefinedEvents...
         |   completeLoad: function(data){ // <= Event Definition
         |     // do stuff with the 'data'
-        |     this.goToState('ready');
+        |     if (true) this.goToState('ready', 'data');
+        |     else this.goToState('notReady', { err: 'data' });
         |   },
         |   // other events
         | });
+        | &nbsp;
+        | statechart.addState('ready', {
+        |   enterState: function() {
+        |     var data = this.getData('data'); // will yield 'data'
+        |   }
+        |   // other events
+        | });
+        | &nbsp;
+        | statechart.addState('notReady', {
+        |   enterState: function() {
+        |     var data = this.getData('err'); // will yield 'data'
+        |   }
+        |   // other events
+        | });
+        
       hr
     .basic-api(style='display: none;')
       //- Section

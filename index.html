@@ -496,10 +496,12 @@ var state = sc.loadState(&quot;#testingState2&quot;, &quot;error&quot;);</pre>
           </div>
           <div style="display: none;" class="basic-api">
             <h4>Function</h4>
-            <h3><code>goToState( name )</code></h3>
+            <h3><code>goToState( name, data )</code></h3>
             <h4>Parameters</h4>
             <ul>
               <li> <strong>'name' :: </strong><em>String - <strong>REQUIRED</strong></em>
+              </li>
+              <li> <strong>'data' :: </strong><em>Object || String - <strong>OPTIONAL</strong></em>
               </li>
             </ul>
             <h4>Description</h4>
@@ -507,14 +509,32 @@ var state = sc.loadState(&quot;#testingState2&quot;, &quot;error&quot;);</pre>
               This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
               This is <strong><em>ONLY </em></strong>to be called inside an event and as the last line after you <em>do </em>what you need to do.
             </p>
+            <p>When you use the optional <strong>data </strong>paramter, the data that is included will be passed along and attached to the destination state. The data 
+              paramter can be either a String or an Object.
+            </p>
             <h4>Example</h4>
             <pre>statechart.addState('loading', {
   // Stativus.State.DefinitionParameters...
   Stativus.State.DefinedEvents...
   completeLoad: function(data){ // &lt;= Event Definition
     // do stuff with the 'data'
-    this.goToState('ready');
+    if (true) this.goToState('ready', 'data');
+    else this.goToState('notReady', { err: 'data' });
   },
+  // other events
+});
+&nbsp;
+statechart.addState('ready', {
+  enterState: function() {
+    var data = this.getData('data'); // will yield 'data'
+  }
+  // other events
+});
+&nbsp;
+statechart.addState('notReady', {
+  enterState: function() {
+    var data = this.getData('err'); // will yield 'data'
+  }
   // other events
 });</pre>
             <hr/>
