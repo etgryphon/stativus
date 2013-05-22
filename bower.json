@@ -1,6 +1,6 @@
 {
   "name": "stativus",
-  "version": "0.7.0",
+  "version": "0.9.2",
   "main": "./libs/stativus-min.js",
   "repository": {
     "type": "git",
