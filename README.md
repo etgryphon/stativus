@@ -49,8 +49,9 @@ Please read the complete API documentation at [Stativ.us](http://stativ.us)
 ## Development
 
 1. Make sure that you have [UglifyJS](https://github.com/mishoo/UglifyJS) installed
-2. Clone the repository: git clone git://github.com/etgryphon/stativus.git
-3. make
+2. Make sure that you have [PreprocessorJS](https://npmjs.org/package/preprocessor) installed
+3. Clone the repository: git clone git://github.com/etgryphon/stativus.git
+4. make
     
 ## Contributors
 
