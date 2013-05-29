@@ -498,7 +498,10 @@ Stativus.Statechart = {
     
     while(!handled && responder){
       if (responder[evt]){
-        handled = responder[evt].apply(responder, args);
+        try {
+          handled = responder[evt].apply(responder, args);
+        } catch(e){
+        }
         found = true;
       }
       // check to see if we have reached the end of this tree
@@ -541,8 +544,12 @@ Stativus.Statechart = {
   _fullEnter: function(state){
     var pState, enterStateHandled = false;
     if (!state) return;
-    if (state.enterState) state.enterState();
-    if (state.didEnterState) state.didEnterState();
+    
+    try {
+      if (state.enterState) state.enterState();
+      if (state.didEnterState) state.didEnterState();
+    } catch(e){
+    }
     if (state.parentState) {
       pState = state.statechart.getState(state.parentState, state.globalConcurrentState);
       pState.setHistoryState(state);
@@ -550,12 +557,16 @@ Stativus.Statechart = {
     this._unwindEnterStateStack();
   },
   
+  
   _fullExit: function(state){
     var pState;
     if (!state) return;
     var exitStateHandled = false;
-    if (state.exitState) state.exitState();
-    if (state.didExitState) state.didExitState();
+    try {
+      if (state.exitState) state.exitState();
+      if (state.didExitState) state.didExitState();
+    } catch (e){
+    }
     this._unwindExitStateStack();
   },
   

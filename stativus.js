@@ -662,10 +662,18 @@ Stativus.Statechart = {
       if (responder[evt]){
         // #ifdef DEBUG_MODE
         if (DEBUG_MODE) {
-          var msg = Stativus.DebugMessagingObject.sendInfo('EVENT', responder.name, 'Fired \''+evt+'\' with '+(args.length || 0)+' argument(s)', responder.globalConcurrentState);
+          Stativus.DebugMessagingObject.sendInfo('EVENT', responder.name, 'Fired \''+evt+'\' with '+(args.length || 0)+' argument(s)', responder.globalConcurrentState);
         }
         // #endif
-        handled = responder[evt].apply(responder, args);
+        try {
+          handled = responder[evt].apply(responder, args);
+        } catch(e){
+          // #ifdef DEBUG_MODE
+          if (DEBUG_MODE) {
+            Stativus.DebugMessagingObject.sendError('EVENT', responder.name, 'Fired \''+evt+'\': Exception: '+e, responder.globalConcurrentState);
+          }
+          // #endif
+        }
         found = true;
       }
       // check to see if we have reached the end of this tree
@@ -708,13 +716,22 @@ Stativus.Statechart = {
   _fullEnter: function(state){
     var pState, enterStateHandled = false;
     if (!state) return;
+    
+    try {
+      if (state.enterState) state.enterState();
+      if (state.didEnterState) state.didEnterState();
+    } catch(e){
+      // #ifdef DEBUG_MODE
+      if (DEBUG_MODE) {
+        Stativus.DebugMessagingObject.sendError('ENTER STATE', state.name, 'EXECEPTION ['+e+']', state.globalConcurrentState);
+      }
+      // #endif
+    }
     // #ifdef DEBUG_MODE
     if (DEBUG_MODE) {
       Stativus.DebugMessagingObject.sendInfo('ENTER STATE', state.name, 'Completed', state.globalConcurrentState);
     }
     // #endif
-    if (state.enterState) state.enterState();
-    if (state.didEnterState) state.didEnterState();
     if (state.parentState) {
       pState = state.statechart.getState(state.parentState, state.globalConcurrentState);
       pState.setHistoryState(state);
@@ -722,12 +739,21 @@ Stativus.Statechart = {
     this._unwindEnterStateStack();
   },
   
+  
   _fullExit: function(state){
     var pState;
     if (!state) return;
     var exitStateHandled = false;
-    if (state.exitState) state.exitState();
-    if (state.didExitState) state.didExitState();
+    try {
+      if (state.exitState) state.exitState();
+      if (state.didExitState) state.didExitState();
+    } catch (e){
+      // #ifdef DEBUG_MODE
+      if (DEBUG_MODE) {
+        Stativus.DebugMessagingObject.sendError('EXIT STATE', state.name, 'EXECEPTION ['+e+']', state.globalConcurrentState);
+      }
+      // #endif
+    }
     // #ifdef DEBUG_MODE
     if (DEBUG_MODE) {
       Stativus.DebugMessagingObject.sendInfo('EXIT STATE', state.name, 'Completed', state.globalConcurrentState);
