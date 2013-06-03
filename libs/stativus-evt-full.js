@@ -47,21 +47,21 @@ var creator = function(){
 
 // helper function for merging in properties
 var merge = function(obj, configs){
-  var config, i, len, k;
+  var k;
   obj = obj || {};
-  for (i = 1, len = configs.length || 0; i < len; i++){
-    config = configs[i];
-    if (typeof config === 'object'){
-      for (k in config){ 
-        if(config.hasOwnProperty(k)) obj[k] = config[k]; 
+  configs = configs || [];
+  configs.forEach( function(x){
+    if (typeof x === 'object'){
+      for (k in x){ 
+        if(x.hasOwnProperty(k)) obj[k] = x[k];         
       }
     }
-  }
+  });
   
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.2' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.3' };
 
 // This creates the Debug object that is used to output statements
 // ******************
@@ -127,21 +127,11 @@ Stativus.State = {
   }
 };
 // Our Maker function:  Thank you D.Crockford.
-Stativus.State.create = function (configs) {
-  var nState, k, config, i, len;
-  configs = configs || [];
+Stativus.State.create = function (config) {
+  var nState, k, i, len;
   nState = creator.call(this);
   nState._data = {};
-  // You can have 0...n configuration objects
-  for (i = 0, len = configs.length || 0; i < len; i++){
-    config = configs[i];
-    if (typeof config === 'object'){
-      for (k in config){ 
-        if(config.hasOwnProperty(k)) nState[k] = config[k]; 
-      }
-    }
-  }
-  return nState;
+  return merge(nState, [config]);
 };
 
 /**
@@ -181,7 +171,7 @@ Stativus.Statechart = {
       hasConcurrentSubstates = hasConcurrentSubstates || !!config.substatesAreConcurrent;
       pState = pState || config.parentState;
     }
-    if (len === 1) configs[0] = config = {};
+    config = len === 1 ? {} : merge(null, configs);
 	  // primary config is always the last config
 	  config.name = name;
 	  config.statechart = this;
@@ -207,7 +197,7 @@ Stativus.Statechart = {
       }
 	  }
 	  
-	  nState = Stativus.State.create(configs);
+	  nState = Stativus.State.create(config);
 	  
 	  // Actually add the state to our statechart
 	  obj = this._all_states[tree] || {}; 
