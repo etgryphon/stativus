@@ -140,13 +140,11 @@ Stativus.State.create = function (config) {
 */
 Stativus.Statechart = {
   
-  
-  isStatechart: true,
-  
   create: function(config){
 		var sc = creator.call(this);
 		
 		// config all the internal information 
+    sc.isStatechart = true;
 		sc._all_states = {};
 		sc._all_states[Stativus.DEFAULT_TREE] = {};
 		sc._states_with_concurrent_substates = {};
