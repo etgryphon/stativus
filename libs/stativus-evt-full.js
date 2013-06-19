@@ -1,5 +1,6 @@
 /*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ createNode*/
 /*
+@license
 ==========================================================================
 Statechart -- A Micro Library
 Copyright: ©2011-2013 Evin Grano All rights reserved.
@@ -61,7 +62,7 @@ var merge = function(obj, configs){
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.3' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.4' };
 
 // This creates the Debug object that is used to output statements
 // ******************
@@ -117,21 +118,18 @@ Stativus.State = {
   },
   
   setHistoryState: function(state){
-    this.history = this.history || {};
-    if (this.substatesAreConcurrent){
-      this.history[this.localConcurrentState] = state.name;
-    }
-    else {
-      this.history = state.name;
-    }
+    this.history = this.substatesAreConcurrent ? this.substates : state.name;
   }
 };
 // Our Maker function:  Thank you D.Crockford.
-Stativus.State.create = function (config) {
-  var nState, k, i, len;
+Stativus.State.create = function (config, sc) {
+  var nState, k, i, len, configs = [config],
+      key = config.name+'_'+config.globalConcurrentState,
+      waitingConfig = sc._configs_in_waiting[key];
   nState = creator.call(this);
   nState._data = {};
-  return merge(nState, [config]);
+  if (waitingConfig) configs.push(waitingConfig);
+  return merge(nState, configs);
 };
 
 /**
@@ -156,26 +154,27 @@ Stativus.Statechart = {
 		sc._pendingStateTransitions = [];
 		sc._pendingEvents = [];
 		sc._active_subtrees = {};
+    sc._configs_in_waiting = {};
 		
 		return sc;
 	},
   
   addState: function(name){
-	  var tree, obj, hasConcurrentSubstates = false, pState, states,
-	      cTree, nState, config, configs = [], len, i, that = this;
+	  var tree, obj, hasConcurrentSubstates = false, pState, pName, states,
+	      cTree, nState, config, configs = [], len, i, that = this, key;
 	  
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
       hasConcurrentSubstates = hasConcurrentSubstates || !!config.substatesAreConcurrent;
-      pState = pState || config.parentState;
+      tree = tree || config.globalConcurrentState;
+      pName = pName || config.parentState;
     }
+    tree = tree || Stativus.DEFAULT_TREE;
     config = len === 1 ? {} : merge(null, configs);
 	  // primary config is always the last config
 	  config.name = name;
 	  config.statechart = this;
-	  config.history = null;
 	  
-	  tree = config.globalConcurrentState || Stativus.DEFAULT_TREE;
 	  config.globalConcurrentState = tree;
 	  
 	  // Concurrent Substate checks: 
@@ -186,16 +185,18 @@ Stativus.Statechart = {
 	    obj[name] = true;
 	    this._states_with_concurrent_substates[tree] = obj;
 	  } 
-	  // Am I a Concurrent State of any parent State?
-	  if (pState && cTree && cTree[pState]){
-	    pState = this._all_states[tree][pState];
-	    if(pState) {
-	      pState.substates = pState.substates || [];
-	      pState.substates.push(name);
+	  // Am I a substate of any parent State?
+	  if (pName){
+	    pState = this._all_states[tree][pName];
+      if(!pState) {
+        key = pName+'_'+tree;
+        this._configs_in_waiting[key] = pState = this._configs_in_waiting[key] || {};
       }
+      pState.substates = pState.substates || [];
+      pState.substates.push(name);
 	  }
 	  
-	  nState = Stativus.State.create(config);
+	  nState = Stativus.State.create(config, this);
 	  
 	  // Actually add the state to our statechart
 	  obj = this._all_states[tree] || {}; 
@@ -252,7 +253,7 @@ Stativus.Statechart = {
     return this;
   },
   
-  goToState: function(requestedStateName, tree, concurrentTree, data){
+  goToState: function(requestedStateName, tree, localConcurrentState, data){
     var cState, allStates = this._all_states[tree], idx, len,
         enterStates = [], exitStates = [], haveExited,
         enterMatchIndex, exitMatchIndex, that,
@@ -260,23 +261,16 @@ Stativus.Statechart = {
         enterStateHandled, exitStateHandled, substates;
     
 
-    // First, find the current tree off of the concurrentTree, then the main tree
-    cState = concurrentTree ? this._current_state[concurrentTree] : this._current_state[tree];
+    // First, find the current tree off of the localConcurrentState, then the main tree
+    cState = localConcurrentState ? this._current_state[localConcurrentState] : this._current_state[tree];
     
     reqState = allStates[requestedStateName];
     
 
     // if the current state is the same as the requested state do nothing
-    if (this._checkAllCurrentStates(reqState, concurrentTree || tree)) return;
+    if (this._checkAllCurrentStates(reqState, localConcurrentState || tree)) return;
 
-    if (typeof data !== 'undefined' && data !== null) {
-      if (typeof data === 'string') reqState.setData(data, data);
-      if (typeof data === 'object') {
-        for (var key in data) {
-          if(data.hasOwnProperty(key)) reqState.setData(key, data[key]);
-        }
-      }
-    }
+    this._setDataOnState(reqState, data);
     
     if (this._goToStateLocked){
       // There is a state transition currently happening. Add this requested
@@ -320,7 +314,7 @@ Stativus.Statechart = {
     // Setup for the enter state sequence
     this._enterStates = enterStates;
     this._enterStateMatchIndex = enterMatchIndex;
-    this._enterStateConcurrentTree = concurrentTree;
+    this._enterStateConcurrentTree = localConcurrentState;
     this._enterStateTree = tree;
     
     // Now, we will exit all the underlying states till we reach the common
@@ -338,10 +332,10 @@ Stativus.Statechart = {
     this._unwindExitStateStack();
   },
     
-  goToHistoryState: function(requestedState, tree, concurrentTree, isRecursive){
-    var allStateForTree = this._all_states[tree],
+  goToHistoryState: function(requestedState, tree, localConcurrentState, isRecursive){
+    var allStatesForTree = this._all_states[tree],
         pState, realHistoryState;
-    pState = allStateForTree[requestedState];
+    pState = allStatesForTree[requestedState];
     if (pState) realHistoryState = pState.history || pState.initialSubstate;
     
     if(!realHistoryState){
@@ -410,6 +404,17 @@ Stativus.Statechart = {
     }
 
     this._restartEvents();
+  },
+  
+  _setDataOnState: function(state, data){
+    if (state && typeof data !== 'undefined' && data !== null) {
+      if (typeof data === 'string') state.setData(data, data);
+      if (typeof data === 'object') {
+        for (var key in data) {
+          if(data.hasOwnProperty(key)) state.setData(key, data[key]);
+        }
+      }
+    }
   },
   
   _processEvent: function(evt, args){
@@ -525,13 +530,7 @@ Stativus.Statechart = {
     this.goToState(pending.requestedState, pending.tree);
     return true;
   },
-  
-  _parentStateObject: function(name, tree){
-    if(name && tree && this._all_states[tree] && this._all_states[tree][name]){
-      return this._all_states[tree][name];
-    }
-  },
-  
+    
   _fullEnter: function(state){
     var pState, enterStateHandled = false;
     if (!state) return;
@@ -609,7 +608,6 @@ Stativus.Statechart = {
     if (start.substatesAreConcurrent){
       tree = start.globalConcurrentState || Stativus.DEFAULT_TREE;
       nTreeBase = [Stativus.SUBSTATE_DELIM,tree,name].join('=>');
-      start.history = start.history || {};
       subStates = start.substates || [];
       subStates.forEach( function(x){
         nTree = nTreeBase+'=>'+x;
@@ -744,6 +742,12 @@ Stativus.Statechart = {
     });
     
     return nArray;
+  },
+  
+  _parentStateObject: function(name, tree){
+    if(name && tree && this._all_states[tree]){
+      return this._all_states[tree][name];
+    }
   },
   
   _parentStates: function(state){

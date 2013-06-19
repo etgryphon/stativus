@@ -1,5 +1,6 @@
 /*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ createNode*/
 /*
+@license
 ==========================================================================
 Statechart -- A Micro Library
 Copyright: ©2011-2013 Evin Grano All rights reserved.
@@ -74,7 +75,7 @@ var merge = function(obj, configs){
   return obj;
 };
 
-Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.3' };
+Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.9.4' };
 
 // This creates the Debug object that is used to output statements
 // #ifdef DEBUG_MODE
