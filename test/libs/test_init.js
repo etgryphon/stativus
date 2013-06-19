@@ -37,9 +37,6 @@ test("Is Statechart Initialization Correct for single state w/ only a name?", fu
 module("Module: Test Edge Initializations", {
   setup: function(){
     this.sc = Stativus.createStatechart();
-    this.sc.addState("#application", {
-      substatesAreConcurrent: true
-    });
     this.sc.addState("#subapplication", {
       parentState: "#application",
       substatesAreConcurrent: true
@@ -52,6 +49,11 @@ module("Module: Test Edge Initializations", {
     this.sc.addState("#second", {
       parentState: "#subapplication"
     });
+    // this is supposed to be out of order to test that it works...
+    this.sc.addState("#application", {
+      substatesAreConcurrent: true
+    });
+    
     this.sc.initStates("#application");
   }
 });

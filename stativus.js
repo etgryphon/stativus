@@ -198,11 +198,14 @@ Stativus.State = {
   }
 };
 // Our Maker function:  Thank you D.Crockford.
-Stativus.State.create = function (config) {
-  var nState, k, i, len;
+Stativus.State.create = function (config, sc) {
+  var nState, k, i, len, configs = [config],
+      key = config.name+'_'+config.globalConcurrentState,
+      waitingConfig = sc._configs_in_waiting[key];
   nState = creator.call(this);
   nState._data = {};
-  return merge(nState, [config]);
+  if (waitingConfig) configs.push(waitingConfig);
+  return merge(nState, configs);
 };
 
 /**
@@ -227,6 +230,7 @@ Stativus.Statechart = {
 		sc._pendingStateTransitions = [];
 		sc._pendingEvents = [];
 		sc._active_subtrees = {};
+    sc._configs_in_waiting = {};
 		
     // #ifdef DEBUG_MODE
 		if(DEBUG_MODE){
@@ -245,20 +249,21 @@ Stativus.Statechart = {
 	},
   
   addState: function(name){
-	  var tree, obj, hasConcurrentSubstates = false, pState, states,
-	      cTree, nState, config, configs = [], len, i, that = this;
+	  var tree, obj, hasConcurrentSubstates = false, pState, pName, states,
+	      cTree, nState, config, configs = [], len, i, that = this, key;
 	  
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
       hasConcurrentSubstates = hasConcurrentSubstates || !!config.substatesAreConcurrent;
-      pState = pState || config.parentState;
+      tree = tree || config.globalConcurrentState;
+      pName = pName || config.parentState;
     }
+    tree = tree || Stativus.DEFAULT_TREE;
     config = len === 1 ? {} : merge(null, configs);
 	  // primary config is always the last config
 	  config.name = name;
 	  config.statechart = this;
 	  
-	  tree = config.globalConcurrentState || Stativus.DEFAULT_TREE;
 	  config.globalConcurrentState = tree;
 	  
 	  // Concurrent Substate checks: 
@@ -269,16 +274,18 @@ Stativus.Statechart = {
 	    obj[name] = true;
 	    this._states_with_concurrent_substates[tree] = obj;
 	  } 
-	  // Am I a Concurrent State of any parent State?
-	  if (pState && cTree && cTree[pState]){
-	    pState = this._all_states[tree][pState];
-	    if(pState) {
-	      pState.substates = pState.substates || [];
-	      pState.substates.push(name);
+	  // Am I a substate of any parent State?
+	  if (pName){
+	    pState = this._all_states[tree][pName];
+      if(!pState) {
+        key = pName+'_'+tree;
+        this._configs_in_waiting[key] = pState = this._configs_in_waiting[key] || {};
       }
+      pState.substates = pState.substates || [];
+      pState.substates.push(name);
 	  }
 	  
-	  nState = Stativus.State.create(config);
+	  nState = Stativus.State.create(config, this);
 	  
 	  // Actually add the state to our statechart
 	  obj = this._all_states[tree] || {}; 
