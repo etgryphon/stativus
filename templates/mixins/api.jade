@@ -227,13 +227,21 @@ mixin api
         state named global.
       pre
         | {
-        |   events: Array[0]
-        |   hasConcurrentSubstates: true
-        |   initialSubstate: undefined
-        |   isConcurrentSubstate: undefined
-        |   isInitialSubstate: undefined
-        |   name: "global"
-        |   substates: Array[3]
+        |   events: [
+        |     {
+        |       name: 'eventName',
+        |       content: 'function(){goToState("aState");}',
+        |       transitions: [ 'aState' ]
+        |     }
+        |   ],
+        |   hasConcurrentSubstates: true,
+        |   initialSubstate: undefined,
+        |   isConcurrentSubstate: undefined,
+        |   isInitialSubstate: undefined,
+        |   name: "global",
+        |   substates: [
+        |   ...
+        |   ]
         | }
       h4 Returns
       ul

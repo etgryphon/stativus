@@ -1,14 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <title>Stativus</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="description" content="Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page."/>
-    <meta/>
-    <meta/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.">
+    <meta>
+    <meta>
     <!-- Le styles-->
-    <link href="./assets/css/bootstrap.css" rel="stylesheet"/>
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
       body {
         padding-top: 60px;
@@ -24,15 +24,15 @@
         width: 610px;
       }
     </style>
-    <link href="./assets/css/bootstrap-responsive.css" rel="stylesheet"/>
+    <link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements--><!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <!-- Le fav and touch icons-->
-    <link rel="shortcut icon" href="../assets/ico/favicon.ico"/>
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/ico/apple-touch-icon-144-precomposed.png"/>
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/ico/apple-touch-icon-114-precomposed.png"/>
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/ico/apple-touch-icon-72-precomposed.png"/>
-    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png"/>
+    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png">
     <!-- Google Analytics idea from my beautiful wife-->
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -119,7 +119,8 @@
               </ul>
               <h4>Version: <span style="font-weight: normal">0.9.0</span></h4>
             </p>
-            <div class="pull-right"><a data="MainQuickStart" class="eventable btn btn-success btn-large quick-start-act">Quick Start &raquo;</a>  <a data="LearnMorePrimer" class="btn btn-primary btn-large underContruction">*Learn More &raquo;</a>
+            <div class="pull-right"><a data="MainQuickStart" class="eventable btn btn-success btn-large quick-start-act">Quick Start &raquo;</a>
+              < > </ ><a data="LearnMorePrimer" class="btn btn-primary btn-large underContruction">*Learn More &raquo;</a>
             </div>
           </div>
           <div class="row-fluid">
@@ -159,25 +160,25 @@
           <div style="display: none;" class="qs-step1">
             <h3>Step #1: Setup HTML...</h3>
             <p>Create a directory put in the  <em>stativus.js</em> create some simple HTML in a file called <em>index.html</em> fill it will the following code...</p>
-            <pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-&lt;html lang=&quot;en&quot;&gt;
- &lt;head&gt;
-   &lt;!- I'm using JQuery, but you can use whatever -!&gt;
-   &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js&quot;&gt;&lt;/script&gt;
-   &lt;script src=&quot;./stativus.js&quot;&gt;&lt;/script&gt;
- &lt;/head&gt;
- &lt;body&gt;
-   &lt;div id=&quot;state-one&quot; style=&quot;display: none; background-color: red; color: white;&quot;&gt; 
-     &lt;h1&gt;State One (#1)&lt;/h1&gt;
-   &lt;/div&gt;
-   &lt;div id=&quot;state-two&quot; style=&quot;display: none; background-color: blue; color: white;&quot;&gt; 
-     &lt;h1&gt;State Two (#2)&lt;/h1&gt;
-   &lt;/div&gt;
-   &lt;script type=&quot;text/javascript&quot;&gt;
+            <pre><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+ <head>
+   <!- I'm using JQuery, but you can use whatever -!>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+   <script src="./stativus.js"></script>
+ </head>
+ <body>
+   <div id="state-one" style="display: none; background-color: red; color: white;"> 
+     <h1>State One (#1)</h1>
+   </div>
+   <div id="state-two" style="display: none; background-color: blue; color: white;"> 
+     <h1>State Two (#2)</h1>
+   </div>
+   <script type="text/javascript">
       // Statechart code goes here...
-   &lt;/script&gt;
- &lt;/body&gt;
-&lt;/html&gt;</pre>
+   </script>
+ </body>
+</html></pre>
             <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step2-act">Next &raquo;</a></div>
           </div>
           <div style="display: none;" class="qs-step2">
@@ -190,7 +191,7 @@
           <div style="display: none;" class="qs-step3">
             <h3>Step #3: Create First State...</h3>
             <p>you need to define your first state:</p>
-            <pre>statechart.addState(&quot;#state-one&quot;, {
+            <pre>statechart.addState("#state-one", {
   enterState: function(){
     $('#state-one').show(); // Using JQuery, but you can use whatever...
   },
@@ -207,7 +208,7 @@
           <div style="display: none;" class="qs-step4">
             <h3>Step #4: Create Second State...</h3>
             <p>you need to define your second state:</p>
-            <pre>statechart.addState(&quot;#state-two&quot;, {
+            <pre>statechart.addState("#state-two", {
   enterState: function(){
     $('#state-two').show(); // Using JQuery, but you can use whatever...
   },
@@ -231,23 +232,23 @@
           <div style="display: none;" class="qs-step6">
             <h2>Finally,</h2>
             <p>with everything put together it should look like this:</p>
-            <pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-&lt;html lang=&quot;en&quot;&gt;
- &lt;head&gt;
-   &lt;!- I'm using JQuery, but you can use whatever -!&gt;
-   &lt;script src=&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js&quot;&gt;&lt;/script&gt;
-   &lt;script src=&quot;./stativus.js&quot;&gt;   &lt;/script&gt;
- &lt;/head&gt;
- &lt;body&gt;
-   &lt;div id=&quot;state-one&quot; style=&quot;display: none; background-color: red; color: white;&quot;&gt; 
-     &lt;h1&gt;State One (#1)&lt;/h1&gt;
-   &lt;/div&gt;
-   &lt;div id=&quot;state-two&quot; style=&quot;display: none; background-color: blue; color: white;&quot;&gt; 
-     &lt;h1&gt;State Two (#2)&lt;/h1&gt;
-   &lt;/div&gt;
-   &lt;script type=&quot;text/javascript&quot;&gt;
+            <pre><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en">
+ <head>
+   <!- I'm using JQuery, but you can use whatever -!>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+   <script src="./stativus.js">   </script>
+ </head>
+ <body>
+   <div id="state-one" style="display: none; background-color: red; color: white;"> 
+     <h1>State One (#1)</h1>
+   </div>
+   <div id="state-two" style="display: none; background-color: blue; color: white;"> 
+     <h1>State Two (#2)</h1>
+   </div>
+   <script type="text/javascript">
      var statechart = Stativus.createStatechart();
-     statechart.addState(&quot;#state-one&quot;, {
+     statechart.addState("#state-one", {
        enterState: function(){
          console.log('boom');
          $('#state-one').show(); // Using JQuery, but you can use whatever...
@@ -259,7 +260,7 @@
          this.goToState('#state-two');
        }
      });
-     statechart.addState(&quot;#state-two&quot;, {
+     statechart.addState("#state-two", {
        enterState: function(){
          $('#state-two').show(); // Using JQuery, but you can use whatever...
        },
@@ -272,9 +273,9 @@
      });
      statechart.initStates('#state-one');
 |
-   &lt;/script&gt;
- &lt;/body&gt;
-&lt;/html&gt;</pre>
+   </script>
+ </body>
+</html></pre>
             <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step5-act">&laquo; Prev </a></div>
             <div class="pull-right"><a class="eventable btn btn-success btn-large qs-stepFinal-act">Finish &raquo;</a></div>
           </div>
@@ -321,7 +322,7 @@
           <h6>namespace</h6><br/>
           <div style="display: none;" class="basic-api">
             <h4>Function</h4>
-            <h3><code>addState( name, def1, def2, ... )</code></h3>
+            <h3><code>addState\( name, def1, def2, ... \)</code></h3>
             <h4>Parameters</h4>
             <ul>
               <li><strong>'name' :: </strong><em>String  - REQUIRED</em></li>
@@ -360,7 +361,7 @@ statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');
           </div>
           <div style="display: none;" class="basic-api">
             <h4>Function</h4>
-            <h3><code>sendEvent( name, param1, param2, ... )</code></h3>
+            <h3><code>sendEvent\( name, param1, param2, ... \)</code></h3>
             <h4>Parameters</h4>
             <ul>
               <li><strong>'name' :: </strong><em>String - REQUIRED</em></li>
@@ -421,9 +422,9 @@ var states = statechart.currentState();
 var states = statechart.currentState('modal_states');</pre>
             <hr/>
             <h4>Function</h4>
-            <h3><code>getActiveStates( globalState)</code></h3>
+            <h3><code>getActiveStates\( globalState\)</code></h3>
             <h4>Description</h4>
-            <p>This is an <em>alias </em>for<code>currentState( ... )</code></p>
+            <p>This is an <em>alias </em>for<code>currentState\( ... \)</code></p>
             <hr/>
           </div>
           <div style="display: none;" class="basic-api">
@@ -458,9 +459,9 @@ var states = statechart.currentState('modal_states');</pre>
             </ul>
             <h4>Description</h4>
             <p>This will convert the statechart to a Testing statechart, loading up the named state and permitting testing on there returned start object.</p>
-            <pre>var state = sc.loadState(&quot;#testingState&quot;);
+            <pre>var state = sc.loadState("#testingState");
 // or
-var state = sc.loadState(&quot;#testingState2&quot;, &quot;error&quot;);</pre>
+var state = sc.loadState("#testingState2", "error");</pre>
             <h4>Returns</h4>
             <ul>
               <li> <strong>Type :: </strong><em>Stativus.TestStateObject</em></li>
@@ -477,13 +478,21 @@ var state = sc.loadState(&quot;#testingState2&quot;, &quot;error&quot;);</pre>
               <state>named global.</state>
             </p>
             <pre>{
-  events: Array[0]
-  hasConcurrentSubstates: true
-  initialSubstate: undefined
-  isConcurrentSubstate: undefined
-  isInitialSubstate: undefined
-  name: &quot;global&quot;
-  substates: Array[3]
+  events: [
+    {
+      name: 'eventName',
+      content: 'function(){goToState("aState");}',
+      transitions: [ 'aState' ]
+    }
+  ],
+  hasConcurrentSubstates: true,
+  initialSubstate: undefined,
+  isConcurrentSubstate: undefined,
+  isInitialSubstate: undefined,
+  name: "global",
+  substates: [
+  ...
+  ]
 }</pre>
             <h4>Returns</h4>
             <ul>
@@ -516,7 +525,7 @@ var state = sc.loadState(&quot;#testingState2&quot;, &quot;error&quot;);</pre>
             <pre>statechart.addState('loading', {
   // Stativus.State.DefinitionParameters...
   Stativus.State.DefinedEvents...
-  completeLoad: function(data){ // &lt;= Event Definition
+  completeLoad: function(data){ // <= Event Definition
     // do stuff with the 'data'
     if (true) this.goToState('ready', 'data');
     else this.goToState('notReady', { err: 'data' });
@@ -555,7 +564,7 @@ statechart.addState('notReady', {
             <pre>statechart.addState('loading', {
   // Stativus.State.DefinitionParameters...
   Stativus.State.DefinedEvents...
-  completeLoad: function(data){ // &lt;= Event Definition
+  completeLoad: function(data){ // <= Event Definition
     // do stuff with the 'data'
     this.goToHistoryState('ready');
   },
@@ -649,7 +658,7 @@ state.getData('id');</pre>
               <li><strong>Default Value :: </strong><em>undefined</em></li>
             </ul>
             <h4>Description</h4>
-            <p>This value sets in a parent state to tell it what substate to enter when someone calls<code>this.goToState('< parentStateName >')</code>. Technically, it isn't <em>required </em>persay, but it bad practice to just enter a parent state with substates and not go to a substate. 
+            <p>This value sets in a parent state to tell it what substate to enter when someone calls<code>this.goToState('\< parentStateName \>')</code>. Technically, it isn't <em>required </em>persay, but it bad practice to just enter a parent state with substates and not go to a substate. 
               This is added in the <code>addState()</code>function and never changes.
             </p>
             <h4>Example</h4>
@@ -727,16 +736,16 @@ statechart.addState('state_one', {
   // more Stativus.State.DefinitionParameters...
 });</pre>
             <h4>Example Type #2:</h4>
-            <h5>You can also pass an array where the first argument <strong>(String - REQUIRED) </strong>is the name, next n-argument are config hashes</h5>
+            <h5>You can also pass an array where the first argument <strong>\(String - REQUIRED\) </strong>is the name, next n-argument are config hashes</h5>
             <pre>// Example #3: With shared functionality
 statechart.addState('state_one', {
   states: [
-    ['#substate_one', mySharedFunctions, /* &lt;= shared function hash &gt;*/ {
+    ['#substate_one', mySharedFunctions, /* <= shared function hash >*/ {
       enterState: function(){
         // define function
       }
     }],
-    ['#substate_two', mySharedFunctions, /* &lt;= shared function hash &gt;*/ {
+    ['#substate_two', mySharedFunctions, /* <= shared function hash >*/ {
       enterState: function(){
         // define function
       }
@@ -780,7 +789,7 @@ statechart.addState('state_one', {
             </ul>
             <h4>Description</h4>
             <p>This is the pre-loading event to be used for async functionality. You would need to return <strong>true </strong>from this function to pause the statechart allowing the async event to happen then you need to call <code>done()</code> to restart the statechart transition from state to state</p>
-            <pre>sc.addState(&quot;#second&quot;, {
+            <pre>sc.addState("#second", {
   willEnterState: function(done){
     $('#content .boosh').animate({
       left: 911,
@@ -804,7 +813,7 @@ statechart.addState('state_one', {
             </ul>
             <h4>Description</h4>
             <p>This is the post-loading event that you can use to do any last minute functionality</p>
-            <pre>sc.addState(&quot;#second&quot;, {
+            <pre>sc.addState("#second", {
   didEnterState: function(){
     // setup refresh timers or fire an event
   }
@@ -842,7 +851,7 @@ statechart.addState('state_one', {
             </ul>
             <h4>Description</h4>
             <p>This is the pre-exit event to be used for async functionality. You would need to return <strong>true </strong>from this function to pause the statechart allowing the async event to happen then you need to call <code>done()</code> to restart the statechart transition from state to state</p>
-            <pre>sc.addState(&quot;#second&quot;, {
+            <pre>sc.addState("#second", {
   willExitState: function(done){
     $('#content .boosh').animate({
       right: 911,
@@ -866,7 +875,7 @@ statechart.addState('state_one', {
             </ul>
             <h4>Description</h4>
             <p>This is the post-exiting event that you can use to do any last minute functionality</p>
-            <pre>sc.addState(&quot;#second&quot;, {
+            <pre>sc.addState("#second", {
   didExitState: function(){
     // kill variables; fire events; or send data.
   }
@@ -896,7 +905,7 @@ state.enterState();</pre>
             </ul>
             <h4>Description</h4>
             <p>This is a function that will trigger an `willEnterState` call that can then test the state. Example is using `qUnit` tests</p>
-            <pre>var state = SC.loadState(&quot;#async&quot;);
+            <pre>var state = SC.loadState("#async");
 state.willEnterState(function(){
   start();
 });
@@ -911,7 +920,7 @@ stop();</pre>
             </ul>
             <h4>Description</h4>
             <p>This is a function that will return if the asynchronous call was made in the 'willEnterState' function</p>
-            <pre>var state = SC.loadState(&quot;#async&quot;);
+            <pre>var state = SC.loadState("#async");
 state.willEnterState(function(){
   start();
   ok(state.willExitCompleted(), 'Will exit async call was completed');
@@ -941,7 +950,7 @@ state.exitState();</pre>
             </ul>
             <h4>Description</h4>
             <p>This is a function that will trigger an `willExitState` call that can then test the state. Example is using `qUnit` tests</p>
-            <pre>var state = SC.loadState(&quot;#async&quot;);
+            <pre>var state = SC.loadState("#async");
 state.willExitState(function(){
   start();
 });
@@ -956,7 +965,7 @@ stop();</pre>
             </ul>
             <h4>Description</h4>
             <p>This is a function that will return if the asynchronous call was made in the 'willEnterState' function</p>
-            <pre>var state = SC.loadState(&quot;#async&quot;);
+            <pre>var state = SC.loadState("#async");
 state.willExitState(function(){
   start();
   ok(state.willExitCompleted(), 'Will exit async call was completed');
@@ -974,7 +983,7 @@ stop();</pre>
             </ul>
             <h4>Description</h4>
             <p>This is a function that will return true if the last action resulted in the state needing to transition to a different state</p>
-            <pre>var state = SC.loadState(&quot;#async&quot;);
+            <pre>var state = SC.loadState("#async");
 state.enterState(); // switch state that immediately transitions to a new state
 ok(state.transitionedTo('newState'), 'state proper transition');</pre>
           </div>
@@ -983,7 +992,7 @@ ok(state.transitionedTo('newState'), 'state proper transition');</pre>
           <div class="hero-unit">
             <h1>Debug Version</h1>
             <h6>For development</h6>
-            <h4>Size:<span style="font-weight: normal"><30k (unminified and not gzipped)</span></h4>
+            <h4>Size:<span style="font-weight: normal"><30k \(unminified and not gzipped\)</span></h4>
           </div>
           <p>This is the version that is un-minified version of the code that has all of the functionality of the <a href="#" class="eventable basic-version-act"></a>
             <Basic>Version</Basic>. In addition it has some helpful<code>console.log</code>and <code>errors</code> when your code is in correctly designed.  These errors include the following:
@@ -991,17 +1000,17 @@ ok(state.transitionedTo('newState'), 'state proper transition');</pre>
           <ul>
             <li>All <code>enterState() </code>are documented with <code>ENTER: *state_name*</code></li>
             <li>All <code>exitState()</code>'s are documented with <code>EXIT: <state_name></code></li>
-            <li>All events are documented with <code>EVENT: <state_name> fired [<event_name>] with <n> argument(s)</code></li>
+            <li>All events are documented with <code>EVENT: \<state_name\> fired [\<event_name\>] with \<n\> argument\(s\)</code></li>
             <li>Any time your application is configured in such a way that it will break, you will get a console or exception</li>
             <li>All Async starts and stops will be outputted to the console.</li>
-            <li>Will warn you if you forgot to return true when using <code>willEnterState()</code></li>
+            <li>Will warn you if you forgot to return true when using <code>willEnterState\(\)</code></li>
           </ul>
         </div>
         <div style="display: none;" class="span9 basic-version-page">
           <div style="display: none;" class="hero-unit advanced-api-header">
             <h1>Basic Version</h1>
             <h6>For production</h6>
-            <h4>Size:<span style="font-weight: normal"><3k (minified and gzipped)</span></h4>
+            <h4>Size:<span style="font-weight: normal"><3k \(minified and gzipped\)</span></h4>
           </div>
           <p>This is the minified version of the code for production use.</p>
         </div>
@@ -1009,7 +1018,7 @@ ok(state.transitionedTo('newState'), 'state proper transition');</pre>
           <div style="display: none;" class="hero-unit all-api-header">
             <h1>Eventable Version</h1>
             <h6>For production</h6>
-            <h4>Size:<span style="font-weight: normal">~3.3k (minified and gzipped)</span></h4>
+            <h4>Size:<span style="font-weight: normal">~3.3k \(minified and gzipped\)</span></h4>
           </div>
           <p>This is a special version of the code that does event propigation from user events.  </p>
         </div>
@@ -1031,7 +1040,7 @@ Copyright: ©2011-2012 Evin Grano All rights reserved.
          Portions ©2011-2012 Evin Grano
          
 Permission is hereby granted, free of charge, to any person obtaining a 
-copy of this software and associated documentation files (the &quot;Software&quot;), 
+copy of this software and associated documentation files (the "Software"), 
 to deal in the Software without restriction, including without limitation 
 the rights to use, copy, modify, merge, publish, distribute, sublicense, 
 and/or sell copies of the Software, and to permit persons to whom the 
@@ -1040,7 +1049,7 @@ Software is furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in 
 all copies or substantial portions of the Software.
  
-THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
@@ -1089,7 +1098,7 @@ under heaven given among men by which we must be saved.
         </div>
         <div class="modal-footer"><a class="eventable btn btn-primary close-action">Close</a></div>
       </div>   
-      <hr/>
+      <hr>
       <footer>
         <p>&copy; Evin Grano 2012</p>
       </footer>
