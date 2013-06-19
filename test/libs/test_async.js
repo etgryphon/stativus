@@ -1,6 +1,6 @@
-/*globals $ equal module expect myStatechart Stativus stop start*/
+/*globals $ equal module expect myStatechart Stativus stop start asyncTest*/
 
-module("Simple Async", {
+module("Module: Simple Async", {
   setup: function(){
     this.sc = Stativus.createStatechart();
     this.data = 0;

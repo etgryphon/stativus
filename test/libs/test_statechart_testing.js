@@ -1,6 +1,6 @@
-/*globals $ equal module expect myStatechart Stativus start stop*/
-
-module("Test Statechart Testing", {
+/*globals $ equal module expect myStatechart Stativus start stop asyncTest*/
+var mockObject;
+module("Module: Test Statechart Testing", {
   setup: function(){
     mockObject = {
       willEnterCount: 0,
