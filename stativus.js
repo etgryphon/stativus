@@ -374,8 +374,7 @@ Stativus.Statechart = {
   
   goToState: function(requestedStateName, tree, localConcurrentState, data){
     var cState, allStates = this._all_states[tree], idx, len,
-        enterStates = [], exitStates = [], haveExited,
-        enterMatchIndex, exitMatchIndex, that,
+        enterStates = [], exitStates = [], haveExited, indexes, that,
         reqState, pState, i, substateTree,
         enterStateHandled, exitStateHandled, substates;
     
@@ -421,28 +420,11 @@ Stativus.Statechart = {
     // we will use them to find the commen parent state
     enterStates = this._parentStatesWithRoot(reqState);
     exitStates = cState ? this._parentStatesWithRoot(cState) : [];
-    
-    // continue by finding the common parent state for the current and 
-    // requested states:
-    //
-    // At most, this takes O(m^2) time, where m is the maximum depth from the 
-    // root of the tree to either the requested state or the current state.
-    // Will always be less than or equal to O(n^2), where n is the number
-    // of states in the tree
-    enterMatchIndex = -1;
-    for (idx = 0, len = exitStates.length; idx < len; idx++){
-      exitMatchIndex = idx;
-      enterMatchIndex = enterStates.indexOf(exitStates[idx]);
-      if(enterMatchIndex >= 0) break;
-    }
-    
-    // In the case where we don't find a common parent state, we 
-    // must enter from the root state
-    if (enterMatchIndex < 0) enterMatchIndex = enterStates.length - 1;
+    indexes = this._findCommonAncestor(exitStates, enterStates);
     
     // Setup for the enter state sequence
     this._enterStates = enterStates;
-    this._enterStateMatchIndex = enterMatchIndex;
+    this._enterStateMatchIndex = indexes.enter;
     this._enterStateConcurrentTree = localConcurrentState;
     this._enterStateTree = tree;
     
@@ -451,7 +433,7 @@ Stativus.Statechart = {
     // within it.
     this._exitStateStack = [];
     if (cState && cState.substatesAreConcurrent) this._fullExitFromSubstates(tree, cState);
-    for (i = 0; i < exitMatchIndex; i+=1){
+    for (i = 0; i < indexes.exit; i+=1){
       cState = exitStates[i];
       this._exitStateStack.push(cState);
     }
@@ -459,6 +441,30 @@ Stativus.Statechart = {
     // Now, that we have the full stack of states to exit
     // We can exit them in an orderly fashion.
     this._unwindExitStateStack();
+  },
+  
+  // Common Ancestor function:
+  // continue by finding the common parent state for the current and 
+  // requested states:
+  //
+  // At most, this takes O(m^2) time, where m is the maximum depth from the 
+  // root of the tree to either the requested state or the current state.
+  // Will always be less than or equal to O(n^2), where n is the number
+  // of states in the tree
+  _findCommonAncestor: function(exitStates, enterStates){
+    var idx, len, exitIdx, enterIdx = -1;
+    
+    for (idx = 0, len = exitStates.length; idx < len; idx++){
+      exitIdx = idx;
+      enterIdx = enterStates.indexOf(exitStates[idx]);
+      if(enterIdx >= 0) break;
+    }
+    
+    // In the case where we don't find a common parent state, we 
+    // must enter from the root state
+    if (enterIdx < 0) enterIdx = enterStates.length - 1;
+    
+    return {exit: exitIdx, enter: enterIdx};
   },
     
   goToHistoryState: function(requestedState, tree, localConcurrentState, isRecursive){
