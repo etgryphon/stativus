@@ -372,10 +372,10 @@ Stativus.Statechart = {
     return this;
   },
   
-  goToState: function(requestedStateName, tree, localConcurrentState, data){
+  goToState: function(requestedState, tree, localConcurrentState, data){
     var cState, allStates = this._all_states[tree], idx, len,
         enterStates = [], exitStates = [], haveExited, indexes, that,
-        reqState, pState, i, substateTree,
+        reqState, pState, i, substateTree, t,
         enterStateHandled, exitStateHandled, substates;
     
     // #ifdef DEBUG_MODE    
@@ -391,7 +391,7 @@ Stativus.Statechart = {
     
     // #ifdef DEBUG_MODE
     if (DEBUG_MODE) {
-      if (!reqState) throw '#goToState: Could not find requested state: '+requestedStateName;
+      if (!reqState) throw '#goToState: Could not find requested state: '+requestedState;
     } 
     // #endif
 
@@ -405,7 +405,7 @@ Stativus.Statechart = {
       // state transition to the queue of pending state transitions. The req
       // will be invoked after the current state transition is finished
       this._pendingStateTransitions.push({
-        requestedState: requestedStateName,
+        requestedState: requestedState,
         tree: tree
       });
       
@@ -424,7 +424,7 @@ Stativus.Statechart = {
     
     // Setup for the enter state sequence
     this._enterStates = enterStates;
-    this._enterStateMatchIndex = indexes.enter;
+    this._enterStateMatchIndex = indexes.second;
     this._enterStateConcurrentTree = localConcurrentState;
     this._enterStateTree = tree;
     
@@ -433,7 +433,7 @@ Stativus.Statechart = {
     // within it.
     this._exitStateStack = [];
     if (cState && cState.substatesAreConcurrent) this._fullExitFromSubstates(tree, cState);
-    for (i = 0; i < indexes.exit; i+=1){
+    for (i = 0; i < indexes.first; i+=1){
       cState = exitStates[i];
       this._exitStateStack.push(cState);
     }
@@ -451,20 +451,80 @@ Stativus.Statechart = {
   // root of the tree to either the requested state or the current state.
   // Will always be less than or equal to O(n^2), where n is the number
   // of states in the tree
-  _findCommonAncestor: function(exitStates, enterStates){
-    var idx, len, exitIdx, enterIdx = -1;
+  _findCommonAncestor: function(set1, set2){
+    var idx, len, set1Idx, set2Idx = -1;
     
-    for (idx = 0, len = exitStates.length; idx < len; idx++){
-      exitIdx = idx;
-      enterIdx = enterStates.indexOf(exitStates[idx]);
-      if(enterIdx >= 0) break;
+    for (idx = 0, len = set1.length; idx < len; idx++){
+      set1Idx = idx;
+      set2Idx = set2.indexOf(set1[idx]);
+      if(set1Idx >= 0) break;
     }
     
     // In the case where we don't find a common parent state, we 
     // must enter from the root state
-    if (enterIdx < 0) enterIdx = enterStates.length - 1;
+    if (set2Idx < 0) set2Idx = set2.length - 1;
     
-    return {exit: exitIdx, enter: enterIdx};
+    return {first: set1Idx, second: set2Idx};
+  },
+  
+  _compileStateTransitions: function(stateTransitionObj){
+    var key, curr, ret, indexes,
+        retStates, currStates, pivot,
+        firstTime = true;
+    for(key in stateTransitionObj){
+      if (stateTransitionObj.hasOwnProperty(key)){
+        curr = stateTransitionObj[key];
+        if (firstTime){
+          ret = curr;
+          retStates = this._parentStates(ret);
+          firstTime = false;
+        } else {
+          currStates = this._parentStates(curr);
+          indexes = this._findCommonAncestor(retStates, currStates);
+          
+          // if we can't find a common ancestor then we have a violation of the statechart
+          if (indexes.second < 0){
+            // #ifdef DEBUG_MODE
+            if (DEBUG_MODE){
+              Stativus.DebugMessagingObject.sendError('TRANSITION:', ret.name, 'Invalid Transition to '+curr.name+' because of no suitable common ancestor', ret.globalConcurrentState);
+            }
+            // #endif
+            continue;
+          }
+          
+          // check to see if the common ancestor has concurrent substates because 
+          // we need to pause transition on the parent state
+          pivot = currStates[indexes.second];
+          if (!pivot.hasConcurrentSubstates){
+            // #ifdef DEBUG_MODE
+            if (DEBUG_MODE){
+              Stativus.DebugMessagingObject.sendError('TRANSITION:', ret.name, 'Invalid Transition to '+curr.name+' because of common ancestor is NOT have concurrent Substates', ret.globalConcurrentState);
+            }
+            // #endif
+            continue;
+          }
+          pivot = currStates[indexes.second+1];
+          // now we take the top most concurrent substate and pause it in transition
+          // we will catch it on the next round of transition...
+          if(pivot){
+            this._paused_transition_states = this._paused_transition_states || {};
+            this._paused_transition_states[pivot.name] = (this._paused_transition_states[pivot.name] || 0) + 1;
+            this._pendingStateTransitions.push({
+              requestedState: curr,
+              tree: pivot.globalConcurrentState
+            });
+          }
+          // #ifdef DEBUG_MODE
+          else if (DEBUG_MODE){
+            Stativus.DebugMessagingObject.sendError('TRANSITION:', ret.name, 'Invalid Transition to '+curr.name+' because of common ancestor is NOT have concurrent Substates', ret.globalConcurrentState);
+          }
+          // #endif
+        }
+        
+      }
+    }
+    
+    return ret;
   },
     
   goToHistoryState: function(requestedState, tree, localConcurrentState, isRecursive){
@@ -1235,10 +1295,10 @@ if (DEBUG_MODE){
       }
     };
     
-    this.goToState = function(requestedStateName, tree, concurrentTree){
+    this.goToState = function(requestedState, tree, concurrentTree){
       var currTestObj = this._current_test_state_object,
           evt = this._current_testing_event;
-      currTestObj._setTransitionState(evt, requestedStateName);
+      currTestObj._setTransitionState(evt, requestedState);
     };
   };
 }
