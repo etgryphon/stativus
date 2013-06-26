@@ -1,5 +1,5 @@
 /*globals $ equal module expect myStatechart Stativus*/
-
+var stateTransitions = [];
 module("Module: Events", {
 
   setup: function(){
@@ -7,17 +7,16 @@ module("Module: Events", {
     var that = this;
 
     this.sc = Stativus.createStatechart();
-    this.stateTransitions = [];
     
     var allEnterExit = {
       enterState: function() {
-        that.stateTransitions.push('ENT: '+this.name);
+        stateTransitions.push('ENT: '+this.name);
       },
       exitState: function() {
-        that.stateTransitions.push('EXT: '+this.name);
+        stateTransitions.push('EXT: '+this.name);
       },
       testEvent: function(){
-        that.stateTransitions.push('EVT: '+this.name+'.testEvent');
+        stateTransitions.push('EVT: '+this.name+'.testEvent');
       }
     };
     
@@ -38,7 +37,7 @@ module("Module: Events", {
     this.sc.addState("#first.first", allEnterExit, {
       parentState: "#first",
       testEvent: function(){
-        that.stateTransitions.push('EVT: '+this.name+'.testEvent');
+        stateTransitions.push('EVT: '+this.name+'.testEvent');
         this.goToState('#first.second');
         return true;
       },
@@ -65,16 +64,15 @@ module("Module: Events", {
 });
 
 test("Is Event Propigation stops on true return?", function() {
-  expect(11);
-  var expectedEvents = ['EVT','EVT', 'EXT', 'ENT', 'EVT', 'EVT', 'EVT', 'EVT', 'EVT'];
-  this.stateTransitions = [];
-  expect(11);
+  var expectedEvents = ['EVT','EVT', 'EXT', 'ENT', 'EVT', 'EVT', 'EXT', 'ENT'];
+  stateTransitions = [];
+  equal( stateTransitions.length, 0, "Before first event: There should be NO transitions" );
   this.sc.sendEvent('testEvent');
-  equal( this.stateTransitions.length, 4, "After first event: There should be 4 transitions" );
+  equal( stateTransitions.length, 4, "After first event: There should be 4 transitions" );
   this.sc.sendEvent('testEvent');
-  equal( this.stateTransitions.length, 9, "After second event: There should be 9 transitions" );
-  this.stateTransitions.forEach( function(x, i){
-    ok( x.indexOf(expectedEvents[i]) > -1, "The ["+i+"] transition is => "+x );
+  equal( stateTransitions.length, 8, "After second event: There should be 8 transitions" );
+  stateTransitions.forEach( function(x, i){
+    ok( x.indexOf(expectedEvents[i]) > -1, "The ["+(i+1)+"] transition is => "+x );
   });
 });
 
