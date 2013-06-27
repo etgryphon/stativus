@@ -711,14 +711,10 @@ Stativus.Statechart = {
     name: _cascadeEvents
   */
   _cascadeEvents: function(evt, args, responder, allStates, tree){
-    var handled, trees, len, ssName, found = false;
+    var handled, ssName, found = false;
     
     // substate prep work...
-    if (tree){
-      trees = tree.split('=>');
-      len = trees.length || 0;
-      ssName = trees[len-1];
-    }
+    ssName = this._splitConcurrencyKey(tree);
     
     while(!handled && responder){
       if (responder[evt]){
@@ -775,9 +771,9 @@ Stativus.Statechart = {
     var pState, tree, enterStateHandled = false;
     if (!state) return;
     this._addActiveConcurrentSubstate(state, state.localConcurrentState);
+    tree = state.localConcurrentState || state.globalConcurrentState;
+    this._current_state[tree] = state;
     try {
-      tree = state.localConcurrentState || state.globalConcurrentState;
-      this._current_state[tree] = state;
       if (state.enterState) state.enterState();
       if (state.didEnterState) state.didEnterState();
     } catch(e){
