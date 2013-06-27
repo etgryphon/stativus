@@ -64,13 +64,13 @@ module("Module: Events", {
 });
 
 test("Is Event Propigation stops on true return?", function() {
-  var expectedEvents = ['EVT','EVT', 'EXT', 'ENT', 'EVT', 'EVT', 'EXT', 'ENT'];
+  var expectedEvents = ['EVT','EVT', 'EXT', 'ENT', 'EVT', 'EVT', 'EVT', 'EVT', 'EVT'];
   stateTransitions = [];
   equal( stateTransitions.length, 0, "Before first event: There should be NO transitions" );
   this.sc.sendEvent('testEvent');
   equal( stateTransitions.length, 4, "After first event: There should be 4 transitions" );
   this.sc.sendEvent('testEvent');
-  equal( stateTransitions.length, 8, "After second event: There should be 8 transitions" );
+  equal( stateTransitions.length, 9, "After second event: There should be 9 transitions" );
   stateTransitions.forEach( function(x, i){
     ok( x.indexOf(expectedEvents[i]) > -1, "The ["+(i+1)+"] transition is => "+x );
   });

@@ -103,15 +103,12 @@ test("Is Initial State Correct?", function() {
 
 test("multi-state transition", function(){
   this.sc.sendEvent('testEvent');
-  debugger;
   ok(this.sc.inState('#other'), "correctly in #other");
   ok(this.sc.inState('#i'), "correctly in #i");
-  console.log('RIGHT BEFORE:');
   this.sc.sendEvent('testEvent');
   ok(this.sc.inState('#main'), "correctly in #main");
   ok(this.sc.inState('#first'), "correctly in #first");
   ok(this.sc.inState('#b'), "correctly in #b");
-  debugger;
   ok(this.sc.inState('#second'), "correctly in #second");
   ok(this.sc.inState('#e'), "correctly in #e");
   ok(this.sc.inState('#third'), "correctly in #third");

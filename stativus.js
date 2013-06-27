@@ -521,7 +521,6 @@ Stativus.Statechart = {
               tree: pivot.globalConcurrentState,
               localConcurrentState: pivot.localConcurrentState
             });
-            console.log('BANG!!!');
           }
           // #ifdef DEBUG_MODE
           else if (DEBUG_MODE){
@@ -761,8 +760,6 @@ Stativus.Statechart = {
   _flushPendingStateTransitions: function(){
     var pending = this._pendingStateTransitions.shift(), msg;
     if (!pending) return false;
-    console.log('BOOM!!!');
-    // debugger;
     this.goToState(pending.requestedState, pending.tree, pending.localConcurrentState);
     return true;
   },
@@ -846,7 +843,7 @@ Stativus.Statechart = {
     // has an initial sub state, then we must enter it too
     i = enterMatchIndex-1;
     cState = enterStates[i];
-    tree = (cState && cState.localConcurrentState) || tree;
+    tree = this._getValidLocalConcurrentState(cState) || tree;
     if (cState) this._cascadeEnterSubstates(cState, enterStates.slice(0, enterMatchIndex), i-1, tree, allStates);
     
     // once, we have fully hydrated the Enter State Stack, we must actually async unwind it 
@@ -1099,6 +1096,12 @@ Stativus.Statechart = {
       ret = keys[len-1];
     }
     return ret;
+  },
+  
+  _getValidLocalConcurrentState: function(state, allStates){
+    if (!state) return;
+    allStates = allStates || this._all_states[state.globalConcurrentState];
+    return state.localConcurrentState || this._getValidLocalConcurrentState(allStates[state.parentState], allStates);
   }
 	
 };
@@ -1226,7 +1229,6 @@ if (DEBUG_MODE){
     _eventHandled: null,
     
     create: function(statechart){
-      console.log("Creating TestStateObject...");
       var tso = creator.call(this);
       
       tso._eventsCalled = {};
