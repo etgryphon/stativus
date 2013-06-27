@@ -19,7 +19,11 @@ module("Module: Concurrency", {
     });
     
     this.sc.addState('#a', {
-      parentState: '#first'
+      parentState: '#first',
+      
+      testEvent: function(){
+        this.goToState('#i');
+      }
     });
     
     this.sc.addState('#b', {
@@ -69,7 +73,10 @@ module("Module: Concurrency", {
     });
     
     this.sc.addState('#i', {
-      parentState: '#other'
+      parentState: '#other',
+      testEvent: function(){
+        this.goToState({'#first': '#b', '#second': '#e'});
+      }
     });
     
     this.sc.addState('#j', {
@@ -92,4 +99,21 @@ test("Is Initial State Correct?", function() {
   var state = this.sc.getState('#main');
   ok(typeof state.history !== 'string', "#main's history is an array");
   equal(state.history.length, 3, "#main's history has three states");
+});
+
+test("multi-state transition", function(){
+  this.sc.sendEvent('testEvent');
+  debugger;
+  ok(this.sc.inState('#other'), "correctly in #other");
+  ok(this.sc.inState('#i'), "correctly in #i");
+  console.log('RIGHT BEFORE:');
+  this.sc.sendEvent('testEvent');
+  ok(this.sc.inState('#main'), "correctly in #main");
+  ok(this.sc.inState('#first'), "correctly in #first");
+  ok(this.sc.inState('#b'), "correctly in #b");
+  debugger;
+  ok(this.sc.inState('#second'), "correctly in #second");
+  ok(this.sc.inState('#e'), "correctly in #e");
+  ok(this.sc.inState('#third'), "correctly in #third");
+  ok(this.sc.inState('#f'), "correctly in #f");
 });
