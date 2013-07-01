@@ -17,10 +17,10 @@ efull: stativus.js
 
 minified: full
 	@@rm -f ./libs/$(MIN_NAME)
-	@@uglifyjs ./libs/$(FULL_NAME) > ./libs/$(MIN_NAME)
+	@@uglifyjs ./libs/$(FULL_NAME) --comments -m -o ./libs/$(MIN_NAME) --source-map ./build_log/$(MIN_NAME).map
 	@@echo 'Basic Minified version built'
 
 evented: efull
 	@@rm -f ./libs/$(EVENTED_NAME)
-	@@uglifyjs ./libs/$(EVTN_FULL_NAME) > ./libs/$(EVENTED_NAME)
+	@@uglifyjs ./libs/$(EVTN_FULL_NAME) --comments -m -o ./libs/$(EVENTED_NAME) --source-map ./build_log/$(EVENTED_NAME).map
 	@@echo 'Minified Evented version built'

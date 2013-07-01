@@ -1,10 +1,17 @@
 /*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ createNode*/
-/*
-@license
+
+/**
+  This is the code for creating statecharts in your javascript files
+  
+  @author: Evin Grano
+*/
+// Pre-processor for eventable code
+
+/** @preserve @license
 ==========================================================================
 Statechart -- A Micro Library
 Copyright: ©2011-2013 Evin Grano All rights reserved.
-          Portions ©2011-2013 Evin Grano
+          Portions ©2011-2013 Evin Grano, and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a 
 copy of this software and associated documentation files (the "Software"), 
@@ -29,14 +36,6 @@ For more information about Statechart, visit http://www.itsgotwhatplanscrave.com
 
 ==========================================================================
 */
-
-/**
-  This is the code for creating statecharts in your javascript files
-  
-  @author: Evin Grano
-*/
-// Pre-processor for eventable code
-// Helper function for creating prototypical objects...
 var creator = function(){
   function F() {}
   F.prototype = this;
