@@ -195,6 +195,47 @@ Stativus.State = {
       Stativus.DebugMessagingObject.sendLog('HISTORY STATE SET', this.name, ' history state set to: '+state.name, this.globalConcurrentState);
     }
     // #endif
+  },
+
+  tryToPerform: function(name, args) {
+    if (this[name]) {
+      return this[name];
+    }
+    else if (this.actions && args[0]){
+      var selectors = this._getSelectors(),
+          evt = args[0],
+          el  = jQuery(evt.target),
+          ret = false, i;
+
+      var selLen = selectors.length;
+
+      while (!ret && el.length > 0 && el[0] !== document.body) {
+        i = selLen;
+        while (!ret && ((i--) > 0)) {
+          if (el.is(selectors[i])) ret = selectors[i];
+        }
+        el = el.parent();
+      }
+      el = null;
+      if (ret && this.actions[ret][name]) return this.actions[ret][name];
+    }
+    return false;
+  },
+
+  _getSelectors: function() {
+    var selectors = this._selectors, actions = this.actions, name;
+    if (selectors) return selectors;
+    if (!actions) return [];
+
+    selectors = this._selectors = [];
+    actions   = this.actions;
+
+    for (name in actions) {
+      if (actions.hasOwnProperty(name)) {
+        selectors.push(name);
+      }
+    }
+    return selectors;
   }
 };
 // Our Maker function:  Thank you D.Crockford.
@@ -709,20 +750,21 @@ Stativus.Statechart = {
     name: _cascadeEvents
   */
   _cascadeEvents: function(evt, args, responder, allStates, tree){
-    var handled, ssName, found = false;
+    var handled, ssName, found = false, func;
     
     // substate prep work...
     ssName = this._splitConcurrencyKey(tree);
     
     while(!handled && responder){
-      if (responder[evt]){
+      func = EVENTABLE ? responder[evt] : responder.tryToPerform(evt, args);
+      if (func){
         // #ifdef DEBUG_MODE
         if (DEBUG_MODE) {
           Stativus.DebugMessagingObject.sendInfo('EVENT', responder.name, 'Fired \''+evt+'\' with '+(args.length || 0)+' argument(s)', responder.globalConcurrentState);
         }
         // #endif
         try {
-          handled = responder[evt].apply(responder, args);
+          handled = func.apply(responder, args);
         } catch(e){
           // #ifdef DEBUG_MODE
           if (DEBUG_MODE) {
