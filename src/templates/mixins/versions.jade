@@ -1,0 +1,47 @@
+mixin versions
+  script#versions-template(type='text/template')
+    .page-header
+      h1 Versions
+      p.lead
+        | There are two versions of Stativus available: 
+        a(href='#debug') Debug 
+        | and 
+        a(href='#minified') Minified.
+    .section#debug
+      h2 Debug 
+        small 49.152 kb
+      p.lead 
+        | This is the un-minified version of the code that has all functionality. In addition to improved readability, it has some 
+        | helpful messages that are output via console. These include the following:
+      p.debug-feature
+        strong Enter State: 
+        | All enterState() events are documented with 
+        code ENTER: *state_name*
+      p.debug-feature
+        strong Exit State: 
+        | All exitState() events are documented with 
+        code EXIT: *state_name*
+      p.debug-feature
+        strong State Events: 
+        | All events are documented with 
+        code EVENT: *event_name* fired with argument(s)
+      p.debug-feature
+        strong Will Enter State: 
+        | Will warn you if you forgot to return 
+        code true
+        |  when using 
+        code willEnterState()
+      p.debug-feature
+        strong Malformed statechart: 
+        | Any time your statechart is configured in such a way that it will break, you will get a console exception
+      p.debug-feature
+        strong Asynchronous processing: 
+        | Asynchronous starts and stops will be written to the console
+      .callout
+        h4 Important!
+        p The Stativus testing API is only available in the debug version.
+    .section#minified
+      h2 Minified 
+        small xx.xx kb
+      p.lead The minified version of Stativus is compressed and minified for production deployment. The only information output to the console 
+        | will be exception information.

@@ -1,0 +1,86 @@
+mixin api-nav
+  script#api-nav-template(type='text/template')
+    .bs-sidebar
+      ul.nav.bs-sidenav
+        li
+          a(href='#Stativus') Stativus
+          ul.nav
+            li
+              a(href='#createStatechart') createStatechart
+        li
+          a(href='#Statechart') Statechart
+          ul.nav
+            li
+              a(href='#addState') addState
+            li
+              a(href='#createStateTree') createStateTree
+            li
+              a(href='#currentState') currentState
+            li
+              a(href='#getActiveStates') getActiveStates
+            li
+              a(href='#getState') getState
+            li
+              a(href='#initStates') initStates
+            li
+              a(href='#inState') inState
+            li
+              a(href='#loadState') loadState
+            li
+              a(href='#sendEvent') sendEvent
+        li
+          a(href='#State') State
+          ul.nav
+            li
+              a(href='#getData') getData
+            li
+              a(href='#goToHistoryState') goToHistoryState
+            li
+              a(href='#goToState') goToState
+            li
+              a(href='#setData') setData
+        li
+          a(href='#StateProperties') State Properties
+          ul.nav
+            li
+              a(href='#globalConcurrentState') globalConcurrentState
+            li
+              a(href='#initialSubstate') initialSubstate
+            li
+              a(href='#parentState') parentState
+            li
+              a(href='#states') states
+            li
+              a(href='#substatesAreConcurrent') substatesAreConcurrent
+        li
+          a(href='#StateEvents') State Events
+          ul.nav
+            li
+              a(href='#enterState') enterState
+            li
+              a(href='#willEnterState') willEnterState
+            li
+              a(href='#didEnterState') didEnterState
+            li
+              a(href='#exitState') exitState
+            li
+              a(href='#willExitState') willExitState
+            li
+              a(href='#didExitState') didExitState
+        li
+          a(href='#TestEvents') Test Events
+          ul.nav
+            li
+              a(href='#t-enterState') enterState
+            li
+              a(href='#t-willEnterState') willEnterState
+            li
+              a(href='#willEnterCompleted') willEnterCompleted
+            li
+              a(href='#t-exitState') exitState
+            li
+              a(href='#t-willExitState') willExitState
+            li
+              a(href='#willExitCompleted') willExitCompleted
+            li
+              a(href='#t-transitionTo') transitionTo

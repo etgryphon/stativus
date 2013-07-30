@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
     <title>Stativus</title>
@@ -7,33 +7,7 @@
     <meta name="description" content="Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.">
     <meta>
     <meta>
-    <!-- Le styles-->
-    <link href="./assets/css/bootstrap.css" rel="stylesheet">
-    <style type="text/css">
-      body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-      }
-      .sidebar-nav {
-        padding: 9px 0;
-      }
-      .info-text {
-        font-size: 115%;
-      }
-      #license-modal {
-        width: 610px;
-      }
-    </style>
-    <link href="./assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements--><!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    <!-- Le fav and touch icons-->
-    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="./assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./assets/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./assets/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="./assets/ico/apple-touch-icon-57-precomposed.png">
-    <!-- Google Analytics idea from my beautiful wife-->
+    <link href="/assets/app.css" rel="stylesheet" type="text/css">
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-32146791-1']);
@@ -41,447 +15,115 @@
       _gaq.push(['_trackPageview']);
       
       (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        var ga = document.createElement('script');ga.type = 'text/javascript';ga.async = true;
+        ga.src = (document.location.protocol === 'https:' ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga, s);
       })();
       
     </script>
-    <script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-    <script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-    <script type="text/javascript">
-      (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-      })();
-    </script>
   </head>
-  <body>
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container-fluid"><a data-toggle="collapse" data-target=".nav-collapse" class="btn btn-navbar"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="#" class="eventable brand home-act">Stativus</a>
-          <div class="nav-collapse pull-right">
-            <ul class="nav">
-              <li><a href="#" class="eventable contact-act">Contact</a></li>
-              <li><span><a href="https://twitter.com/stativus" data-show-count="false" data-size="small" class="btn btn-primary twitter-follow-button">Follow @stativus</a></span></li>
-              <li><span><a href="https://twitter.com/share" data-via="etgryphon" data-related="etgryphon" data-hashtags="statecharts" class="btn btn-primary twitter-share-button">Tweet</a></span></li>
-            </ul>
-          </div>
+  <body data-offset="60" data-target=".bs-sidebar"><a href="https://github.com/etgryphon/stativus" target="_blank"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub" class="github-ribbon"/></a>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <button type="button" data-toggle="collapse" data-target=".nav-collapse" class="navbar-toggle"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#/" class="navbar-brand">Stativus</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="api"><a href="#/api">API</a></li>
+            <li id="guide"><a href="#/guide">Guide</a></li>
+            <li id="versions"><a href="#/versions">Versions</a></li>
+            <li id="samples"><a href="#/samples">Samples</a></li>
+            <li id="gists"><a href="#/gists">Gists</a></li>
+            <li id="faq"><a href="#/faq">FAQ</a></li>
+          </ul>
         </div>
       </div>
     </div>
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span2">
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Statecharts</li>
-              <li><a href="#" data="MenuPrimer" class="eventable underContruction">*Primer</a></li>
-              <li><a href="#" data="External Resources" class="eventable underContruction">*External Resources</a></li>
-              <li class="nav-header">API</li>
-              <li><a href="#" data="BasicAPI" class="eventable basic-api-act">Basic</a></li>
-              <li><a href="#" data="AdvancedAPI" class="eventable advanced-api-act">Advanced</a></li>
-              <li><a href="#" data="TestingAPI" class="eventable testing-api-act">Testing</a></li>
-              <li><a href="#" data="AllAPI" class="eventable all-api-act">All</a></li>
-              <li class="nav-header">Versions</li>
-              <li><a href="#" data="versionDebug" class="eventable debug-version-act">Debug-Mode</a></li>
-              <li><a href="#" data="versionBasic" class="eventable underContruction">*Basic</a></li>
-              <li><a href="#" data="versionEventable" class="eventable underContruction">*Eventable</a></li>
-              <li class="nav-header">Examples</li>
-              <li><a href="#" data="MenuQuickStart" class="eventable quick-start-act">Quick Start</a></li>
-              <li><a href="#" data="BasicExample" class="eventable underContruction">*Basic</a></li>
-              <li><a href="#" data="AdvancedExample" class="eventable underContruction">*Advanced</a></li>
-              <li class="nav-header">Demos</li>
-              <li><a href="http://demo.stativ.us">All Demos</a></li>
-              <li><a href="http://demo.stativ.us/html5-canvas/index.html">Redflix (jQuery, HTML5)</a></li>
-              <li class="nav-header">Miscellaneous</li>
-              <li><a href="#" data="Browsers" class="eventable underContruction">*Browser Compatibility</a></li>
-              <li><a href="#" data="License" class="eventable license-act">License</a></li>
-              <li><a href="#" data="Acknowledgements" class="eventable ack-act">Acknowledgements</a></li>
-            </ul>
-          </div>
+    <div class="wrapper">
+      <div id="content-container" class="container"></div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <div class="twitter pull-right"><a href="https://twitter.com/stativus" data-show-count="false" data-dnt="true" class="twitter-follow-button">Follow @stativus</a>
+          <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
         </div>
-        <div class="span9 home-page">
-          <div class="hero-unit">
-            <h1>Welcome to Stativus!</h1>
-            <p>Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.
-              <h3>Features:</h3>
-              <ul>
-                <li>Hierarchical (composite, nested) states</li>
-                <li>Local & Global Orthogonal (concurrent) states</li>
-                <li>Entry, exit, and transition-action control</li>
-                <li>Shallow/deep history</li>
-                <li>Event deferral</li>
-                <li>Support for asynchronous transitions</li>
-                <li>State-local Storage</li>
-                <li>Runtime Statechart construction</li>
-              </ul>
-              <h4>Version: <span style="font-weight: normal">0.9.0</span></h4>
-            </p>
-            <div class="pull-right"><a data="MainQuickStart" class="eventable btn btn-success btn-large quick-start-act">Quick Start &raquo;</a>
-              < > </ ><a data="LearnMorePrimer" class="btn btn-primary btn-large underContruction">*Learn More &raquo;</a>
-            </div>
-          </div>
-          <div class="row-fluid">
-            <div class="span4">
-              <h2>What Is a Statechart?</h2>
-              <p class="info-text">A Statechart is a hierarchical finite state machine that is very useful in building and organizing user interfaces...  </p></p>
-              <p><a href="#" data="WhatIsPrimer" class="btn underContruction">*Read Primer &raquo;</a></p>
-            </div>
-            <div class="span4">
-              <h2>An Issue or a Bug?</h2>
-              <p class="info-text">We are always working to constantly improve Stativus, so please submit any questions, issues or bugs at the github account... </p></p>
-              <p><a href="https://github.com/etgryphon/stativus/issues" class="btn">Submit an Issue &raquo;</a></p>
-            </div>
-            <div class="span4">
-              <h2>Where's the Code?</h2>
-              <p class="info-text">The code is hosted on Github: Watch, Fork, Play!</p>
-              <p><a href="https://github.com/etgryphon/stativus" class="btn">View code &raquo;</a></p>
-            </div>
-          </div>
+        <p class="text-muted credit">&nbsp;©&nbsp;<a href="https://github.com/etgryphon" target="_blank" alt="Evin Grano">Evin Grano</a>&nbsp;2013.</p>
+      </div>
+    </div>
+    <script id="api-template" type="text/template">
+      <div class="page-header">
+        <h1>API Documentation</h1>
+      </div>
+      <div class="row">
+        <div id="api-nav" class="col-lg-3"></div>
+        <div id="api-doc" class="col-lg-9"></div>
+      </div>
+    </script>
+    <script id="api-doc-template" type="text/template">
+      <div class="section doc-section">
+        <div class="page-header">
+          <h1 id="Stativus">Stativus</h1>
         </div>
-        <div style="display: none;" class="span9 quick-start-page">
-          <div style="display: none;" class="hero-unit quick-start-banner">
-            <h1>Quick Start!</h1>
-            <p>the very basics of getting a Stativus Statechart up and running.</p>
-            <p>You will Learn</p>
-            <ul>
-              <li>How to create a statechart...</li>
-              <li>How to create a state...</li>
-              <li>How to create a event in a state...</li>
-              <li>How to initialize a statechart once it is defined...</li>
-              <li>...and more!</li>
-            </ul>
-            <div class="pull-right"><a data="QuickStartBegin" class="eventable btn btn-success btn-large qs-step1-act">Begin &raquo;</a></div>
-          </div>
+        <h3 id="createStatechart">createStatechart</h3>
+        <p>
+          This is the function to actually create the statechart. 
+          This is the only function that needs to be called <b>first</b> 
+          in order for the other functions to work. This returns a 
+          <b>Stativus.Statechart</b> object. You can create as many 
+          statecharts as you want. You can even create them in your 
+          views to control how the view works in any of the MVC frameworks out there.
+        </p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var statechart = Stativus.createStatechart();</pre>
         </div>
-        <div style="display: none;" class="span9 qs-steps">
-          <div style="display: none;" class="qs-step1">
-            <h3>Step #1: Setup HTML...</h3>
-            <p>Create a directory put in the  <em>stativus.js</em> create some simple HTML in a file called <em>index.html</em> fill it will the following code...</p>
-            <pre><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en">
- <head>
-   <!- I'm using JQuery, but you can use whatever -!>
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-   <script src="./stativus.js"></script>
- </head>
- <body>
-   <div id="state-one" style="display: none; background-color: red; color: white;"> 
-     <h1>State One (#1)</h1>
-   </div>
-   <div id="state-two" style="display: none; background-color: blue; color: white;"> 
-     <h1>State Two (#2)</h1>
-   </div>
-   <script type="text/javascript">
-      // Statechart code goes here...
-   </script>
- </body>
-</html></pre>
-            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step2-act">Next &raquo;</a></div>
-          </div>
-          <div style="display: none;" class="qs-step2">
-            <h3>Step #2: Create Statechart...</h3>
-            <p>You need to create the statechart:</p>
-            <pre>var statechart = Stativus.createStatechart();</pre>
-            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step1-act">&laquo; Prev </a></div>
-            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step3-act">Next &raquo;</a></div>
-          </div>
-          <div style="display: none;" class="qs-step3">
-            <h3>Step #3: Create First State...</h3>
-            <p>you need to define your first state:</p>
-            <pre>statechart.addState("#state-one", {
-  enterState: function(){
-    $('#state-one').show(); // Using JQuery, but you can use whatever...
-  },
-  exitState: function(){
-    $('#state-one').hide(); // Using JQuery, but you can use whatever...
-  },
-  fireEvent: function(){
-    this.goToState('#state-two');
-  }
-});</pre>
-            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step2-act">&laquo; Prev </a></div>
-            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step4-act">Next &raquo;</a></div>
-          </div>
-          <div style="display: none;" class="qs-step4">
-            <h3>Step #4: Create Second State...</h3>
-            <p>you need to define your second state:</p>
-            <pre>statechart.addState("#state-two", {
-  enterState: function(){
-    $('#state-two').show(); // Using JQuery, but you can use whatever...
-  },
-  exitState: function(){
-    $('#state-two').hide(); // Using JQuery, but you can use whatever...
-  }
-  fireEvent: function(){
-    this.goToState('#state-one');
-  }
-});</pre>
-            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step3-act">&laquo; Prev </a></div>
-            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step5-act">Next &raquo;</a></div>
-          </div>
-          <div style="display: none;" class="qs-step5">
-            <h3>Step #5: Initializing the Statechart...</h3>
-            <p>initalizing the statechart to tell Stativus where the start state is...</p>
-            <pre>statechart.initStates('#state-one');</pre>
-            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step4-act">&laquo; Prev </a></div>
-            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-step6-act">Next &raquo;</a></div>
-          </div>
-          <div style="display: none;" class="qs-step6">
-            <h2>Finally,</h2>
-            <p>with everything put together it should look like this:</p>
-            <pre><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en">
- <head>
-   <!- I'm using JQuery, but you can use whatever -!>
-   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-   <script src="./stativus.js">   </script>
- </head>
- <body>
-   <div id="state-one" style="display: none; background-color: red; color: white;"> 
-     <h1>State One (#1)</h1>
-   </div>
-   <div id="state-two" style="display: none; background-color: blue; color: white;"> 
-     <h1>State Two (#2)</h1>
-   </div>
-   <script type="text/javascript">
-     var statechart = Stativus.createStatechart();
-     statechart.addState("#state-one", {
-       enterState: function(){
-         console.log('boom');
-         $('#state-one').show(); // Using JQuery, but you can use whatever...
-       },
-       exitState: function(){
-         $('#state-one').hide(); // Using JQuery, but you can use whatever...
-       },
-       fireEvent: function(){
-         this.goToState('#state-two');
-       }
-     });
-     statechart.addState("#state-two", {
-       enterState: function(){
-         $('#state-two').show(); // Using JQuery, but you can use whatever...
-       },
-       exitState: function(){
-         $('#state-two').hide(); // Using JQuery, but you can use whatever...
-       },
-       fireEvent: function(){
-         this.goToState('#state-one');
-       }
-     });
-     statechart.initStates('#state-one');
-|
-   </script>
- </body>
-</html></pre>
-            <div class="pull-left"><a class="eventable btn btn-success btn-large qs-step5-act">&laquo; Prev </a></div>
-            <div class="pull-right"><a class="eventable btn btn-success btn-large qs-stepFinal-act">Finish &raquo;</a></div>
-          </div>
-          <div style="display: none;" class="qs-stepFinal">
-            <h2>Use It!</h2>
-            <p>Open the command console and run the following commands:</p>
-            <pre>statechart.sendEvent('fireEvent');</pre>
-            <div class="pull-right"><a href="./quick-start.html" class="eventable btn btn-success btn-large">Working Demo &raquo;</a></div>
-          </div>
+      </div>
+      <div class="section doc-section">
+        <div class="page-header">
+          <h1 id="Statechart">Statechart</h1>
         </div>
-        <div style="display: none;" class="span9 api-page">
-          <div style="display: none;" class="hero-unit basic-api-header">
-            <h1>Basic API</h1>
-          </div>
-          <div style="display: none;" class="hero-unit advanced-api-header">
-            <h1>Advanced API</h1>
-          </div>
-          <div style="display: none;" class="hero-unit testing-api-header">
-            <h1>Testing API</h1>
-          </div>
-          <div style="display: none;" class="hero-unit all-api-header">
-            <h1>Complete API</h1>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h2>Stativus</h2>
-            <h6>namespace</h6><br/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>createStatechart()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is the function to actually create the statechart.  This is the only function that needs to be called <strong><em>first</em></strong> in order for the other functions to work.  This returns a <strong><em>Stativus.Statechart</em></strong> object.  You can create as many statecharts as you want. You can even create them in your views to control
-               how the view works in any of the MVC frameworks out there
-            </p>
-            <h4>Example</h4>
-            <pre>var statechart = Stativus.createStatechart();</pre>
-            <hr/>
-          </div>
-          <h2>Stativus.Statechart</h2>
-          <h6>namespace</h6><br/>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>addState\( name, def1, def2, ... \)</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><strong>'name' :: </strong><em>String  - REQUIRED</em></li>
-              <li> <strong>'def</strong><em>n</em><strong>' :: </strong><em> Object | Hash - REQUIRED &raquo; see Stativus.State.DefinitionParameters</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This function creates the state and you pass in the definition of the state.  An interesting bonus is that you 
-              can send in as many of these as you would like.  This helps when you have the same action or configuration that 
-              needs to go in several states.
-            </p>
-            <h4>Example</h4>
-            <pre>statechart.addState( 'first_state', {
+        <h3 id="addState">addState</h3>
+        <p>
+          This function creates the state and you pass in the definition of the state. 
+          An interesting bonus is that you can send in as many of these as you would like. 
+          This helps when you have the same action or configuration that needs to go in several states.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>Name of the state being added to the statechart</td>
+              </tr>
+              <tr>
+                <td>definition</td>
+                <td>State definition. See <a href="#StateProperties">State Properties</a> and <a href="#StateEvents">State Events</a></td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('first_state', {
   // Stativus.State.DefinitionParameters
 });</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>initStates( name )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'name' :: </strong><em>String | Hash - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This actually initializes the statechart and make the statechart enter the initial state. If the <strong>'name' </strong>is a <em>String </em>then it represents the name of the state in the <em>DEFAULT </em>statechart. If the value is an <em>Hash | Object </em>then it represents a key-value pair of the initial states for all the global concurrent states. 
-              global state = <em>KEY </em>and initial state name = <em>VALUE</em>
-            </p>
-            <h4>Example</h4>
-            <pre>// Example #1: String
-statechart.initStates('first_state');
-// Example #2: Hash | Object
-statechart.initStates({'default': 'first_state', 'modal_states': 'first_modal');</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>sendEvent\( name, param1, param2, ... \)</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><strong>'name' :: </strong><em>String - REQUIRED</em></li>
-              <li><strong>'param</strong><em>n</em><strong>' :: </strong><em> OPTIONAL</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This sends an event to all the global concurrent states.  If you are in a state that has the event/action
-              defined then it will respond with this trigger.  You can have <em>N</em>-number of parameters of any type and they will be passed to the function definition for the event on
-              the current states.
-            </p>
-            <h4>Example</h4>
-            <pre>// Example #1: no params
-statechart.sendEvent('viewMenu');
-// Example #2: one param
-statechart.sendEvent('openMenuItem', 3);
-// Example #3: n-params
-statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>getState( name, globalState)</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'name' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-              <li> <strong>'globalState' :: </strong><em>String - <strong>OPTIONAL</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is what you call to fetch a state. The second param, <em>'globalState' </em>is an optional param set to the global concurrent state name.  If you don't pass anything in
-              it defaults to <em>'default'</em>.
-            </p>
-            <h4>Example</h4>
-            <pre>// Example #1: no global param
-var state = statechart.getState('state_one');
-// Example #2: global conncurrent state param
-var state = statechart.sendEvent('other_state', 'modal_states');</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>currentState( globalState )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'globalState' :: </strong><em>String - <strong>OPTIONAL</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a helper function that will give you an array of all the current states that your are in. The param<em>'globalState' </em>is an optional param set to the global concurrent state name.  If you don't pass anything in
-              it defaults to <em>'default'</em>.
-            </p>
-            <h4>Example</h4>
-            <pre>// Example #1: no global param
-var states = statechart.currentState();
-// Example #2: global conncurrent state param
-var states = statechart.currentState('modal_states');</pre>
-            <hr/>
-            <h4>Function</h4>
-            <h3><code>getActiveStates\( globalState\)</code></h3>
-            <h4>Description</h4>
-            <p>This is an <em>alias </em>for<code>currentState\( ... \)</code></p>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>inState( globalState )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'name' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-              <li> <strong>'globalState' :: </strong><em>String - <strong>OPTIONAL</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a helper function when you are using the <em>DEBUG_MODE </em>version of the code. It will return <em>true </em>or <em>false </em>if you are in a state. This can be helpful for debugging. Not to be used in production.
-              .
-            </p>
-            <h4>Example</h4>
-            <pre>if ( statechart.inState('state_one', 'default') ) {
-  // do something ;
-} </pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>loadState: function(name, globalStatechart)</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'name' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-              <li> <strong>'globalStatechart' :: </strong><em>String - <strong>OPTIONAL</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This will convert the statechart to a Testing statechart, loading up the named state and permitting testing on there returned start object.</p>
-            <pre>var state = sc.loadState("#testingState");
-// or
-var state = sc.loadState("#testingState2", "error");</pre>
-            <h4>Returns</h4>
-            <ul>
-              <li> <strong>Type :: </strong><em>Stativus.TestStateObject</em></li>
-            </ul>
-            <h4>Function</h4>
-            <h3><code>createStateTree: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-            </ul>
-            <h4>Description</h4>
-            <p>This creates a tree representation of the statechart. Where each state
-              <is>represented similarly to the following example. Additionally, global</is>
-              <concurrent>states are represented as concurrent states underneath a</concurrent>
-              <state>named global.</state>
-            </p>
-            <pre>{
-  events: [
+        </div>
+        <h3 id="createStateTree">createStateTree</h3>
+        <p>
+          This creates a tree representation of the statechart. Where each state represented similarly 
+          to the following example. Additionally, global states are represented as concurrent states underneath a named global.
+        </p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">{
+events: [
     {
       name: 'eventName',
-      content: 'function(){goToState("aState");}',
+      content: 'function(){ goToState(&quot;aState&quot;); }',
       transitions: [ 'aState' ]
     }
   ],
@@ -489,223 +131,393 @@ var state = sc.loadState("#testingState2", "error");</pre>
   initialSubstate: undefined,
   isConcurrentSubstate: undefined,
   isInitialSubstate: undefined,
-  name: "global",
+  name: &quot;global&quot;,
   substates: [
-  ...
+    ...
   ]
 }</pre>
-            <h4>Returns</h4>
-            <ul>
-              <li> <strong>Type :: </strong><em>Hash</em></li>
-            </ul>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h2>Stativus.State</h2>
-            <h6>namespace</h6><br/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>goToState( name, data )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'name' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-              <li> <strong>'data' :: </strong><em>Object || String - <strong>OPTIONAL</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
-              This is <strong><em>ONLY </em></strong>to be called inside an event and as the last line after you <em>do </em>what you need to do.
-            </p>
-            <p>When you use the optional <strong>data </strong>paramter, the data that is included will be passed along and attached to the destination state. The data 
-              paramter can be either a String or an Object.
-            </p>
-            <h4>Example</h4>
-            <pre>statechart.addState('loading', {
+        </div>
+        <h3 id="currentState">currentState</h3>
+        <p>
+          This is a helper function that will give you an array of all the current states that your are in. 
+          The param <b>globalStateM</b> is an optional param set to the global concurrent state name. If you don&#39;t 
+          pass anything in it defaults to <b>default</b>.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>globalState</td>
+                <td>The global state namespace to search</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">// Example #1: no global param
+var states = statechart.currentState();
+// Example #2: global conncurrent state param
+var states = statechart.currentState('modal_states');</pre>
+        </div>
+        <h3 id="getActiveStates">getActiveStates</h3>
+        <p>This is an alias for <a href='#currentState'>currentState(...)</a></p>
+        <h3 id="getState">getState</h3>
+        <p>
+          This is what you call to fetch a state. The second param, <b>globalState</b> is an optional param set to the 
+          global concurrent state name. If you don&#39;t pass anything in it defaults to <b>default</b>.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>Name of the state to search for</td>
+              </tr>
+              <tr>
+                <td>globalState</td>
+                <td>Global state scope to search in</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">// Example #1: no global param
+var state = statechart.getState('state_one');
+// Example #2: global conncurrent state param
+var state = statechart.sendEvent('other_state', 'modal_states');</pre>
+        </div>
+        <h3 id="initStates">initStates</h3>
+        <p>
+          This actually initializes the statechart and make the statechart enter the initial state. 
+          If the <b>name</b> is a String then it represents the name of the state in the DEFAULT statechart. 
+          If the value is an Hash | Object then it represents a key-value pair of the initial states for 
+          all the global concurrent states. global state = KEY and initial state name = VALUE
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name | definition</td>
+                <td>The name of the state to init OR a hash containing global states to initialize</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">// Example #1: String
+statechart.initStates('first_state');
+// Example #2: Hash | Object
+statechart.initStates({ 'default': 'first_state', 'modal_states': 'first_modal' });</pre>
+        </div>
+        <h3 id="inState">inState</h3>
+        <p>
+          This is a helper function when you are using the DEBUG_MODE version of the code. It will return 
+          true or false if you are in a state. This can be helpful for debugging. Not to be used in production.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>Name of the state to search for</td>
+              </tr>
+              <tr>
+                <td>globalState</td>
+                <td>Global state scope to search in</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">if (statechart.inState('state_one', 'default')) {
+  // do something ;
+}</pre>
+        </div>
+        <h3 id="loadState">loadState</h3>
+        <p>
+          This will convert the statechart to a Testing statechart, loading up the named state and permitting 
+          testing on there returned start object.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>Name of the state to search for</td>
+              </tr>
+              <tr>
+                <td>globalState</td>
+                <td>Global state scope to search in</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = sc.loadState(&quot;#testingState&quot;);
+// or
+var state = sc.loadState(&quot;#testingState2&quot;, &quot;error&quot;);</pre>
+        </div>
+        <h3 id="sendEvent">sendEvent</h3>
+        <p>
+          This sends an event to all the global concurrent states. If you are in a state that has the event/action 
+          defined then it will respond with this trigger. You can have N-number of parameters of any type and they 
+          will be passed to the function definition for the event on the current states.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>Name of the event to broadcast</td>
+              </tr>
+              <tr>
+                <td>parameters</td>
+                <td>Data to be sent to the event</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">// Example #1: no params
+statechart.sendEvent('viewMenu');
+// Example #2: one param
+statechart.sendEvent('openMenuItem', 3);
+// Example #3: n-params
+statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});</pre>
+        </div>
+      </div>
+      <div class="section doc-section">
+        <div class="page-header">
+          <h1 id="State">State</h1>
+        </div>
+        <h3 id="getData">getData</h3>
+        <p>
+          This is the function that gets the local data to the state. You would use this when you need to retrieve 
+          local state data. The beauty of the state data storage is that it won&#39;t conflict with any other states local data. 
+          IMPORTANT: The get data function will traverse any on the child or parent states.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>key</td>
+                <td>The key to lookup in the data hash that is stored on the state</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = statechart.getState('state_one');
+state.getData('id');</pre>
+        </div>
+        <h3 id="goToHistoryState">goToHistoryState</h3>
+        <p>
+          Much like <code>goToState()</code> This will transition to the last substate of 'stateName'. This is ONLY to be called inside 
+          an event and as the last line after you do what you need to do.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>The history state that will be traversed to</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('loading', {
   // Stativus.State.DefinitionParameters...
   Stativus.State.DefinedEvents...
-  completeLoad: function(data){ // <= Event Definition
+  completeLoad: function(data){ // &lt;= Event Definition
+    // do stuff with the 'data'
+    this.goToHistoryState('ready');
+  }
+  // other events
+});</pre>
+        </div>
+        <h3 id="goToState">goToState</h3>
+        <p>
+          This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
+          This is ONLY to be called inside an event and as the last line after you do what you need to do.
+          |
+          When you use the optional data parameter, the data that is included will be passed along and attached to the 
+          destination state. The data paramter can be either a String or an Object.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>The destination state that will be traversed to</td>
+              </tr>
+              <tr>
+                <td>data</td>
+                <td>Data that is attached to the destination state</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('loading', {
+  // Stativus.State.DefinitionParameters...
+  Stativus.State.DefinedEvents...
+  completeLoad: function(data){ // &lt;= Event Definition
     // do stuff with the 'data'
     if (true) this.goToState('ready', 'data');
     else this.goToState('notReady', { err: 'data' });
   },
   // other events
 });
-&nbsp;
+ 
 statechart.addState('ready', {
   enterState: function() {
     var data = this.getData('data'); // will yield 'data'
   }
   // other events
 });
-&nbsp;
+ 
 statechart.addState('notReady', {
   enterState: function() {
     var data = this.getData('err'); // will yield 'data'
   }
   // other events
 });</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>goToHistoryState( name )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'name' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-              <li> <strong>'isRecursive' :: </strong><em>Boolean - <strong>OPTIONAL</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>Must like <code>goToState() </code>This will transition to the last substate of <em>'stateName'</em>. This is <strong><em>ONLY </em></strong>to be called inside an event and as the last line after you <em>do </em>what you need to do.</p>
-            <h4>Example</h4>
-            <pre>statechart.addState('loading', {
-  // Stativus.State.DefinitionParameters...
-  Stativus.State.DefinedEvents...
-  completeLoad: function(data){ // <= Event Definition
-    // do stuff with the 'data'
-    this.goToHistoryState('ready');
-  },
-  // other events
-});</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>setData( key, value )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'key' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-              <li> <strong>'value' :: </strong><em>ANY - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This is the function that sets the local data to the state.  You would use this when you need to pass/set data to 
-              be used in a state.
-            </p>
-            <h4>Example</h4>
-            <pre>var state = statechart.getState('state_one');
+        </div>
+        <h3 id="setData">setData</h3>
+        <p>
+          This is the function that sets the local data to the state. You would use this when you need to pass/set data to be used in a state. 
+          IMPORTANT: Any data set on a state will be accessible to it&#39;s any child states that it has.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>key</td>
+                <td>The key that data will be stored on the state hash with</td>
+              </tr>
+              <tr>
+                <td>value</td>
+                <td>The data that will be associated with the key on the state hash</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = statechart.getState('state_one');
 state.setData('id', 123);</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>getData( key )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'key' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This is the function that gets the local data to the state.  You would use this when you need to retrieve local state data. 
-              The beauty of the state data storage is that it won't conflict with any other states local data.
-            </p>
-            <h4>Example</h4>
-            <pre>var state = statechart.getState('state_one');
-state.getData('id');</pre>
-            <hr/>
-          </div>
-          <h2>Stativus.State.DefinitionParameters</h2>
-          <h6>definitions</h6><br/>
-          <div style="display: none;" class="basic-api">
-            <h4>Definition</h4>
-            <h3><code>globalConcurrentState</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><strong>Type :: </strong><em>String - <strong>OPTIONAL</strong></em></li>
-              <li><strong>Default Value :: </strong><em>default</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is the name of the global concurrent state that this state belongs to.  This is set in the<code>addState()</code>function and does not ever change.</p>
-            <h4>Example</h4>
-            <pre>statechart.addState('state_one', {
+        </div>
+      </div>
+      <div class="section doc-section">
+        <div class="page-header">
+          <h1 id="StateProperties">State Properties</h1>
+        </div>
+        <h3 id="globalConcurrentState">globalConcurrentState</h3>
+        <p>This is the name of the global concurrent state that this state belongs to. This is set in the <code>addState()</code> function and does not ever change.</p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('state_one', {
   globalConcurrentState: 'modal_states'
   // more Stativus.State.DefinitionParameters...
 });</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Definition</h4>
-            <h3><code>parentState</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><strong>Type :: </strong><em>String - <strong>OPTIONAL</strong></em></li>
-              <li><strong>Default Value :: </strong><em>undefined</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This value sets who the parent state of this substate is.  You do not need to add these in order, even though
-              its a good idea.  If you do not set a value or set it to <em>null </em>the statechart assumes that this is a top level state. It is added once in<code>addState()</code>function and never changes.
-            </p>
-            <h4>Example</h4>
-            <pre>statechart.addState('substate_one', {
-  parentState: 'state_one'
-  // more Stativus.State.DefinitionParameters...
-});</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Definition</h4>
-            <h3><code>initialSubstate</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><strong>Type :: </strong><em>String - <strong>REQUIRED</strong></em></li>
-              <li><strong>Default Value :: </strong><em>undefined</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This value sets in a parent state to tell it what substate to enter when someone calls<code>this.goToState('\< parentStateName \>')</code>. Technically, it isn't <em>required </em>persay, but it bad practice to just enter a parent state with substates and not go to a substate. 
-              This is added in the <code>addState()</code>function and never changes.
-            </p>
-            <h4>Example</h4>
-            <pre>statechart.addState('state_one', {
+        </div>
+        <h3 id="initialSubstate">initialSubstate</h3>
+        <p>
+          This value sets in a parent state to tell it what substate to enter when someone calls <code>this.goToState('parentStateName')</code>. 
+          Technically, it isn&#39;t required persay, but it bad practice to just enter a parent state with substates and not go to a substate. 
+          This is added in the <code>addState()</code> function and never changes.
+        </p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('state_one', {
   initialSubstate: 'substate_one',
   // more Stativus.State.DefinitionParameters...
 });</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="advanced-api">
-            <h4>Definition</h4>
-            <h3><code>substatesAreConcurrent</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><strong>Type :: </strong><em>Boolean - <strong>REQUIRED</strong></em></li>
-              <li><strong>Default Value :: </strong><em>undefined</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This value sets in a parent state to tell it that it should enter all of its substates. This gives you the fine 
-              grain control in substates to do multiple things at the same time. You do not use <code>initialSubstate</code> with this because it doesn't make any sense. 
-              This is added in the <code>addState()</code>function and never changes.
-            </p>
-            <h4>Example</h4>
-            <pre>statechart.addState('state_one', {
-  substatesAreConcurrent: true,
+        </div>
+        <h3 id="parentState">parentState</h3>
+        <p>
+          This value sets who the parent state of this substate is. You do not need to add these in order, 
+          even though its a good idea. If you do not set a value or set it to null the statechart assumes 
+          that this is a top level state. It is added once in <code>addState()</code> function and never changes.
+        </p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('substate_one', {
+  parentState: 'state_one'
   // more Stativus.State.DefinitionParameters...
 });</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="advanced-api">
-            <h4>Definition</h4>
-            <h3><code>states</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><strong>Type :: </strong><em>Array - <strong>REQUIRED</strong></em></li>
-              <li><strong>Default Value :: </strong><em>undefined</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              You can define substates within a state for a more concise way of defining your statechart. You do this by defining an 
-              array of hashes with the same APIs as <strong>Stativus.State.DefinitionParameters </strong>and<strong>Stativus.State.DefinitionEvents</strong>. There are two ways 
-              to do this. This is added in the <code>addState()</code>function and never changes.
-            </p>
-            <h4>Example Type #1: </h4>
-            <h5>create configuration code as a HASH</h5>
-            <pre>// Example #1:
+        </div>
+        <h3 id="states">states</h3>
+        <p>
+          You can define substates within a state for a more concise way of defining your statechart. 
+          You do this by defining an array of hashes with the same APIs as Stativus.State.DefinitionParameters 
+          and Stativus.State.DefinitionEvents. There are two ways to do this. This is added in the 
+          <code>addState()</code> function and never changes.
+        </p>
+        <h4>Example 1</h4>
+        <h4>Create configuration code as a HASH</h4>
+        <div class="highlight">
+          <pre class="brush: js">// Example #1:
 statechart.addState('state_one', {
   states: [
     {
@@ -735,64 +547,85 @@ statechart.addState('state_one', {
   ],
   // more Stativus.State.DefinitionParameters...
 });</pre>
-            <h4>Example Type #2:</h4>
-            <h5>You can also pass an array where the first argument <strong>\(String - REQUIRED\) </strong>is the name, next n-argument are config hashes</h5>
-            <pre>// Example #3: With shared functionality
+        </div>
+        <h4>Example 2</h4>
+        <h4>You can also pass an array where the first argument (String - REQUIRED) is the name, next n-argument are config hashes</h4>
+        <div class="highlight">
+          <pre class="brush: js">// Example #3: With shared functionality
 statechart.addState('state_one', {
   states: [
-    ['#substate_one', mySharedFunctions, /* <= shared function hash >*/ {
+    ['#substate_one', mySharedFunctions, /* &lt;= shared function hash &gt;*/ {
       enterState: function(){
         // define function
       }
     }],
-    ['#substate_two', mySharedFunctions, /* <= shared function hash >*/ {
+    ['#substate_two', mySharedFunctions, /* &lt;= shared function hash &gt;*/ {
       enterState: function(){
         // define function
       }
     }],
   // more Stativus.State.DefinitionParameters...
-});
- </pre>
-            <hr/>
-          </div>
-          <h2>Stativus.State.DefinitionEvents</h2>
-          <h6>definitions</h6><br/>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>enterState: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This is the first of the important default state events that need to be defined.  This event gets called when a state
-              gets entered.  This is <em>optional </em>and is added in the <code>addState()</code>function and never changes.
-            </p>
-            <h4>Example</h4>
-            <pre>statechart.addState('state_one', {
+});</pre>
+        </div>
+        <h3 id="substatesAreConcurrent">substatesAreConcurrent</h3>
+        <p>
+          This value sets in a parent state to tell it that it should enter all of its substates. This gives you 
+          the fine grain control in substates to do multiple things at the same time. You do not use 
+          initialSubstate with this because it doesn&#39;t make any sense. This is added in the <code>addState()</code> function and never changes.
+        </p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('state_one', {
+  substatesAreConcurrent: true,
+  // more Stativus.State.DefinitionParameters...
+});</pre>
+        </div>
+      </div>
+      <div class="section doc-section">
+        <div class="page-header">
+          <h1 id="StateEvents">State Events</h1>
+        </div>
+        <h3 id="enterState">enterState</h3>
+        <p>
+          This is the first of the important default state events that need to be defined. This event gets called when a state gets entered. 
+          This is optional and is added in the <code>addState()</code> function and never changes.
+        </p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('state_one', {
   // Stativus.State.DefinitionParameters...
   enterState: function(){
     // code that sets up the view or state.
   },
   // more Stativus.State.DefinitionEvents...
 });</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="advanced-api">
-            <h4>Function</h4>
-            <h3><code>willEnterState: function( statechart )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'done' :: </strong><em>function - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is the pre-loading event to be used for async functionality. You would need to return <strong>true </strong>from this function to pause the statechart allowing the async event to happen then you need to call <code>done()</code> to restart the statechart transition from state to state</p>
-            <pre>sc.addState("#second", {
+        </div>
+        <h3 id="willEnterState">willEnterState</h3>
+        <p>
+          This is the pre-loading event to be used for async functionality. You would need to return true from this function to pause 
+          the statechart allowing the async event to happen then you need to call <code>done()</code> to restart the statechart transition from state to state
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>done</td>
+                <td>Function that resumes statechart activity after asynchronous processing</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">sc.addState(&quot;#second&quot;, {
   willEnterState: function(done){
-    $('#content .boosh').animate({
-      left: 911,
+    $('#content .deep-thought').animate({
+      left: 42,
       complete: function () {
         done(); // REQUIRED!!: call this function to 
                 // restart the statechart transitions
@@ -803,58 +636,59 @@ statechart.addState('state_one', {
   },
   enterState: function(){ ... }
 });</pre>
-          </div>
-          <div style="display: none;" class="advanced-api">
-            <h4>Function</h4>
-            <h3><code>didEnterState: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is the post-loading event that you can use to do any last minute functionality</p>
-            <pre>sc.addState("#second", {
+        </div>
+        <h3 id="didEnterState">didEnterState</h3>
+        <p>This is the post-loading event that you can use to do any last minute functionality.</p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">sc.addState(&quot;#second&quot;, {
   didEnterState: function(){
     // setup refresh timers or fire an event
   }
 });</pre>
-          </div>
-          <div style="display: none;" class="basic-api">
-            <h4>Function</h4>
-            <h3><code>exitState: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>
-              This is the second most important of the default state events that need to be defined.  This event gets called when a state
-              gets exited.  This is <em>optional </em>and is added in the <code>addState()</code>function and never changes.
-            </p>
-            <h4>Example</h4>
-            <pre>statechart.addState('state_one', {
+        </div>
+        <h3 id="exitState">exitState</h3>
+        <p>
+          This is the second most important of the default state events that need to be defined. 
+          This event gets called when a state gets exited. This is optional and is added in the <code>addState()</code> function and never changes.
+        </p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">statechart.addState('state_one', {
   // Stativus.State.DefinitionParameters...
   exitState: function(){
     // code that tears down the view or state.
   },
   // more Stativus.State.DefinitionEvents...
 });</pre>
-            <hr/>
-          </div>
-          <div style="display: none;" class="advanced-api">
-            <h4>Function</h4>
-            <h3><code>willExitState: function( done )</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'done' :: </strong><em>function - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is the pre-exit event to be used for async functionality. You would need to return <strong>true </strong>from this function to pause the statechart allowing the async event to happen then you need to call <code>done()</code> to restart the statechart transition from state to state</p>
-            <pre>sc.addState("#second", {
+        </div>
+        <h3 id="willExitState">willExitState</h3>
+        <p>
+          This is the pre-exit event to be used for async functionality. You would need to return true from this 
+          function to pause the statechart allowing the async event to happen then you need to call <code>done()</code> 
+          to restart the statechart transition from state to state.
+        </p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>done</td>
+                <td>Function that resumes statechart activity after asynchronous processing</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">sc.addState(&quot;#second&quot;, {
   willExitState: function(done){
-    $('#content .boosh').animate({
-      right: 911,
+    $('#content .deep-thought').animate({
+      right: 42,
       complete: function () {
         done(); // REQUIRED!!: call this function to 
                 // restart the statechart transitions
@@ -865,261 +699,350 @@ statechart.addState('state_one', {
   },
   exitState: function(){ ... }
 });</pre>
-          </div>
-          <div style="display: none;" class="advanced-api">
-            <h4>Function</h4>
-            <h3><code>didExitState: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is the post-exiting event that you can use to do any last minute functionality</p>
-            <pre>sc.addState("#second", {
+        </div>
+        <h3 id="didExitState">didExitState</h3>
+        <p>This is the post-exiting event that you can use to do any last minute functionality.</p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">sc.addState(&quot;#second&quot;, {
   didExitState: function(){
     // kill variables; fire events; or send data.
   }
 });</pre>
-          </div>
-          <h2>Stativus.TestStateObject</h2>
-          <h6>definitions</h6><br/>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>enterState: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a function that will trigger an `enterState` call that can then test the state.</p>
-            <pre>var state = statechart.loadState('state1');
+        </div>
+      </div>
+      <div class="section doc-section">
+        <div class="page-header">
+          <h1 id="TestEvents">Test Events</h1>
+        </div>
+        <h3 id="t-enterState">enterState</h3>
+        <p>This is a function that will trigger an 'enterState' call that can then test the state.</p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = statechart.loadState('state1');
 state.enterState();</pre>
-          </div>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>willEnterState: function(done)</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'done' :: </strong><em>function - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a function that will trigger an `willEnterState` call that can then test the state. Example is using `qUnit` tests</p>
-            <pre>var state = SC.loadState("#async");
+        </div>
+        <h3 id="t-willEnterState">willEnterState</h3>
+        <p>This is a function that will trigger an `willEnterState` call that can then test the state. Example is using `qUnit` tests.</p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>done</td>
+                <td>Function that resumes statechart activity after asynchronous processing</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = SC.loadState(&quot;#async&quot;);
 state.willEnterState(function(){
   start();
 });
 stop();</pre>
-          </div>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>willExitCompleted: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a function that will return if the asynchronous call was made in the 'willEnterState' function</p>
-            <pre>var state = SC.loadState("#async");
+        </div>
+        <h3 id="willEnterCompleted">willEnterCompleted</h3>
+        <p>This is a function that will return if the asynchronous call was made in the 'willEnterState' function.</p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = SC.loadState(&quot;#async&quot;);
 state.willEnterState(function(){
   start();
   ok(state.willExitCompleted(), 'Will exit async call was completed');
   equal(mockObject.willExitCount, 1, 'willExitCount was successfully called');
 });
 stop();</pre>
-          </div>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>exitState: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a function that will trigger an `exitState` call that can then test the state.</p>
-            <pre>var state = statechart.loadState('state1');
+        </div>
+        <h3 id="t-exitState">exitState</h3>
+        <p>This is a function that will trigger an `exitState` call that can then test the state.</p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = statechart.loadState('state1');
 state.exitState();</pre>
-          </div>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>willExitState: function(done)</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'done' :: </strong><em>function - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a function that will trigger an `willExitState` call that can then test the state. Example is using `qUnit` tests</p>
-            <pre>var state = SC.loadState("#async");
+        </div>
+        <h3 id="t-willExitState">willExitState</h3>
+        <p>This is a function that will trigger an `willExitState` call that can then test the state. Example is using `qUnit` tests.</p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>done</td>
+                <td>Function that resumes statechart activity after asynchronous processing</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = SC.loadState(&quot;#async&quot;);
 state.willExitState(function(){
   start();
 });
 stop();</pre>
-          </div>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>willExitCompleted: function()</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li><em>none</em></li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a function that will return if the asynchronous call was made in the 'willEnterState' function</p>
-            <pre>var state = SC.loadState("#async");
+        </div>
+        <h3 id="willExitCompleted">willExitCompleted</h3>
+        <p>This is a function that will return if the asynchronous call was made in the 'willEnterState' function.</p>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = SC.loadState(&quot;#async&quot;);
 state.willExitState(function(){
   start();
   ok(state.willExitCompleted(), 'Will exit async call was completed');
   equal(mockObject.willExitCount, 1, 'willExitCount was successfully called');
 });
 stop();</pre>
-          </div>
-          <div style="display: none;" class="testing-api">
-            <h4>Function</h4>
-            <h3><code>transitionTo: function(name)</code></h3>
-            <h4>Parameters</h4>
-            <ul>
-              <li> <strong>'name' :: </strong><em>String - <strong>REQUIRED</strong></em>
-              </li>
-            </ul>
-            <h4>Description</h4>
-            <p>This is a function that will return true if the last action resulted in the state needing to transition to a different state</p>
-            <pre>var state = SC.loadState("#async");
+        </div>
+        <h3 id="t-transitionTo">transitionTo</h3>
+        <p>This is a function that will return true if the last action resulted in the state needing to transition to a different state.</p>
+        <h4>Parameters</h4>
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th style="width: 150px;">Parameter</th>
+              <th>Description</th>
+            </tr>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>Name of the state to transition to</td>
+              </tr>
+            </tbody>
+          </thead>
+        </table>
+        <h4>Example</h4>
+        <div class="highlight">
+          <pre class="brush: js">var state = SC.loadState(&quot;#async&quot;);
 state.enterState(); // switch state that immediately transitions to a new state
 ok(state.transitionedTo('newState'), 'state proper transition');</pre>
-          </div>
-        </div>
-        <div style="display: none;" class="span9 debug-version-page">
-          <div class="hero-unit">
-            <h1>Debug Version</h1>
-            <h6>For development</h6>
-            <h4>Size:<span style="font-weight: normal"><30k \(unminified and not gzipped\)</span></h4>
-          </div>
-          <p>This is the version that is un-minified version of the code that has all of the functionality of the <a href="#" class="eventable basic-version-act"></a>
-            <Basic>Version</Basic>. In addition it has some helpful<code>console.log</code>and <code>errors</code> when your code is in correctly designed.  These errors include the following:
-          </p>
-          <ul>
-            <li>All <code>enterState() </code>are documented with <code>ENTER: *state_name*</code></li>
-            <li>All <code>exitState()</code>'s are documented with <code>EXIT: <state_name></code></li>
-            <li>All events are documented with <code>EVENT: \<state_name\> fired [\<event_name\>] with \<n\> argument\(s\)</code></li>
-            <li>Any time your application is configured in such a way that it will break, you will get a console or exception</li>
-            <li>All Async starts and stops will be outputted to the console.</li>
-            <li>Will warn you if you forgot to return true when using <code>willEnterState\(\)</code></li>
-          </ul>
-        </div>
-        <div style="display: none;" class="span9 basic-version-page">
-          <div style="display: none;" class="hero-unit advanced-api-header">
-            <h1>Basic Version</h1>
-            <h6>For production</h6>
-            <h4>Size:<span style="font-weight: normal"><3k \(minified and gzipped\)</span></h4>
-          </div>
-          <p>This is the minified version of the code for production use.</p>
-        </div>
-        <div style="display: none;" class="span9 evt-version-page">
-          <div style="display: none;" class="hero-unit all-api-header">
-            <h1>Eventable Version</h1>
-            <h6>For production</h6>
-            <h4>Size:<span style="font-weight: normal">~3.3k \(minified and gzipped\)</span></h4>
-          </div>
-          <p>This is a special version of the code that does event propigation from user events.  </p>
         </div>
       </div>
-      <div id="info-modal" class="modal fade hide">
-        <div class="modal-header">Header</div>
-        <div class="modal-body">Info Text</div>
-        <div class="modal-footer"><a class="eventable btn btn-primary close-action">Close</a></div>
+    </script>
+    <script id="api-nav-template" type="text/template">
+      <div class="bs-sidebar">
+        <ul class="nav bs-sidenav">
+          <li><a href="#Stativus">Stativus</a>
+            <ul class="nav">
+              <li><a href="#createStatechart">createStatechart</a></li>
+            </ul>
+          </li>
+          <li><a href="#Statechart">Statechart</a>
+            <ul class="nav">
+              <li><a href="#addState">addState</a></li>
+              <li><a href="#createStateTree">createStateTree</a></li>
+              <li><a href="#currentState">currentState</a></li>
+              <li><a href="#getActiveStates">getActiveStates</a></li>
+              <li><a href="#getState">getState</a></li>
+              <li><a href="#initStates">initStates</a></li>
+              <li><a href="#inState">inState</a></li>
+              <li><a href="#loadState">loadState</a></li>
+              <li><a href="#sendEvent">sendEvent</a></li>
+            </ul>
+          </li>
+          <li><a href="#State">State</a>
+            <ul class="nav">
+              <li><a href="#getData">getData</a></li>
+              <li><a href="#goToHistoryState">goToHistoryState</a></li>
+              <li><a href="#goToState">goToState</a></li>
+              <li><a href="#setData">setData</a></li>
+            </ul>
+          </li>
+          <li><a href="#StateProperties">State Properties</a>
+            <ul class="nav">
+              <li><a href="#globalConcurrentState">globalConcurrentState</a></li>
+              <li><a href="#initialSubstate">initialSubstate</a></li>
+              <li><a href="#parentState">parentState</a></li>
+              <li><a href="#states">states</a></li>
+              <li><a href="#substatesAreConcurrent">substatesAreConcurrent</a></li>
+            </ul>
+          </li>
+          <li><a href="#StateEvents">State Events</a>
+            <ul class="nav">
+              <li><a href="#enterState">enterState</a></li>
+              <li><a href="#willEnterState">willEnterState</a></li>
+              <li><a href="#didEnterState">didEnterState</a></li>
+              <li><a href="#exitState">exitState</a></li>
+              <li><a href="#willExitState">willExitState</a></li>
+              <li><a href="#didExitState">didExitState</a></li>
+            </ul>
+          </li>
+          <li><a href="#TestEvents">Test Events</a>
+            <ul class="nav">
+              <li><a href="#t-enterState">enterState</a></li>
+              <li><a href="#t-willEnterState">willEnterState</a></li>
+              <li><a href="#willEnterCompleted">willEnterCompleted</a></li>
+              <li><a href="#t-exitState">exitState</a></li>
+              <li><a href="#t-willExitState">willExitState</a></li>
+              <li><a href="#willExitCompleted">willExitCompleted</a></li>
+              <li><a href="#t-transitionTo">transitionTo</a></li>
+            </ul>
+          </li>
+        </ul>
       </div>
-      <div id="license-modal" class="modal fade hide">
-        <div class="modal-header">
-          <h2>Stativus is licensed under MIT</h2>
-        </div>
-        <div class="modal-body">
-          <pre>/*! @license
-==========================================================================
-Stativus -- A Statechart Micro Library
-Copyright: ©2011-2012 Evin Grano All rights reserved.
-         Portions ©2011-2012 Evin Grano
-         
-Permission is hereby granted, free of charge, to any person obtaining a 
-copy of this software and associated documentation files (the "Software"), 
-to deal in the Software without restriction, including without limitation 
-the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-and/or sell copies of the Software, and to permit persons to whom the 
-Software is furnished to do so, subject to the following conditions:
- 
-The above copyright notice and this permission notice shall be included in 
-all copies or substantial portions of the Software.
- 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-DEALINGS IN THE SOFTWARE.
- 
-For more information about Stativus, visit http://stativ.us
- 
-==========================================================================
-@license */</pre>
-        </div>
-        <div class="modal-footer"><a class="eventable btn btn-primary close-action">Close</a></div>
+    </script>
+    <script id="faq-template" type="text/template">
+      <div class="page-header">
+        <h1>Frequently Asked Questions</h1>
+        <p class="lead">Find answers to some commonly asked questions</p>
       </div>
-      <div id="acknowledge-modal" class="modal fade hide">
-        <div class="modal-header">
-          <h2>Acknowledgements</h2>
+      <div class="section">
+        <div class="lead">Q: What type of license does Stativus have?</div>
+        <blockquote>
+          <p>A: Stativus is licensed under the terms of the <a href="http://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT license</a>.</p>
+        </blockquote>
+      </div>
+      <div class="section">
+        <div class="lead">Q: I have found an issue or bug, how do I report it?</div>
+        <blockquote>
+          <p>A: We are always working to constantly improve Stativus, so please <a href="https://github.com/etgryphon/stativus/issues" target="_blank">submit</a> any questions, issues or bugs at the github account...</p>
+        </blockquote>
+      </div>
+      <div class="section">
+        <div class="lead">Q: What browsers does Stativus support?</div>
+        <blockquote>
+          <p>A: Stativus supports all modern browsers: <a href="http://www.google.com/chrome" target="_blank">Google Chrome</a>, <a href="http://www.getfirefox.com" target="_blank">Mozilla Firefox</a>, and <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank">Internet Explorer 10</a>.</p>
+        </blockquote>
+      </div>
+      <div class="section">
+        <div class="lead">Q: Does Stativus support Internet Explorer 7, 8, or 9?</div>
+        <blockquote>
+          <p>A: Yes, Stativus will work in Internet Explorer 7, 8, and 9. Though, use of a <a href="http://en.wikipedia.org/wiki/Web_browser#Standards_support" target="_blank">modern browser </a>is encouraged.</p>
+        </blockquote>
+      </div>
+      <div class="section">
+        <div class="lead">Q: Can Stativus be used with JavaScript MV* frameworks?</div>
+        <blockquote>
+          <p>A: YES! I can be used with Backbone.js, knockout.js, SpoutCore, Ember.js, ExtJS, Spine, and others...</p>
+        </blockquote>
+      </div>
+      <div class="section">
+        <div class="lead">Q: Is there anywhere I can read more about statecharts?</div>
+        <blockquote>
+          <p>A: You can learn more about statecharts by reading David Harel&#39;s <a href="http://www.wisdom.weizmann.ac.il/~harel/SCANNED.PAPERS/Statecharts.pdf" target="_blank">white paper</a>.</p>
+        </blockquote>
+      </div>
+    </script>
+    <script id="gists-template" type="text/template">
+      <div class="page-header">
+        <h1>Stativus Gists</h1>
+        <p class="lead">Some sample code to help along the way</p>
+      </div>
+      <div class="media"><a href="https://gist.github.com/scarney81/6137075" target="_blank" class="pull-left"><img src="http://placehold.it/96x96" class="media-object"/></a>
+        <div class="media-body">
+          <h3 class="media-heading"><a href="https://gist.github.com/scarney81/6137075" target="_blank">Modifying Backbone.js views to fire Stativus events</a></h3>
+          <div class="lead">Use Backbone.js view action wire-up with Stativus eventing. Supports the following action definitions:</div>
+          <pre class="brush: js">...
+actions: {
+  'click a': 'foo', // equivalent to statechart.sendEvent('foo');
+  'click a': { event: 'foo', data: 'bar' } // equivalent to statechart.sendEvent('foo', 'bar');
+}
+...</pre><small>Also available as a JSFiddle: <a href="http://jsfiddle.net/JPDfr/" target="_blank">http://jsfiddle.net/JPDfr/</a></small>
         </div>
-        <div class="modal-body">
-          <h3>Jesus Christ</h3>
-          <p>How often I am arrogant and impressed with myself. And then I am gently reminded:
-            <pre>For who sees anything different in you? What do you have 
-that you did not receive? If then you received it, 
-why do you boast as if you did not receive it?
-- (1 Corinthians 4:7 ESV)</pre>I am in need of a rescuer and that rescuer is Jesus Christ.
-            <pre>And there is salvation in no one else, for there is no other name 
-under heaven given among men by which we must be saved.
-- (Acts 4:12 ESV)</pre>
+      </div>
+    </script>
+    <script id="guide-template" type="text/template">
+      <div class="page-header">
+        <h1>Guide</h1>
+        <p class="lead">Go from zero to statechart hero with this basic guide through Stativus</p>
+      </div>
+    </script>
+    <script id="home-template" type="text/template">
+      <div class="bs-masthead">
+        <div class="container">
+          <h1>Stativus</h1>
+          <p class="lead">
+            Stativus is a cross-browser, framework-independent micro-library that provides
+            full statechart functionality to your web application or web page.
           </p>
-          <h6>Contact Info:</h6><strong>Pray to Him</strong> -- <strong>Bible: </strong><a href="http://www.esvbible.org/esv/browse/">Read ESV</a>
-          <hr/>
-          <h3>Mike Ball</h3>
-          <p>
-            Mike is my technical partner in crime.  He did most of the development for the SproutCore Statecharts 
-            of which Stativus is derived.  He has been a constant friend and pushes me to make better and bolder 
-            choices.
-          </p>
-          <h6>Contact Info:</h6><strong>Twitter: </strong><a href="http://twitter.com/#!/onkis">@onkis</a> -- <strong>Github: </strong><a href="https://github.com/onkis">onkis</a> -- <strong>LinkedIn: </strong><a href="http://www.linkedin.com/pub/mike-ball/12/854/976">Mike Ball</a>
-          <hr/>
-          <h3>Erich Ocean</h3>
-          <p>
-            Erich was the first to introduce me to Statecharts and I will forever be grateful.  Erich has
-            to be one of the smartest and most well rounded technologists I have ever met.
-          </p>
-          <h6>Contact Info:</h6><strong>Twitter: </strong><a href="http://twitter.com/#!/erichocean">@erichocean</a> -- <strong>Github: </strong><a href="https://github.com/erichocean">erichocean</a> -- <strong>Website: </strong><a href="http://erichocean.com/">http://erichocean.com/</a>
+          <p><a class="btn btn-default btn-large download">Download Stativus</a>
+            <div class="callout hidden">
+              <h4>What&#39;s this?! </h4>
+              <p>We need to get a reliable download link</p>
+            </div>
+          </p><small class="version">v. 0.10.0</small>
         </div>
-        <div class="modal-footer"><a class="eventable btn btn-primary close-action">Close</a></div>
-      </div>   
-      <hr>
-      <footer>
-        <p>&copy; Evin Grano 2012</p>
-      </footer>
-    </div>
-    <!-- Le javascript-->
-    <!-- ==================================================-->
-    <!-- Placed at the end of the document so the pages load faster-->
-    <script src="./assets/js/jquery.js"></script>
-    <script src="./assets/js/stativus-evt-min.js"></script>
-    <script src="./assets/js/states.js"></script>
-    <script src="./assets/js/bootstrap-transition.js"></script>
-    <script src="./assets/js/bootstrap-alert.js"></script>
-    <script src="./assets/js/bootstrap-modal.js"></script>
-    <script src="./assets/js/bootstrap-dropdown.js"></script>
-    <script src="./assets/js/bootstrap-scrollspy.js"></script>
-    <script src="./assets/js/bootstrap-tab.js"></script>
-    <script src="./assets/js/bootstrap-tooltip.js"></script>
-    <script src="./assets/js/bootstrap-popover.js"></script>
-    <script src="./assets/js/bootstrap-button.js"></script>
-    <script src="./assets/js/bootstrap-collapse.js"></script>
-    <script src="./assets/js/bootstrap-carousel.js"></script>
-    <script src="./assets/js/bootstrap-typeahead.js"></script>
+      </div>
+      <div class="marketing">
+        <hr class="featurette-divider"/>
+        <div class="featurette"><a href="#" target="_blank"><img style="width: 300px; height: 300x;" src="http://placehold.it/300x300" class="featurette-image img-circle pull-right"/></a>
+          <h2 class="featurette-heading">What is a <span class="text-muted">Statechart?</span></h2>
+          <p class="lead">A Statechart is a hierarchical finite state machine that is very useful in building and organizing user interfaces. <a href="#">Read the primer...</a></p>
+        </div>
+        <hr class="featurette-divider"/>
+        <div class="featurette"><a href="#" target="_blank"><img style="width: 300px; height: 300x;" src="http://placehold.it/300x300" class="featurette-image img-circle pull-left"/></a>
+          <h2 class="featurette-heading">Why should I use <span class="text-muted">Statecharts?</span></h2>
+          <p class="lead">You should use statecharts because...</p>
+        </div>
+        <hr class="featurette-divider"/>
+        <div class="featurette"><a href="https://github.com/etgryphon/stativus" target="_blank"><img style="width: 300px; height: 300x;" src="http://placehold.it/300x300" class="featurette-image img-circle pull-right"/></a>
+          <h2 class="featurette-heading">Where&#39;s the <span class="text-muted">Code?</span></h2>
+          <p class="lead">The code is hosted on <a href='https://github.com/etgryphon/stativus' target='_blank'>Github</a>: Watch, Fork, Play!</p>
+        </div>
+      </div>
+    </script>
+    <script id="samples-template" type="text/template">
+      <div class="page-header">
+        <h1>Sample Applications</h1>
+        <p class="lead">
+          Imitation is the sincerest form of flattery. Learn how to build a Stativus powered application 
+          from other Stativus powered applications.
+        </p>
+      </div>
+      <div class="media"><a href="https://github.com/etgryphon/stativus/tree/gh-pages" target="_blank" class="pull-left"><img src="http://placehold.it/96x96" class="media-object"/></a>
+        <div class="media-body">
+          <h3 class="media-heading"><a href="https://github.com/etgryphon/stativus/tree/gh-pages" target="_blank">Stativus Documentation</a></h3>
+          <p class="lead">The main Stativus Documentation site is built with Stativus, <a href="http://jquery.com/" target="_blank">jQuery</a>, <a href="http://getbootstrap.com" target="_blank">Twitter Bootstrap</a>, <a href="http://alexgorbatchev.com/SyntaxHighlighter/" target="_blank">SyntaxHighlighter</a>, and <a href="http://mtrpcic.github.io/pathjs/" target="_blank">Path</a>.</p>
+        </div>
+      </div>
+      <div class="media"><a href="http://demo.stativ.us/html5-canvas/index.html" target="_blank" class="pull-left"><img src="http://placehold.it/96x96" class="media-object"/></a>
+        <div class="media-body">
+          <h3 class="media-heading"><a href="http://demo.stativ.us/html5-canvas/index.html" target="_blank">Red Flix</a></h3>
+          <p class="lead">Fake Movie Application for your TV. Developed with <a href="http://jquery.com/" target="_blank">jQuery</a> and HTML5 Canvas Only. Navigate with the Left, Right, Up, Down and Enter Keys (No Mouse)</p>
+        </div>
+      </div>
+    </script>
+    <script id="versions-template" type="text/template">
+      <div class="page-header">
+        <h1>Versions</h1>
+        <p class="lead">There are two versions of Stativus available: <a href="#debug">Debug </a>and <a href="#minified">Minified.</a></p>
+      </div>
+      <div id="debug" class="section">
+        <h2>Debug <small>49.152 kb</small></h2>
+        <p class="lead">
+           
+          This is the un-minified version of the code that has all functionality. In addition to improved readability, it has some 
+          helpful messages that are output via console. These include the following:
+        </p>
+        <p class="debug-feature"><strong>Enter State: </strong>All enterState() events are documented with <code>ENTER: *state_name*</code></p>
+        <p class="debug-feature"><strong>Exit State: </strong>All exitState() events are documented with <code>EXIT: *state_name*</code></p>
+        <p class="debug-feature"><strong>State Events: </strong>All events are documented with <code>EVENT: *event_name* fired with argument(s)</code></p>
+        <p class="debug-feature"><strong>Will Enter State: </strong>Will warn you if you forgot to return <code>true</code> when using <code>willEnterState()</code></p>
+        <p class="debug-feature"><strong>Malformed statechart: </strong>Any time your statechart is configured in such a way that it will break, you will get a console exception</p>
+        <p class="debug-feature"><strong>Asynchronous processing: </strong>Asynchronous starts and stops will be written to the console</p>
+        <div class="callout">
+          <h4>Important!</h4>
+          <p>The Stativus testing API is only available in the debug version.</p>
+        </div>
+      </div>
+      <div id="minified" class="section">
+        <h2>Minified <small>xx.xx kb</small></h2>
+        <p class="lead">
+          The minified version of Stativus is compressed and minified for production deployment. The only information output to the console 
+          will be exception information.
+        </p>
+      </div>
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="/assets/app.js"></script>
   </body>
 </html>
