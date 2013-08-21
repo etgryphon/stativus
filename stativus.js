@@ -95,28 +95,28 @@ if(DEBUG_MODE){
     sendLog: function(type, state, details, tree){
       if (this.level > 0) return;
       var msg = this._buildOutput(type, state, details, tree);
-      console.log(msg);
+      if (console && console.log) console.log(msg);
       return msg;
     },
 
     sendInfo: function(type, state, details, tree){
       if (this.level > 1) return;
       var msg = this._buildOutput(type, state, details, tree);
-      console.info(msg);
+      if (console && console.info) console.info(msg);
       return msg;
     },
 
     sendWarn: function(type, state, details, tree){
       if (this.level > 2) return;
       var msg = this._buildOutput(type, state, details, tree);
-      console.warn(msg);
+      if (console && console.warn) console.warn(msg);
       return msg;
     },
 
     sendError: function(type, state, details, tree){
       if (this.level > 3) return;
       var msg = this._buildOutput(type, state, details, tree);
-      console.error(msg);
+      if (console && console.error) console.error(msg);
       return msg;
     }
   };
