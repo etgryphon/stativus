@@ -1,11 +1,18 @@
-/*globals Stativus DEBUG_MODE EVENTABLE COLOR_MODE EVENT_COLOR EXIT_COLOR ENTER_COLOR exports $ createNode*/
+/*globals Stativus:true, DEBUG_MODE:true, COLOR_MODE:true, EVENT_COLOR:true, EXIT_COLOR:true, ENTER_COLOR:true, exports, $, createNode*/
 
 /**
   This is the code for creating statecharts in your javascript files
-  
+
   @author: Evin Grano
 */
-// Pre-processor for eventable code
+
+var jQueryIsLoaded=false;
+try {
+  if (jQuery) jQueryIsLoaded=true;
+}
+catch(err){
+  jQueryIsLoaded=false;
+}
 
 /** @preserve @license
 ==========================================================================
@@ -13,23 +20,23 @@ Statechart -- A Micro Library
 Copyright: ©2011-2013 Evin Grano All rights reserved.
           Portions ©2011-2013 Evin Grano, and contributors
 
-Permission is hereby granted, free of charge, to any person obtaining a 
-copy of this software and associated documentation files (the "Software"), 
-to deal in the Software without restriction, including without limitation 
-the rights to use, copy, modify, merge, publish, distribute, sublicense, 
-and/or sell copies of the Software, and to permit persons to whom the 
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation
+the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in 
-all copies or substantial portions of the Software and the Software is used 
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software and the Software is used
 for Good, and not Evil.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 
 For more information about Statechart, visit http://www.itsgotwhatplanscrave.com
@@ -44,17 +51,16 @@ var creator = function(){
 
 // helper function for merging in properties
 var merge = function(obj, configs){
-  var k;
   obj = obj || {};
   configs = configs || [];
   configs.forEach( function(x){
     if (typeof x === 'object'){
-      for (k in x){ 
-        if(x.hasOwnProperty(k)) obj[k] = x[k];         
+      for (var k in x){
+        if(x.hasOwnProperty(k)) obj[k] = x[k];
       }
     }
   });
-  
+
   return obj;
 };
 
@@ -65,26 +71,26 @@ Stativus = { DEFAULT_TREE: 'default', SUBSTATE_DELIM: 'SUBSTATE:', version: '0.1
 // State Object
 // ******************
 Stativus.State = {
-  
+
   // walk like a duck
   isState: true,
-  
+
   _data: null,
-  
+
   _isNone: function(value){
     return (value === undefined || value === null);
   },
-  
+
   goToState: function(name, data){
     var sc = this.statechart;
     if (sc){ sc.goToState(name, this.globalConcurrentState, this.localConcurrentState, data); }
   },
-  
+
   goToHistoryState: function(name, isRecursive){
     var sc = this.statechart;
     if (sc){ sc.goToHistoryState(name, this.globalConcurrentState, this.localConcurrentState, isRecursive); }
   },
-  
+
   sendEvent: function(evt){
     var sc = this.statechart;
     if (sc){ sc.sendEvent.apply(sc, arguments); }
@@ -92,14 +98,14 @@ Stativus.State = {
   sendAction: function(evt){
     return this.sendEvent.apply(this, arguments);
   },
-  
+
   getData: function(key){
     if (this._isNone(key)) return key;
     var sc = this.statechart, ret = this._data[key];
     if (this._isNone(ret)) ret = sc.getData(key, this.parentState, this.globalConcurrentState);
     return ret;
   },
-  
+
   setData: function(key, value){
     if (this._isNone(key)) return value;
     this._data[key] = value;
@@ -112,9 +118,57 @@ Stativus.State = {
       sc.removeData(key, this.parentState, this.globalConcurrentState);
     } else delete this._data[key];
   },
-  
+
   setHistoryState: function(state){
     this.history = this.substatesAreConcurrent ? this.substates : state.name;
+  },
+
+  _parseAndHandleEvents: function(events, remove) {
+    var sc = this.statechart, that = this;
+
+    function addEvent(evt, sel, fire) {
+      if (sel) {
+        jQuery('body').on(evt, sel, function (ev) { sc.sendEvent(fire, ev); });
+      }
+      else {
+        jQuery('body').on(evt, function (ev) { sc.sendEvent(fire, ev); });
+      }
+    }
+
+    function removeEvent(evt, sel) {
+      if (sel) {
+        jQuery('body').off(evt, sel);
+      }
+      else {
+        jQuery('body').off(evt);
+      }
+    }
+
+    for (var key in events) {
+      if (events.hasOwnProperty(key)) {
+        var split, evt, selector, toFire;
+        split    = key.split(' ');
+        evt      = split[0];
+        selector = split[1];
+        toFire   = events[key];
+        if(remove) removeEvent(evt, selector);
+        else addEvent(evt, selector, toFire);
+      }
+    }
+  },
+
+  _bindEvents: function() {
+    var prop = this.events || this.actions;
+    if (prop) {
+      this._parseAndHandleEvents(prop);
+    }
+  },
+
+  _unBindEvents: function() {
+    var prop = this.events || this.actions;
+    if (prop) {
+      this._parseAndHandleEvents(prop, true);
+    }
   }
 };
 // Our Maker function:  Thank you D.Crockford.
@@ -133,33 +187,33 @@ Stativus.State.create = function (config, sc) {
   TODO: Document more...
 */
 Stativus.Statechart = {
-  
+
   create: function(config){
-		var sc = creator.call(this);
-		
-		// config all the internal information 
+    var sc = creator.call(this);
+
+    // config all the internal information
     sc.isStatechart = true;
-		sc._all_states = {};
-		sc._all_states[Stativus.DEFAULT_TREE] = {};
-		sc._states_with_concurrent_substates = {};
-		sc._current_subtrees = {};
-		sc._current_state = {};
-		sc._current_state[Stativus.DEFAULT_TREE] = null;
-		sc._goToStateLocked = false;
-		sc._sendEventLocked = false;
-		sc._pendingStateTransitions = [];
-		sc._pendingEvents = [];
-		sc._active_subtrees = {};
+    sc._all_states = {};
+    sc._all_states[Stativus.DEFAULT_TREE] = {};
+    sc._states_with_concurrent_substates = {};
+    sc._current_subtrees = {};
+    sc._current_state = {};
+    sc._current_state[Stativus.DEFAULT_TREE] = null;
+    sc._goToStateLocked = false;
+    sc._sendEventLocked = false;
+    sc._pendingStateTransitions = [];
+    sc._pendingEvents = [];
+    sc._active_subtrees = {};
     sc._configs_in_waiting = {};
     sc._paused_transition_states = {};
-		
-		return sc;
-	},
-  
+
+    return sc;
+  },
+
   addState: function(name){
-	  var tree, obj, hasConcurrentSubstates = false, pState, pName, states,
-	      cTree, nState, config, configs = [], len, i, that = this, key;
-	  
+    var tree, obj, hasConcurrentSubstates = false, pState, pName, states,
+        cTree, nState, config, configs = [], len, i, that = this, key;
+
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
       hasConcurrentSubstates = hasConcurrentSubstates || !!config.substatesAreConcurrent;
@@ -168,39 +222,39 @@ Stativus.Statechart = {
     }
     tree = tree || Stativus.DEFAULT_TREE;
     config = len === 1 ? {} : merge(null, configs);
-	  // primary config is always the last config
-	  config.name = name;
-	  config.statechart = this;
-	  
-	  config.globalConcurrentState = tree;
-	  
-	  // Concurrent Substate checks: 
-	  // Do i have substates?
+    // primary config is always the last config
+    config.name = name;
+    config.statechart = this;
+
+    config.globalConcurrentState = tree;
+
+    // Concurrent Substate checks:
+    // Do i have substates?
     cTree = this._states_with_concurrent_substates[tree];
-	  if (hasConcurrentSubstates){
-	    obj = this._states_with_concurrent_substates[tree] || {};
-	    obj[name] = true;
-	    this._states_with_concurrent_substates[tree] = obj;
-	  } 
-	  // Am I a substate of any parent State?
-	  if (pName){
-	    pState = this._all_states[tree][pName];
+    if (hasConcurrentSubstates){
+      obj = this._states_with_concurrent_substates[tree] || {};
+      obj[name] = true;
+      this._states_with_concurrent_substates[tree] = obj;
+    }
+    // Am I a substate of any parent State?
+    if (pName){
+      pState = this._all_states[tree][pName];
       if(!pState) {
         key = pName+'_'+tree;
         this._configs_in_waiting[key] = pState = this._configs_in_waiting[key] || {};
       }
       pState.substates = pState.substates || [];
       pState.substates.push(name);
-	  }
-	  
-	  nState = Stativus.State.create(config, this);
-	  
-	  // Actually add the state to our statechart
-	  obj = this._all_states[tree] || {}; 
-	  obj[name] = nState;
-	  this._all_states[tree] = obj;
-	  nState._beenAdded = true;
-	  
+    }
+
+    nState = Stativus.State.create(config, this);
+
+    // Actually add the state to our statechart
+    obj = this._all_states[tree] || {};
+    obj[name] = nState;
+    this._all_states[tree] = obj;
+    nState._beenAdded = true;
+
     // Code to get the substates and add them.
     states = nState.states || [];
     states.forEach( function(x, idx){
@@ -226,10 +280,10 @@ Stativus.Statechart = {
         that.addState.apply(that, args);
       }
     });
-    
+
     return this;
   },
-  
+
   initStates: function(init){
     var x, state;
     this._inInitialSetup = true;
@@ -246,16 +300,16 @@ Stativus.Statechart = {
     }
     this._inInitialSetup = false;
     this._flushPendingEvents();
-    
+
     return this;
   },
-  
+
   goToState: function(requestedState, tree, localConcurrentState, data){
     var cState, allStates = this._all_states[tree], idx, len,
         enterStates = [], exitStates = [], haveExited, indexes, that,
         reqState, pState, i, substateTree, t,
         enterStateHandled, exitStateHandled, substates;
-    
+
 
     // First, find the current tree off of the localConcurrentState, then the main tree
     cState = (localConcurrentState && this._current_state[localConcurrentState]) || this._current_state[tree];
@@ -267,13 +321,13 @@ Stativus.Statechart = {
     } else {
       return;
     }
-    
+
 
     // if the current state is the same as the requested state do nothing
     if (this._checkAllCurrentStates(reqState, localConcurrentState || tree)) return;
 
     this._setDataOnState(reqState, data);
-    
+
     if (this._goToStateLocked){
       // There is a state transition currently happening. Add this requested
       // state transition to the queue of pending state transitions. The req
@@ -283,25 +337,25 @@ Stativus.Statechart = {
         tree: tree,
         localConcurrentState: localConcurrentState
       });
-      
+
       return;
     }
 
     // Lock for the current state transition, so that it all gets sorted out
     // in the right order
     this._goToStateLocked = true;
-    
+
     // Get the parent states for the current state and the registered state.
     // we will use them to find the commen parent state
     enterStates = this._parentStatesWithRoot(reqState);
     exitStates = cState ? this._parentStatesWithRoot(cState) : [];
     indexes = this._findCommonAncestor(exitStates, enterStates);
-    
+
     // Setup for the enter state sequence
     this._enterStates = enterStates;
     this._enterStateMatchIndex = indexes.second;
     this._enterStateTree = tree;
-    
+
     // Now, we will exit all the underlying states till we reach the common
     // parent state. We do not exit the parent state because we transition
     // within it.
@@ -311,36 +365,36 @@ Stativus.Statechart = {
       if (cState.substatesAreConcurrent) this._fullExitFromSubstates(tree, cState);
       this._exitStateStack.push(cState);
     }
-    
+
     // Now, that we have the full stack of states to exit
     // We can exit them in an orderly fashion.
     this._unwindExitStateStack();
   },
-  
+
   // Common Ancestor function:
-  // continue by finding the common parent state for the current and 
+  // continue by finding the common parent state for the current and
   // requested states:
   //
-  // At most, this takes O(m^2) time, where m is the maximum depth from the 
+  // At most, this takes O(m^2) time, where m is the maximum depth from the
   // root of the tree to either the requested state or the current state.
   // Will always be less than or equal to O(n^2), where n is the number
   // of states in the tree
   _findCommonAncestor: function(set1, set2){
     var idx, len, set1Idx, set2Idx = -1;
-    
+
     for (idx = 0, len = set1.length; idx < len; idx++){
       set1Idx = idx;
       set2Idx = set2.indexOf(set1[idx]);
       if(set2Idx >= 0) break;
     }
-    
-    // In the case where we don't find a common parent state, we 
+
+    // In the case where we don't find a common parent state, we
     // must enter from the root state
     if (set2Idx < 0) set2Idx = set2.length - 1;
-    
+
     return {first: set1Idx, second: set2Idx};
   },
-  
+
   _compileStateTransitions: function(stateTransitionObj, allStates){
     var key, curr, ret, indexes,
         retStates, currStates, pivot,
@@ -355,13 +409,13 @@ Stativus.Statechart = {
         } else {
           currStates = this._parentStates(allStates[curr]);
           indexes = this._findCommonAncestor(retStates, currStates);
-          
+
           // if we can't find a common ancestor then we have a violation of the statechart
           if (indexes.second < 0){
             continue;
           }
-          
-          // check to see if the common ancestor has concurrent substates because 
+
+          // check to see if the common ancestor has concurrent substates because
           // we need to pause transition on the parent state
           pivot = currStates[indexes.second];
           if (!pivot.substatesAreConcurrent){
@@ -380,18 +434,18 @@ Stativus.Statechart = {
             });
           }
         }
-        
+
       }
     }
     return ret;
   },
-    
+
   goToHistoryState: function(requestedState, tree, localConcurrentState, isRecursive){
     var allStatesForTree = this._all_states[tree],
         pState, realHistoryState;
     pState = allStatesForTree[requestedState];
     if (pState) realHistoryState = pState.history || pState.initialSubstate;
-    
+
     if(!realHistoryState){
       realHistoryState = requestedState;
     }
@@ -401,19 +455,19 @@ Stativus.Statechart = {
     }
     this.goToState(realHistoryState, tree);
   },
-  
-	currentState: function(tree){
+
+  currentState: function(tree){
     var ret, tmp, sTree, aTrees, bTree, cStates = this._current_state,
         cState, i, len, state, ps, aStates;
     tree = tree || 'default';
     cState = cStates[tree];
     aStates = this._all_states[tree];
-    
+
     // now add all the parents of the current state...
     if (cState && cState.isState){
       ret = this._parentStates(cState);
     }
-    
+
     // Now see if it has substates...
     if (cState && cState.substatesAreConcurrent){
       aTrees = this._active_subtrees[tree] || [];
@@ -427,7 +481,7 @@ Stativus.Statechart = {
     }
     return ret;
   },
-  
+
   sendEvent: function(evt){
     var args = [], len = arguments.length, i;
 
@@ -435,8 +489,8 @@ Stativus.Statechart = {
     for(i = 1; i < len; i++){
       args[i-1] = arguments[i];
     }
-    
-	  try {
+
+    try {
       if (this._inInitialSetup || this._sendEventLocked || this._goToStateLocked){
         // We want to prevent any events from occurring until
         // we have completed the state transitions and events
@@ -448,10 +502,10 @@ Stativus.Statechart = {
         return;
       }
       this._sendEventLocked = true;
-    
+
       // function that processes the event, diff for testing v. production
       this._processEvent(evt, args);
-      
+
     } catch(err) {
       this._restartEvents();
       throw err;
@@ -459,7 +513,7 @@ Stativus.Statechart = {
 
     this._restartEvents();
   },
-  
+
   _setDataOnState: function(state, data){
     if (state && typeof data !== 'undefined' && data !== null) {
       if (typeof data === 'string') state.setData(data, data);
@@ -470,11 +524,11 @@ Stativus.Statechart = {
       }
     }
   },
-  
+
   _processEvent: function(evt, args){
     this._structureCrawl('_cascadeEvents', evt, args);
   },
-  
+
   getData: function(key, stateName, tree){
     var allStates = this._all_states[tree], state;
     if (!allStates) return null;
@@ -488,7 +542,7 @@ Stativus.Statechart = {
     state = allStates[statename];
     if (state && state.isState) return state.removeData(key);
   },
-  
+
   getState: function(name, tree){
     var allStates, ret;
     tree = tree || Stativus.DEFAULT_TREE;
@@ -497,55 +551,57 @@ Stativus.Statechart = {
     ret = allStates[name];
     return ret;
   },
-  
+
   _restartEvents: function(){
-  	// Now, that the states have a chance to process the first action
+    // Now, that the states have a chance to process the first action
     // we can go ahead and flush the queued events
     this._sendEventLocked = false;
     if (!this._inInitialSetup) this._flushPendingEvents();
   },
-  
+
   _structureCrawl: function(func, evt, args){
     var tree, currentStates = this._current_state, i, len, sResponder, tmp,
         allStates, responder, aTrees, sTree, handled, found, ss = Stativus.SUBSTATE_DELIM;
     for(tree in currentStates){
-      if(!currentStates.hasOwnProperty(tree)) continue;
-    
-      handled = false;
-      sTree = null;
-      responder = currentStates[tree];
-      if (!responder || tree.slice(0, ss.length) === ss) continue;
-      // if we don't have an all state tree then we know that this is a substate tree
-      allStates = this._all_states[tree];
-      if(!allStates) continue;
-      aTrees = this._active_subtrees[tree] || [];
-      for(i = 0, len = aTrees.length; i < len; i++){
-        sTree = aTrees[i];
-        sResponder = currentStates[sTree];
-        tmp = handled ? [true, true] : this[func](evt, args, sResponder, allStates, sTree);
-        handled = tmp[0];
-      }
-      if (!handled) {
-        tmp = this[func](evt, args, responder, allStates, null);  
-        handled = tmp[0];
+      if(currentStates.hasOwnProperty(tree)) {
+
+        handled = false;
+        sTree = null;
+        responder = currentStates[tree];
+        if (!responder || tree.slice(0, ss.length) === ss) continue;
+        // if we don't have an all state tree then we know that this is a substate tree
+        allStates = this._all_states[tree];
+        if(!allStates) continue;
+        aTrees = this._active_subtrees[tree] || [];
+        for(i = 0, len = aTrees.length; i < len; i++){
+          sTree = aTrees[i];
+          sResponder = currentStates[sTree];
+          tmp = handled ? [true, true] : this[func](evt, args, sResponder, allStates, sTree);
+          handled = tmp[0];
+        }
+        if (!handled) {
+          tmp = this[func](evt, args, responder, allStates, null);
+          handled = tmp[0];
+        }
       }
     }
   },
-  
+
   /**
     @private
     name: _cascadeEvents
   */
   _cascadeEvents: function(evt, args, responder, allStates, tree){
-    var handled, ssName, found = false;
-    
+    var handled, ssName, found = false, func;
+
     // substate prep work...
     ssName = this._splitConcurrencyKey(tree);
-    
+
     while(!handled && responder){
-      if (responder[evt]){
+      func = responder[evt];
+      if (func){
         try {
-          handled = responder[evt].apply(responder, args);
+          handled = func.apply(responder, args);
         } catch(e){
         }
         found = true;
@@ -554,10 +610,10 @@ Stativus.Statechart = {
       if (tree && ssName === responder.name) return [handled, found];
       responder = !handled && responder.parentState ? allStates[responder.parentState] : null ;
     }
-    
+
     return [handled, found];
   },
-  
+
   _checkAllCurrentStates: function(reqState, tree){
     var currentStates = this.currentState(tree) || [];
     if (currentStates === reqState) return true;
@@ -565,7 +621,7 @@ Stativus.Statechart = {
     else if (currentStates.indexOf && currentStates.indexOf(reqState) > -1) return true;
     else return false;
   },
-  
+
   _flushPendingEvents: function(){
     var args, pa = this._pendingEvents.shift();
     if(!pa) return;
@@ -573,14 +629,14 @@ Stativus.Statechart = {
     args.unshift(pa.evt);
     this.sendEvent.apply(this, args);
   },
-  
+
   _flushPendingStateTransitions: function(){
     var pending = this._pendingStateTransitions.shift(), msg;
     if (!pending) return false;
     this.goToState(pending.requestedState, pending.tree, pending.localConcurrentState);
     return true;
   },
-    
+
   _fullEnter: function(state){
     var pState, tree, enterStateHandled = false;
     if (!state) return;
@@ -590,6 +646,7 @@ Stativus.Statechart = {
     try {
       if (state.enterState) state.enterState();
       if (state.didEnterState) state.didEnterState();
+      if (jQueryIsLoaded && (state.actions || state.events)) state._bindEvents();
     } catch(e){
     }
     if (state.parentState) {
@@ -598,17 +655,18 @@ Stativus.Statechart = {
     }
     this._unwindEnterStateStack();
   },
-  
-  
+
+
   _fullExit: function(state){
     var pState, tree, key;
     if (!state) return;
     var exitStateHandled = false;
     try {
+      if (jQueryIsLoaded && (state.actions || state.events)) state._unBindEvents();
       if (state.exitState) state.exitState();
       if (state.didExitState) state.didExitState();
-      
-      // check to see if we are in a concurrent substate and if we are the defined 
+
+      // check to see if we are in a concurrent substate and if we are the defined
       // state then delete the item else set the parent to the current state
       // debugger;
       tree = state.localConcurrentState || state.globalConcurrentState;
@@ -622,19 +680,19 @@ Stativus.Statechart = {
     }
     this._unwindExitStateStack();
   },
-  
+
   _initiateEnterStateSequence: function(){
     var enterStates, enterMatchIndex, concurrentTree, tree,
         allStates, i, cState;
-    
+
     enterStates = this._enterStates;
     enterMatchIndex = this._enterStateMatchIndex;
     tree = this._enterStateTree;
     allStates = this._all_states[tree];
-    
+
     // Initialize the Enter State Stack
     this._enterStateStack = this._enterStateStack || [];
-    
+
     // Finally, from the common parent state, but not including the parent state,
     // enter the sub states down to the requested state. If the requested state
     // has an initial sub state, then we must enter it too
@@ -642,27 +700,27 @@ Stativus.Statechart = {
     cState = enterStates[i];
     tree = this._getValidLocalConcurrentState(cState) || tree;
     if (cState) this._cascadeEnterSubstates(cState, enterStates.slice(0, enterMatchIndex), i-1, tree, allStates);
-    
-    // once, we have fully hydrated the Enter State Stack, we must actually async unwind it 
+
+    // once, we have fully hydrated the Enter State Stack, we must actually async unwind it
     this._unwindEnterStateStack();
-    
+
     // Cleanup
     enterStates = null;
     enterMatchIndex = null;
     concurrentTree = null;
     tree = null;
-    
+
     delete this._enterStates;
     delete this._enterStateMatchIndex;
     delete this._enterStateTree;
   },
-  
+
   _cascadeEnterSubstates: function(start, requiredStates, index, tree, allStates){
     var cState, pState, subStates, that = this, newReqStates,
         nTree, bTree, name, currStates, aTrees, nTreeBase;
-        
+
     if (!start || that._checkIfPausedState(start)) return;
-        
+
     name = start.name;
     this._enterStateStack.push(start);
     start.localConcurrentState = tree;
@@ -672,36 +730,36 @@ Stativus.Statechart = {
       subStates = start.substates || [];
       subStates.forEach( function(x){
         cState = allStates[x];
-        
+
         // check to see if this state is on the paused list
         // if, yes, then decrement the list count
         if(that._checkIfPausedState(cState)) return;
-        
+
         // Now, we have to push the item onto the active subtrees for
         // the base tree for later use of the events.
         nTree = nTreeBase+'=>'+x;
         // that._addActiveConcurrentSubstate(cState, nTree);
 
         // If we have required states and we are in the middle of them
-        // check to see if we are on the required list and decrement the 
+        // check to see if we are on the required list and decrement the
         // index and use the required list of states
         if (index > -1 && requiredStates[index] === cState){
           index = index - 1;
           newReqStates = requiredStates;
-        // if we are in one of the other substates we *don't* have any 
+        // if we are in one of the other substates we *don't* have any
         // required states so we must zero it out and just flow naturally
         // through the initialSubstates.
         } else {
           newReqStates = [];
         }
         that._cascadeEnterSubstates(cState, newReqStates, index, nTree, allStates);
-	    });
-	    return;        
+      });
+      return;
     }
     else {
       // now we can trigger the lower levels of the state
       cState = requiredStates[index];
-      if (cState){ 
+      if (cState){
         if (index > -1 && requiredStates[index] === cState) index = index - 1;
         this._cascadeEnterSubstates( cState, requiredStates, index, tree, allStates);
       }
@@ -712,7 +770,7 @@ Stativus.Statechart = {
       }
     }
   },
-  
+
   _addActiveConcurrentSubstate: function(state, localConcurrentKey){
     var gTree, aTrees;
     if(!localConcurrentKey || state.globalConcurrentState === localConcurrentKey) return;
@@ -723,7 +781,7 @@ Stativus.Statechart = {
       this._active_subtrees[gTree] = aTrees;
     }
   },
-  
+
   _checkIfPausedState: function(state){
     // check to see if this state is on the paused list
     // if, yes, then decrement the list count
@@ -733,37 +791,37 @@ Stativus.Statechart = {
     }
     return false;
   },
-  
+
   _fullExitFromSubstates: function(tree, stopState){
     var cStates, allStates, func, that = this;
     if (!tree || !stopState || !tree || !stopState.substates) return;
-    
+
     allStates = this._all_states[tree];
     cStates = this._current_state;
     this._exitStateStack = this._exitStateStack || [];
-    
+
     stopState.substates.forEach( function(state){
       var substateTree, currState, curr, exitStateHandled, aTrees;
       substateTree = [Stativus.SUBSTATE_DELIM, tree, stopState.name, state].join('=>');
-	    currState = cStates[substateTree];
-	    while(currState && currState !== stopState){
-	      exitStateHandled = false;
+      currState = cStates[substateTree];
+      while(currState && currState !== stopState){
+        exitStateHandled = false;
         if (!currState) continue;
-	      if (that._exitStateStack.indexOf(currState) < 0){
-  	      that._exitStateStack.push(currState);
+        if (that._exitStateStack.indexOf(currState) < 0){
+          that._exitStateStack.push(currState);
 
-  	      // check to see if it has substates
-  	      if(currState.substatesAreConcurrent) that._fullExitFromSubstates(tree, currState);
-	      }
-	      curr = currState.parentState;
-	      currState = allStates[curr];
-	    }
-	    
-	    // Now, remove this from the active substate tree
-	    that._active_subtrees[tree] = that._removeFromActiveTree(tree, substateTree);
+          // check to see if it has substates
+          if(currState.substatesAreConcurrent) that._fullExitFromSubstates(tree, currState);
+        }
+        curr = currState.parentState;
+        currState = allStates[curr];
+      }
+
+      // Now, remove this from the active substate tree
+      that._active_subtrees[tree] = that._removeFromActiveTree(tree, substateTree);
     });
   },
-  
+
   // @private
   // this function unwinds the next item on the exitStateStack...
   _unwindExitStateStack: function(){
@@ -812,7 +870,7 @@ Stativus.Statechart = {
     }
     else {
       delete this._enterStateStack;
-      
+
       // Ok, we're done with the current state transition. Make sure to unlock
       // the goToState and let other pending state transitions
       this._goToStateLocked = false;
@@ -824,7 +882,7 @@ Stativus.Statechart = {
       }
     }
   },
-  
+
   // TODO: make this more efficient
   _removeFromActiveTree: function(baseTree, tree){
     var nArray = [], aTrees = this._active_subtrees[baseTree];
@@ -834,35 +892,35 @@ Stativus.Statechart = {
     aTrees.forEach( function(x){
       if(x !== tree) nArray.push(x);
     });
-    
+
     return nArray;
   },
-  
+
   _parentStateObject: function(name, tree){
     if(name && tree && this._all_states[tree]){
       return this._all_states[tree][name];
     }
   },
-  
+
   _parentStates: function(state){
     var ret = [], curr = state;
     // always add first state
     ret.push(curr);
     curr = this._parentStateObject(curr.parentState, curr.globalConcurrentState);
-    
+
     while(curr){
       ret.push(curr);
       curr = this._parentStateObject(curr.parentState, curr.globalConcurrentState);
     }
     return ret;
   },
-  
+
   _parentStatesWithRoot: function(state){
     var ret = this._parentStates(state);
     ret.push('root');
     return ret;
   },
-  
+
   _splitConcurrencyKey: function(key){
     var ret, len, keys;
     if (key){
@@ -872,18 +930,17 @@ Stativus.Statechart = {
     }
     return ret;
   },
-  
+
   _getValidLocalConcurrentState: function(state, allStates){
     if (!state) return;
     allStates = allStates || this._all_states[state.globalConcurrentState];
     return state.localConcurrentState || this._getValidLocalConcurrentState(allStates[state.parentState], allStates);
   }
-	
+
 };
 
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
-// All this code will add some awesome eventing structure that looks like backbone.js
-// 
+
 // TODO:  Work on AMD Loading...
 if (typeof window !== "undefined") {
   window.Stativus = Stativus;
