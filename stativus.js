@@ -969,8 +969,7 @@ Stativus.Statechart = {
   // @private
   // this function unwinds the next item on the exitStateStack...
   _unwindExitStateStack: function(){
-    var stateToExit, delayForAsync = false, stateRestart,
-        sc = this;
+    var stateToExit, delayForAsync = false, stateRestart, sc = this;
     this._exitStateStack = this._exitStateStack || [];
     stateToExit = this._exitStateStack.shift();
     if(stateToExit){
@@ -980,7 +979,6 @@ Stativus.Statechart = {
         // into the willExitState call that will restart the state
         // exit for this path as needed
         stateRestart = function(){
-          var sc = this._statechart;
           // #ifdef DEBUG_MODE
           if (DEBUG_MODE) {
             Stativus.DebugMessagingObject.sendLog('ASYNC', stateToExit.name, 'willExitState() completed!', stateToExit.globalConcurrentState);
@@ -1007,8 +1005,8 @@ Stativus.Statechart = {
   // @private
   // this function unwinds the next item on the enterStateStack...
   _unwindEnterStateStack: function(){
-    var stateToEnter, delayForAsync = false, stateRestart, more, that = this;
     this._exitStateStack = this._exitStateStack || [];
+    var stateToEnter, delayForAsync = false, stateRestart, more, sc = this;
     stateToEnter = this._enterStateStack.shift();
     if(stateToEnter){
       if (stateToEnter.willEnterState) {
@@ -1022,7 +1020,7 @@ Stativus.Statechart = {
             Stativus.DebugMessagingObject.sendLog('ASYNC', stateToEnter.name, 'willEnterState() completed!', stateToEnter.globalConcurrentState);
           }
           // #endif
-          if (that) that._fullEnter(stateToEnter);
+          if (sc) sc._fullEnter(stateToEnter);
         };
         delayForAsync = stateToEnter.willEnterState(stateRestart);
         // #ifdef DEBUG_MODE
