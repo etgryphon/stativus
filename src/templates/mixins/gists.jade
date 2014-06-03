@@ -1,0 +1,20 @@
+mixin gists
+  script#gists-template(type='text/template')
+    .page-header
+      h1 Stativus Gists
+      p.lead Some sample code to help along the way
+    .media
+      a.pull-left(href='https://gist.github.com/scarney81/6137075', target='_blank')
+        img.media-object(src='http://placehold.it/96x96')
+      .media-body
+        h3.media-heading: a(href='https://gist.github.com/scarney81/6137075', target='_blank') Modifying Backbone.js views to fire Stativus events
+        .lead Use Backbone.js view action wire-up with Stativus eventing. Supports the following action definitions:
+        pre(class='brush: js')
+          | ...
+          | actions: {
+          |   'click a': 'foo', // equivalent to statechart.sendEvent('foo');
+          |   'click a': { event: 'foo', data: 'bar' } // equivalent to statechart.sendEvent('foo', 'bar');
+          | }
+          | ...
+        small Also available as a JSFiddle: 
+          a(href='http://jsfiddle.net/JPDfr/', target='_blank') http://jsfiddle.net/JPDfr/

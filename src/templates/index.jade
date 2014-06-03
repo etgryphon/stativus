@@ -1,0 +1,54 @@
+include mixins/api
+include mixins/api-doc
+include mixins/api-nav
+include mixins/faq
+include mixins/footer
+include mixins/gists
+include mixins/guide
+include mixins/header
+include mixins/home
+include mixins/samples
+include mixins/versions
+
+!!!
+html
+  head
+    meta(charset="utf-8")
+    title Stativus
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="description", content="Stativus is a browser-independent, framework-independent micro-library that provides full statechart functionality to your web application or web page.")
+    meta (name="author", content="Evin Grano")
+    meta (name="keywords", content="statechart,javascript,micro,library,html,jquery,js")
+    link(href='/assets/app.css', rel='stylesheet',type='text/css')
+    script(type='text/javascript')
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-32146791-1']);
+      _gaq.push(['_setDomainName', 'stativ.us']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script');ga.type = 'text/javascript';ga.async = true;
+        ga.src = (document.location.protocol === 'https:' ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(ga, s);
+      })();
+
+  body(data-offset='60', data-target='.bs-sidebar')
+    mixin header
+
+    .wrapper
+      .container#content-container
+    
+    mixin footer
+
+    mixin api
+    mixin api-doc
+    mixin api-nav
+    mixin faq
+    mixin gists
+    mixin guide
+    mixin home
+    mixin samples
+    mixin versions
+  
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
+    script(src="/assets/app.js")

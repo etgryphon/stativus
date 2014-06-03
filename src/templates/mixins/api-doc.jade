@@ -1,0 +1,720 @@
+mixin api-doc
+  script#api-doc-template(type='text/template')
+    .section.doc-section
+      .page-header
+          h1#Stativus Stativus
+      h3#createStatechart createStatechart
+      p
+        | This is the function to actually create the statechart. 
+        | This is the only function that needs to be called <b>first</b> 
+        | in order for the other functions to work. This returns a 
+        | <b>Stativus.Statechart</b> object. You can create as many 
+        | statecharts as you want. You can even create them in your 
+        | views to control how the view works in any of the MVC frameworks out there.
+      h4 Example
+      .highlight
+        pre(class='brush: js') var statechart = Stativus.createStatechart();
+
+    .section.doc-section
+      .page-header
+          h1#Statechart Statechart
+      h3#addState addState
+      p
+        | This function creates the state and you pass in the definition of the state. 
+        | An interesting bonus is that you can send in as many of these as you would like. 
+        | This helps when you have the same action or configuration that needs to go in several states.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | Name of the state being added to the statechart
+            tr
+              td definition
+              td
+                | State definition. See 
+                a(href='#StateProperties') State Properties
+                |  and 
+                a(href='#StateEvents') State Events
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('first_state', {
+          |   // Stativus.State.DefinitionParameters
+          | });
+
+      h3#createStateTree createStateTree
+      p
+        | This creates a tree representation of the statechart. Where each state represented similarly 
+        | to the following example. Additionally, global states are represented as concurrent states underneath a named global.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | {
+          | events: [
+          |     {
+          |       name: 'eventName',
+          |       content: 'function(){ goToState("aState"); }',
+          |       transitions: [ 'aState' ]
+          |     }
+          |   ],
+          |   hasConcurrentSubstates: true,
+          |   initialSubstate: undefined,
+          |   isConcurrentSubstate: undefined,
+          |   isInitialSubstate: undefined,
+          |   name: "global",
+          |   substates: [
+          |     ...
+          |   ]
+          | }
+
+      h3#currentState currentState
+      p
+        | This is a helper function that will give you an array of all the current states that your are in. 
+        | The param <b>globalStateM</b> is an optional param set to the global concurrent state name. If you don&#39;t 
+        | pass anything in it defaults to <b>default</b>.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td globalState
+              td
+                | The global state namespace to search
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | // Example #1: no global param
+          | var states = statechart.currentState();
+          | // Example #2: global conncurrent state param
+          | var states = statechart.currentState('modal_states');
+
+      h3#getActiveStates getActiveStates
+      p
+        | This is an alias for <a href='#currentState'>currentState(...)</a>
+
+      h3#getState getState
+      p
+        | This is what you call to fetch a state. The second param, <b>globalState</b> is an optional param set to the 
+        | global concurrent state name. If you don&#39;t pass anything in it defaults to <b>default</b>.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | Name of the state to search for
+            tr
+              td globalState
+              td
+                | Global state scope to search in
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | // Example #1: no global param
+          | var state = statechart.getState('state_one');
+          | // Example #2: global conncurrent state param
+          | var state = statechart.sendEvent('other_state', 'modal_states');
+
+      h3#initStates initStates
+      p
+        | This actually initializes the statechart and make the statechart enter the initial state. 
+        | If the <b>name</b> is a String then it represents the name of the state in the DEFAULT statechart. 
+        | If the value is an Hash | Object then it represents a key-value pair of the initial states for 
+        | all the global concurrent states. global state = KEY and initial state name = VALUE
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name | definition
+              td
+                | The name of the state to init OR a hash containing global states to initialize
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | // Example #1: String
+          | statechart.initStates('first_state');
+          | // Example #2: Hash | Object
+          | statechart.initStates({ 'default': 'first_state', 'modal_states': 'first_modal' });
+
+      h3#inState inState
+      p
+        | This is a helper function when you are using the DEBUG_MODE version of the code. It will return 
+        | true or false if you are in a state. This can be helpful for debugging. Not to be used in production.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | Name of the state to search for
+            tr
+              td globalState
+              td
+                | Global state scope to search in
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | if (statechart.inState('state_one', 'default')) {
+          |   // do something ;
+          | }
+
+      h3#loadState loadState
+      p
+        | This will convert the statechart to a Testing statechart, loading up the named state and permitting 
+        | testing on there returned start object.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | Name of the state to search for
+            tr
+              td globalState
+              td
+                | Global state scope to search in
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = sc.loadState("#testingState");
+          | // or
+          | var state = sc.loadState("#testingState2", "error");
+
+      h3#sendEvent sendEvent
+      p
+        | This sends an event to all the global concurrent states. If you are in a state that has the event/action 
+        | defined then it will respond with this trigger. You can have N-number of parameters of any type and they 
+        | will be passed to the function definition for the event on the current states.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | Name of the event to broadcast
+            tr
+              td parameters
+              td
+                | Data to be sent to the event
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | // Example #1: no params
+          | statechart.sendEvent('viewMenu');
+          | // Example #2: one param
+          | statechart.sendEvent('openMenuItem', 3);
+          | // Example #3: n-params
+          | statechart.sendEvent('myFavoriteEvent', 3, 'Blue', {lots: 'of', 'other': 'Things'});
+
+    .section.doc-section
+      .page-header
+        h1#State State
+
+      h3#getData getData
+      p
+        | This is the function that gets the local data to the state. You would use this when you need to retrieve 
+        | local state data. The beauty of the state data storage is that it won&#39;t conflict with any other states local data. 
+        | IMPORTANT: The get data function will traverse any on the child or parent states.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td key
+              td
+                | The key to lookup in the data hash that is stored on the state
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = statechart.getState('state_one');
+          | state.getData('id');
+
+      h3#goToHistoryState goToHistoryState
+      p
+        | Much like <code>goToState()</code> This will transition to the last substate of 'stateName'. This is ONLY to be called inside 
+        | an event and as the last line after you do what you need to do.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | The history state that will be traversed to
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('loading', {
+          |   // Stativus.State.DefinitionParameters...
+          |   Stativus.State.DefinedEvents...
+          |   completeLoad: function(data){ // <= Event Definition
+          |     // do stuff with the 'data'
+          |     this.goToHistoryState('ready');
+          |   }
+          |   // other events
+          | });
+
+      h3#goToState goToState
+      p
+        | This is the heart and soul of the statechart. This is what starts the transition from one state to the next. 
+        | This is ONLY to be called inside an event and as the last line after you do what you need to do.
+        |
+        | When you use the optional data parameter, the data that is included will be passed along and attached to the 
+        | destination state. The data paramter can be either a String or an Object.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | The destination state that will be traversed to
+            tr
+              td data
+              td
+                | Data that is attached to the destination state
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('loading', {
+          |   // Stativus.State.DefinitionParameters...
+          |   Stativus.State.DefinedEvents...
+          |   completeLoad: function(data){ // <= Event Definition
+          |     // do stuff with the 'data'
+          |     if (true) this.goToState('ready', 'data');
+          |     else this.goToState('notReady', { err: 'data' });
+          |   },
+          |   // other events
+          | });
+          |  
+          | statechart.addState('ready', {
+          |   enterState: function() {
+          |     var data = this.getData('data'); // will yield 'data'
+          |   }
+          |   // other events
+          | });
+          |  
+          | statechart.addState('notReady', {
+          |   enterState: function() {
+          |     var data = this.getData('err'); // will yield 'data'
+          |   }
+          |   // other events
+          | });
+
+      h3#setData setData
+      p
+        | This is the function that sets the local data to the state. You would use this when you need to pass/set data to be used in a state. 
+        | IMPORTANT: Any data set on a state will be accessible to it&#39;s any child states that it has.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td key
+              td
+                | The key that data will be stored on the state hash with
+            tr
+              td value
+              td
+                | The data that will be associated with the key on the state hash
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = statechart.getState('state_one');
+          | state.setData('id', 123);
+
+    .section.doc-section
+      .page-header
+        h1#StateProperties State Properties
+
+      h3#globalConcurrentState globalConcurrentState
+      p This is the name of the global concurrent state that this state belongs to. This is set in the <code>addState()</code> function and does not ever change.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('state_one', {
+          |   globalConcurrentState: 'modal_states'
+          |   // more Stativus.State.DefinitionParameters...
+          | });
+
+      h3#initialSubstate initialSubstate
+      p
+        | This value sets in a parent state to tell it what substate to enter when someone calls <code>this.goToState('parentStateName')</code>. 
+        | Technically, it isn&#39;t required persay, but it bad practice to just enter a parent state with substates and not go to a substate. 
+        | This is added in the <code>addState()</code> function and never changes.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('state_one', {
+          |   initialSubstate: 'substate_one',
+          |   // more Stativus.State.DefinitionParameters...
+          | });
+
+      h3#parentState parentState
+      p
+        | This value sets who the parent state of this substate is. You do not need to add these in order, 
+        | even though its a good idea. If you do not set a value or set it to null the statechart assumes 
+        | that this is a top level state. It is added once in <code>addState()</code> function and never changes.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('substate_one', {
+          |   parentState: 'state_one'
+          |   // more Stativus.State.DefinitionParameters...
+          | });
+
+      h3#states states
+      p
+        | You can define substates within a state for a more concise way of defining your statechart. 
+        | You do this by defining an array of hashes with the same APIs as Stativus.State.DefinitionParameters 
+        | and Stativus.State.DefinitionEvents. There are two ways to do this. This is added in the 
+        | <code>addState()</code> function and never changes.
+      h4 Example 1
+      h4 Create configuration code as a HASH
+      .highlight
+        pre(class='brush: js')
+          | // Example #1:
+          | statechart.addState('state_one', {
+          |   states: [
+          |     {
+          |       name: 'substate_one',
+          |       enterState: function(){
+          |         // define function
+          |       }
+          |     }
+          |   ],
+          |   // more Stativus.State.DefinitionParameters...
+          | });
+          | // Example #2: n-level nesting
+          | statechart.addState('state_one', {
+          |   states: [
+          |     {
+          |       name: 'substate_one',
+          |       enterState: function(){
+          |         // define function
+          |       },
+          |       states: [
+          |         {
+          |           name: 'sub-substate_one'
+          |           // more Stativus.State.DefinitionParameters...
+          |         }
+          |       ]
+          |     }
+          |   ],
+          |   // more Stativus.State.DefinitionParameters...
+          | });
+      h4 Example 2
+      h4 You can also pass an array where the first argument (String - REQUIRED) is the name, next n-argument are config hashes
+      .highlight
+        pre(class='brush: js')
+          | // Example #3: With shared functionality
+          | statechart.addState('state_one', {
+          |   states: [
+          |     ['#substate_one', mySharedFunctions, /* <= shared function hash >*/ {
+          |       enterState: function(){
+          |         // define function
+          |       }
+          |     }],
+          |     ['#substate_two', mySharedFunctions, /* <= shared function hash >*/ {
+          |       enterState: function(){
+          |         // define function
+          |       }
+          |     }],
+          |   // more Stativus.State.DefinitionParameters...
+          | });
+
+      h3#substatesAreConcurrent substatesAreConcurrent
+      p
+        | This value sets in a parent state to tell it that it should enter all of its substates. This gives you 
+        | the fine grain control in substates to do multiple things at the same time. You do not use 
+        | initialSubstate with this because it doesn&#39;t make any sense. This is added in the <code>addState()</code> function and never changes.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('state_one', {
+          |   substatesAreConcurrent: true,
+          |   // more Stativus.State.DefinitionParameters...
+          | });
+
+    .section.doc-section
+      .page-header
+        h1#StateEvents State Events
+
+      h3#enterState enterState
+      p
+        | This is the first of the important default state events that need to be defined. This event gets called when a state gets entered. 
+        | This is optional and is added in the <code>addState()</code> function and never changes.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('state_one', {
+          |   // Stativus.State.DefinitionParameters...
+          |   enterState: function(){
+          |     // code that sets up the view or state.
+          |   },
+          |   // more Stativus.State.DefinitionEvents...
+          | });
+
+      h3#willEnterState willEnterState
+      p
+        | This is the pre-loading event to be used for async functionality. You would need to return true from this function to pause 
+        | the statechart allowing the async event to happen then you need to call <code>done()</code> to restart the statechart transition from state to state
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td done
+              td
+                | Function that resumes statechart activity after asynchronous processing
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | sc.addState("#second", {
+          |   willEnterState: function(done){
+          |     $('#content .deep-thought').animate({
+          |       left: 42,
+          |       complete: function () {
+          |         done(); // REQUIRED!!: call this function to 
+          |                 // restart the statechart transitions
+          |       }
+          |     });
+          |     return true; // REQUIRED!!: return true so Stativus knows to stop the 
+          |                  // transitions and wait for animation or other async code.
+          |   },
+          |   enterState: function(){ ... }
+          | });
+
+      h3#didEnterState didEnterState
+      p
+        | This is the post-loading event that you can use to do any last minute functionality.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | sc.addState("#second", {
+          |   didEnterState: function(){
+          |     // setup refresh timers or fire an event
+          |   }
+          | });
+
+      h3#exitState exitState
+      p
+        | This is the second most important of the default state events that need to be defined. 
+        | This event gets called when a state gets exited. This is optional and is added in the <code>addState()</code> function and never changes.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | statechart.addState('state_one', {
+          |   // Stativus.State.DefinitionParameters...
+          |   exitState: function(){
+          |     // code that tears down the view or state.
+          |   },
+          |   // more Stativus.State.DefinitionEvents...
+          | });
+
+      h3#willExitState willExitState
+      p
+        | This is the pre-exit event to be used for async functionality. You would need to return true from this 
+        | function to pause the statechart allowing the async event to happen then you need to call <code>done()</code> 
+        | to restart the statechart transition from state to state.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td done
+              td
+                | Function that resumes statechart activity after asynchronous processing
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | sc.addState("#second", {
+          |   willExitState: function(done){
+          |     $('#content .deep-thought').animate({
+          |       right: 42,
+          |       complete: function () {
+          |         done(); // REQUIRED!!: call this function to 
+          |                 // restart the statechart transitions
+          |       }
+          |     });
+          |     return true; // REQUIRED!!: return true so Stativus knows to stop the 
+          |                  // transitions and wait for animation or other async code.
+          |   },
+          |   exitState: function(){ ... }
+          | });
+
+      h3#didExitState didExitState
+      p
+        | This is the post-exiting event that you can use to do any last minute functionality.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | sc.addState("#second", {
+          |   didExitState: function(){
+          |     // kill variables; fire events; or send data.
+          |   }
+          | });
+
+    .section.doc-section
+      .page-header
+        h1#TestEvents Test Events
+
+      h3#t-enterState enterState
+      p
+        | This is a function that will trigger an 'enterState' call that can then test the state.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = statechart.loadState('state1');
+          | state.enterState();
+
+      h3#t-willEnterState willEnterState
+      p
+        | This is a function that will trigger an `willEnterState` call that can then test the state. Example is using `qUnit` tests.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td done
+              td
+                | Function that resumes statechart activity after asynchronous processing
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = SC.loadState("#async");
+          | state.willEnterState(function(){
+          |   start();
+          | });
+          | stop();
+
+      h3#willEnterCompleted willEnterCompleted
+      p
+        | This is a function that will return if the asynchronous call was made in the 'willEnterState' function.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = SC.loadState("#async");
+          | state.willEnterState(function(){
+          |   start();
+          |   ok(state.willExitCompleted(), 'Will exit async call was completed');
+          |   equal(mockObject.willExitCount, 1, 'willExitCount was successfully called');
+          | });
+          | stop();
+
+      h3#t-exitState exitState
+      p
+        | This is a function that will trigger an `exitState` call that can then test the state.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = statechart.loadState('state1');
+          | state.exitState();
+
+      h3#t-willExitState willExitState
+      p
+        | This is a function that will trigger an `willExitState` call that can then test the state. Example is using `qUnit` tests.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td done
+              td
+                | Function that resumes statechart activity after asynchronous processing
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = SC.loadState("#async");
+          | state.willExitState(function(){
+          |   start();
+          | });
+          | stop();
+
+      h3#willExitCompleted willExitCompleted
+      p
+        | This is a function that will return if the asynchronous call was made in the 'willEnterState' function.
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = SC.loadState("#async");
+          | state.willExitState(function(){
+          |   start();
+          |   ok(state.willExitCompleted(), 'Will exit async call was completed');
+          |   equal(mockObject.willExitCount, 1, 'willExitCount was successfully called');
+          | });
+          | stop();
+
+      h3#t-transitionTo transitionTo
+      p
+        | This is a function that will return true if the last action resulted in the state needing to transition to a different state.
+      h4 Parameters
+      table.table.table-bordered.table-striped
+        thead
+          tr
+            th(style='width: 150px;') Parameter
+            th Description
+          tbody
+            tr
+              td name
+              td
+                | Name of the state to transition to
+      h4 Example
+      .highlight
+        pre(class='brush: js')
+          | var state = SC.loadState("#async");
+          | state.enterState(); // switch state that immediately transitions to a new state
+          | ok(state.transitionedTo('newState'), 'state proper transition');

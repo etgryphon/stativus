@@ -1,0 +1,63 @@
+/* First level of nav */
+.bs-sidenav
+  margin-top 30px
+  margin-bottom 30px
+  padding-top    10px
+  padding-bottom 10px
+  text-shadow 0 1px 0 #fff
+  background-color $sidenav-bgcolor
+  border-radius 5px
+
+/* All levels of nav */
+.bs-sidebar .nav > li > a
+  display block
+  color $sidenav-textcolor
+  padding 5px 20px
+
+.bs-sidebar .nav > li > a:hover,
+.bs-sidebar .nav > li > a:focus
+  text-decoration none
+  background-color $sidenav-hover-bgcolor
+  border-right 1px solid $sidenav-hover-bgcolor
+
+.bs-sidebar .nav > .active > a,
+.bs-sidebar .nav > .active:hover > a,
+.bs-sidebar .nav > .active:focus > a
+  font-weight bold
+  color $sidenav-textcolor-active
+  background-color transparent
+  border-right 1px solid $sidenav-textcolor-active
+
+/* Nav second level (shown on .active) */
+.bs-sidebar .nav .nav
+  display none
+  margin-bottom 8px
+
+.bs-sidebar .nav .nav > li > a
+  padding-top    3px
+  padding-bottom 3px
+  padding-left 30px
+  font-size 90%
+
+@media screen and (min-width: 992px)
+  .bs-sidebar.affix,
+  .bs-sidebar.affix-bottom
+    width 213px
+  
+  .bs-sidebar.affix
+    position fixed
+    top 110px
+  
+  .bs-sidebar.affix-bottom .bs-sidenav,
+  .bs-sidebar.affix .bs-sidenav
+    margin-top 0
+    margin-bottom 0
+
+.bs-sidebar,
+.bs-sidebar .nav > .active > ul
+    display block
+
+@media screen and (min-width: 1200px)
+  .bs-sidebar.affix,
+  .bs-sidebar.affix-bottom
+    width 270px

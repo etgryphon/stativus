@@ -1,0 +1,11 @@
+mixin footer
+  #footer
+    .container
+      .twitter.pull-right
+        a.twitter-follow-button(href='https://twitter.com/stativus', data-show-count='false', data-dnt='true') Follow @stativus
+        script
+          !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+      p.text-muted.credit
+        |&nbsp;©&nbsp;
+        a(href='https://github.com/etgryphon', target='_blank', alt='Evin Grano') Evin Grano
+        |&nbsp;2013.
