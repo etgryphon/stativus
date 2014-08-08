@@ -3,7 +3,7 @@ module("Module: Test Statechart History", {
     
     this.sc = Stativus.createStatechart();
     this.sc.addState("parent", {
-      initialSubstate: 'childA'
+      substatesAreConcurrent: true
     });
 
     this.sc.addState("childA", {
@@ -62,7 +62,7 @@ asyncTest("Test to see if history state is calling exitState", function(){
 
 
 asyncTest("Test to see if history state works inside an click event", function(){
-  this.sc.initStates('parent');
+  this.sc.initStates("default",'parent');
   var state = this.sc.currentState()[0];
   state.goToState("childA2");
   state.goToState("childB2");
