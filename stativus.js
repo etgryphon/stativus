@@ -234,7 +234,10 @@ Stativus.State = {
         var split, evt, selector, toFire;
         split    = key.split(' ');
         evt      = split[0];
-        selector = split[1];
+
+        // allow for complex paths
+        // 'change #foo .bar select'
+        selector = key.replace(evt,"");
         toFire   = events[key];
         if(remove) removeEvent(evt, selector);
         else addEvent(evt, selector, toFire);
