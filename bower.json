@@ -8,6 +8,12 @@
     "type": "git",
     "url": "git://github.com/etgryphon/stativus.git"
   },
+  "main": [
+    "dist/stativus.js",
+    "dist/stativus.min.js",
+    "dist/stativus.min.gz.js",
+    "dist/stativus.debug.js"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
