@@ -296,7 +296,7 @@ Stativus.Statechart = {
 
   addState: function(name){
     var tree, obj, hasConcurrentSubstates = false, pState, pName, states,
-        cTree, nState, config, configs = [], len, i, that = this, key;
+        cTree, nState, config, configs = [], len, i, that = this, key, treeObj;
 
     for(i = 1, len = arguments.length; i < len; i++){
       configs[i-1] = config = arguments[i];
@@ -322,7 +322,8 @@ Stativus.Statechart = {
     }
     // Am I a substate of any parent State?
     if (pName){
-      pState = this._all_states[tree][pName];
+      treeObj = this._all_states[tree];
+      pState = treeObj && treeObj[pName];
       if(!pState) {
         key = pName+'_'+tree;
         this._configs_in_waiting[key] = pState = this._configs_in_waiting[key] || {};
