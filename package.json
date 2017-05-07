@@ -1,0 +1,26 @@
+{
+  "name": "stativus",
+  "version": "1.0.0",
+  "description": "Statecharts for the Rest of Us!",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:etgryphon/stativus.git"
+  },
+  "homepage": "http://stativ.us",
+  "author": "Evin Grano <etgryphon@icloud.com>",
+  "dependencies": {},
+  "main": "index",
+  "engines": {
+    "node": "^6.9.5"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-compress": "^1.4.1",
+    "grunt-contrib-uglify": "^2.3.0",
+    "grunt-metascript": "0.0.6",
+    "grunt-text-replace": "^0.4.0",
+    "uglify-js": "^2.8.0"
+  }
+}

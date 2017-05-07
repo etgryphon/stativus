@@ -2,8 +2,7 @@
   "name": "stativus",
   "version": "1.0.0",
   "main": [
-    "./libs/stativus-min.js",
-    "./libs/stativus-full.js"
+    "./dist/stativus.min.js"
   ],
   "repository": {
     "type": "git",

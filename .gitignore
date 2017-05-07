@@ -2,3 +2,4 @@ log
 .DS_Store
 sample_app/
 build_log/
+node_modules/
