@@ -1,6 +1,6 @@
 module.exports = {
     debug: [
-        "dist/stativus-debug.js"
+        "dist/stativus.debug.js"
     ],
     full: [
         "dist/stativus.js"
