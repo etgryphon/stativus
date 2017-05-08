@@ -49,6 +49,7 @@ Please read the complete API documentation at [Stativ.us](http://stativ.us)
 
 ## Development
 
+1. Make sure that you have [GruntJS](https://gruntjs.com/) installed
 1. Make sure that you have [UglifyJS](https://github.com/mishoo/UglifyJS) installed
 2. Make sure that you have [Metascript](https://github.com/dcodeIO/MetaScript) installed
 3. Clone the repository: git clone git://github.com/etgryphon/stativus.git
