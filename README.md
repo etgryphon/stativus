@@ -22,7 +22,7 @@ Statecharts are a great way to organize your web application and make it more ro
     + All Async starts and stops will be outputted to the console.
     + Will warn you if you forgot to return true when using willEnterState()
   + **Full**: this is the file named `stativus.js` and is a normal version for production use
-  + **Minified**: this is the file named `stativus-min.js` and is a minified version for production use (gzipped: ~3.9k)
+  + **Minified**: this is the file named `stativus.min.js` and is a minified version for production use (gzipped: ~3.9k)
 
 ## Demo
 A list of all demos can be found at [Stativus Demos](http://demo.stativ.us)
