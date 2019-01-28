@@ -944,9 +944,9 @@ Stativus.Statechart = {
 
 Stativus.createStatechart = function(){ return this.Statechart.create(); };
 
-// TODO:  Work on AMD Loading...
+if (typeof exports !== "undefined") {
+  module.exports = Stativus;
+}
 if (typeof window !== "undefined") {
   window.Stativus = Stativus;
-} else if (typeof exports !== "undefined") {
-  module.exports = Stativus;
 }

@@ -1361,9 +1361,9 @@ if (DEBUG_MODE){
   };
 }
 
-// TODO:  Work on AMD Loading...
+if (typeof exports !== "undefined") {
+  module.exports = Stativus;
+}
 if (typeof window !== "undefined") {
   window.Stativus = Stativus;
-} else if (typeof exports !== "undefined") {
-  module.exports = Stativus;
 }
