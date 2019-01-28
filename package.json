@@ -10,7 +10,7 @@
   "homepage": "http://stativ.us",
   "author": "Evin Grano <etgryphon@icloud.com>",
   "dependencies": {},
-  "main": "index",
+  "main": "./dist/stativus.js",
   "engines": {
     "node": "^6.9.5"
   },
