@@ -62,6 +62,7 @@ Please read the complete API documentation at [Stativ.us](http://stativ.us)
   + twitter: @etgryphon
   + contact: etgryphon@icloud.com
 + Contributors:
+  + __Rich Harriman__ :: github: @Katahdin
   + __Seth Carney__ :: twitter: @SethCarney :: github: @scarney81
   + __Mike Atkins__ :: github: @apechimp
 + Beta Tester: Johnny Luu
